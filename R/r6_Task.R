@@ -159,7 +159,7 @@ Task <- R6::R6Class(
                               type,
                               permission = NULL,
                               plans = NULL,
-                              inititalizer_fn = NULL,
+                              initializer_fn = NULL,
                               update_plans_fn = NULL,
                               schema,
                               cores = 1,
@@ -170,7 +170,7 @@ Task <- R6::R6Class(
       self$type <- type
       self$permission <- permission
       self$plans <- plans
-      self$inititalizer_fn <- inititalizer_fn
+      self$initializer_fn <- initializer_fn
       self$update_plans_fn <- update_plans_fn
       self$schema <- schema
       self$cores <- cores
@@ -181,7 +181,7 @@ Task <- R6::R6Class(
       if(!is.null(self$initializer_fn)){
         message(glue::glue("Running initializer function"))
         for (s in schema) s$db_connect()
-        self$inititalizer_fn(schema = schema)
+        self$initializer_fn(schema = schema)
         for (s in schema) s$db_disconnect()
       }
       if (!is.null(self$update_plans_fn)) {

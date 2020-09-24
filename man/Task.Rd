@@ -28,7 +28,7 @@ Task
   type,
   permission = NULL,
   plans = NULL,
-  inititalizer_fn = NULL,
+  initializer_fn = NULL,
   update_plans_fn = NULL,
   schema,
   cores = 1,
