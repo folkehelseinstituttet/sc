@@ -1,6 +1,6 @@
 Package: sc
 Title: Sykdomspulsen Core - NIPH Infectious Disease Surveillance System
-Version: 2020.7.9
+Version: 2020.9.24
 Authors@R: c(
   person("Richard", "White", email = "w@rwhite.no", role = c("aut", "cre")),
   person("Gunnar", "R\u00F8", email = "GunnarOyvindIsaksson.Ro@fhi.no", role = c("aut")), 
@@ -40,6 +40,6 @@ Suggests: testthat,
     usethis
 License: GPL-3 + file LICENSE
 LazyData: true
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 VignetteBuilder: knitr
 Encoding: UTF-8

@@ -13,6 +13,7 @@ task_from_config(
   for_each_plan = NULL,
   for_each_argset = NULL,
   upsert_at_end_of_each_plan = FALSE,
+  insert_at_end_of_each_plan = FALSE,
   action,
   schema = NULL,
   args = NULL
@@ -34,6 +35,8 @@ task_from_config(
 \item{for_each_argset}{Create an argset for each value}
 
 \item{upsert_at_end_of_each_plan}{If TRUE, then schema$output is used to upsert at the end of each plan}
+
+\item{insert_at_end_of_each_plan}{If TRUE, then schema$output is used to insert at the end of each plan}
 
 \item{action}{Text}
 

@@ -14,6 +14,7 @@ add_task <- function(task){
 #' @param for_each_plan Create a plan for each value
 #' @param for_each_argset Create an argset for each value
 #' @param upsert_at_end_of_each_plan If TRUE, then schema$output is used to upsert at the end of each plan
+#' @param insert_at_end_of_each_plan If TRUE, then schema$output is used to insert at the end of each plan
 #' @param action Text
 #' @param schema List of schema mappings
 #' @param args List of args
@@ -27,6 +28,7 @@ task_from_config <- function(
   for_each_plan=NULL,
   for_each_argset=NULL,
   upsert_at_end_of_each_plan = FALSE,
+  insert_at_end_of_each_plan = FALSE,
   action,
   schema=NULL,
   args=NULL
@@ -35,6 +37,9 @@ task_from_config <- function(
   stopifnot(type %in% c("data","single", "analysis", "ui"))
   stopifnot(cores %in% 1:parallel::detectCores())
   stopifnot(upsert_at_end_of_each_plan %in% c(T,F))
+  stopifnot(insert_at_end_of_each_plan %in% c(T,F))
+  if(upsert_at_end_of_each_plan & insert_at_end_of_each_plan) stop("upsert_at_end_of_each_plan & insert_at_end_of_each_plan")
+
   plans <- list()
 
   task <- NULL
@@ -54,7 +59,8 @@ task_from_config <- function(
       plans = list(plan),
       schema = schema,
       cores = cores,
-      upsert_at_end_of_each_plan = upsert_at_end_of_each_plan
+      upsert_at_end_of_each_plan = upsert_at_end_of_each_plan,
+      insert_at_end_of_each_plan = insert_at_end_of_each_plan
     )
   } else if (type %in% c("analysis", "ui")) {
     task <- Task$new(
@@ -63,7 +69,8 @@ task_from_config <- function(
       plans = plans,
       schema = schema,
       cores = cores,
-      upsert_at_end_of_each_plan = upsert_at_end_of_each_plan
+      upsert_at_end_of_each_plan = upsert_at_end_of_each_plan,
+      insert_at_end_of_each_plan = insert_at_end_of_each_plan
     )
 
     task$update_plans_fn <- function() {
@@ -140,6 +147,7 @@ Task <- R6::R6Class(
     schema = list(),
     cores = 1,
     upsert_at_end_of_each_plan = FALSE,
+    insert_at_end_of_each_plan = FALSE,
     name = NULL,
     update_plans_fn = NULL,
     initialize = function(
@@ -150,7 +158,9 @@ Task <- R6::R6Class(
                               update_plans_fn = NULL,
                               schema,
                               cores = 1,
-                              upsert_at_end_of_each_plan = FALSE) {
+                              upsert_at_end_of_each_plan = FALSE,
+                              insert_at_end_of_each_plan = FALSE
+                              ) {
       self$name <- name
       self$type <- type
       self$permission <- permission
@@ -159,6 +169,7 @@ Task <- R6::R6Class(
       self$schema <- schema
       self$cores <- cores
       self$upsert_at_end_of_each_plan <- upsert_at_end_of_each_plan
+      self$insert_at_end_of_each_plan <- insert_at_end_of_each_plan
     },
     update_plans = function() {
       if (!is.null(self$update_plans_fn)) {
@@ -220,12 +231,22 @@ Task <- R6::R6Class(
           total = self$num_argsets()
         )
         for (s in schema) s$db_connect()
-        for (x in self$plans) {
-          x$set_progress(pb)
-          retval <- x$run_all(schema = schema)
+        for (x in seq_along(self$plans)) {
+          if(!interactive()){
+            message(glue::glue("Plan {x}/length(self$plans)"))
+          }
+
+          self$plans[[i]]$set_progress(pb)
+          retval <- self$plans[[i]]$run_all(schema = schema)
+
           if (upsert_at_end_of_each_plan) {
             retval <- rbindlist(retval)
             schema$output$db_upsert_load_data_infile(retval, verbose = F)
+          }
+
+          if (insert_at_end_of_each_plan) {
+            retval <- rbindlist(retval)
+            schema$output$db_insert_load_data_infile(retval, verbose = F)
           }
           rm("retval")
         }

@@ -31,7 +31,8 @@ Task
   update_plans_fn = NULL,
   schema,
   cores = 1,
-  upsert_at_end_of_each_plan = FALSE
+  upsert_at_end_of_each_plan = FALSE,
+  insert_at_end_of_each_plan = FALSE
 )}\if{html}{\out{</div>}}
 }
 
