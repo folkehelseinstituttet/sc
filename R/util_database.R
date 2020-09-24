@@ -501,7 +501,11 @@ drop_all_rows <- function(conn, table) {
   }))
 }
 
-keep_rows_where <- function(conn, table, condition) {
+keep_rows_where <- function(conn=NULL, table, condition) {
+  if(is.null(conn)){
+    conn <- get_db_connection()
+    on.exit(DBI::dbDisconnect(conn))
+  }
   t0 <- Sys.time()
   temp_name <- paste0("tmp",sc:::random_uuid())
 
@@ -517,7 +521,11 @@ keep_rows_where <- function(conn, table, condition) {
   if(config$verbose) message(glue::glue("Kept rows in {dif} seconds from {table}"))
 }
 
-drop_rows_where <- function(conn, table, condition) {
+drop_rows_where <- function(conn=NULL, table, condition) {
+  if(is.null(conn)){
+    conn <- get_db_connection()
+    on.exit(DBI::dbDisconnect(conn))
+  }
   t0 <- Sys.time()
   a <- DBI::dbExecute(conn, glue::glue({
     "DELETE FROM {table} WHERE {condition};"
