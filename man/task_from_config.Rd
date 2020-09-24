@@ -15,6 +15,7 @@ task_from_config(
   upsert_at_end_of_each_plan = FALSE,
   insert_at_end_of_each_plan = FALSE,
   action,
+  initializer_fn = NULL,
   schema = NULL,
   args = NULL
 )
