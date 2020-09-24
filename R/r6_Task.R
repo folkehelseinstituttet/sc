@@ -246,7 +246,7 @@ Task <- R6::R6Class(
 
           if (insert_at_end_of_each_plan) {
             retval <- rbindlist(retval)
-            schema$output$db_insert_load_data_infile(retval, verbose = F)
+            schema$output$db_load_data_infile(retval, verbose = F)
           }
 
           rm("retval")
@@ -266,9 +266,15 @@ Task <- R6::R6Class(
             for (s in schema) s$db_connect()
             x$set_progressor(pb)
             retval <- x$run_all(schema = schema)
+
             if (upsert_at_end_of_each_plan) {
               retval <- rbindlist(retval)
               schema$output$db_upsert_load_data_infile(retval, verbose = F)
+            }
+
+            if (insert_at_end_of_each_plan) {
+              retval <- rbindlist(retval)
+              schema$output$db_load_data_infile(retval, verbose = F)
             }
             rm("retval")
             for (s in schema) s$db_disconnect()
