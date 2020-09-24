@@ -30,7 +30,6 @@ task_from_config <- function(
   upsert_at_end_of_each_plan = FALSE,
   insert_at_end_of_each_plan = FALSE,
   action,
-  initializer_fn=NULL,
   schema=NULL,
   args=NULL
 ) {
@@ -58,7 +57,6 @@ task_from_config <- function(
       name = name,
       type = type,
       plans = list(plan),
-      initializer_fn = initializer_fn,
       schema = schema,
       cores = cores,
       upsert_at_end_of_each_plan = upsert_at_end_of_each_plan,
@@ -69,7 +67,6 @@ task_from_config <- function(
       name = name,
       type = type,
       plans = plans,
-      initializer_fn = initializer_fn,
       schema = schema,
       cores = cores,
       upsert_at_end_of_each_plan = upsert_at_end_of_each_plan,
@@ -152,14 +149,12 @@ Task <- R6::R6Class(
     upsert_at_end_of_each_plan = FALSE,
     insert_at_end_of_each_plan = FALSE,
     name = NULL,
-    initializer_fn = NULL,
     update_plans_fn = NULL,
     initialize = function(
                               name,
                               type,
                               permission = NULL,
                               plans = NULL,
-                              initializer_fn = NULL,
                               update_plans_fn = NULL,
                               schema,
                               cores = 1,
@@ -170,7 +165,6 @@ Task <- R6::R6Class(
       self$type <- type
       self$permission <- permission
       self$plans <- plans
-      self$initializer_fn <- initializer_fn
       self$update_plans_fn <- update_plans_fn
       self$schema <- schema
       self$cores <- cores
@@ -178,12 +172,6 @@ Task <- R6::R6Class(
       self$insert_at_end_of_each_plan <- insert_at_end_of_each_plan
     },
     update_plans = function() {
-      if(!is.null(self$initializer_fn)){
-        message(glue::glue("Running initializer function"))
-        for (s in schema) s$db_connect()
-        self$initializer_fn(schema = schema)
-        for (s in schema) s$db_disconnect()
-      }
       if (!is.null(self$update_plans_fn)) {
         message(glue::glue("Updating plans..."))
         self$plans <- self$update_plans_fn()
@@ -260,6 +248,7 @@ Task <- R6::R6Class(
             retval <- rbindlist(retval)
             schema$output$db_insert_load_data_infile(retval, verbose = F)
           }
+
           rm("retval")
         }
         for (s in schema) s$db_disconnect()
