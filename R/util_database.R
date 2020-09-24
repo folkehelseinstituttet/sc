@@ -494,13 +494,27 @@ add_index.default <- function(conn, table, keys, index) {
 
 
 
-
-drop_all_rows <- function(conn, table) {
+#' drop_all_rows
+#' Drops all rows
+#' @param conn A db connection
+#' @param table Table name
+#' @export
+drop_all_rows <- function(conn=NULL, table) {
+  if(is.null(conn)){
+    conn <- get_db_connection()
+    on.exit(DBI::dbDisconnect(conn))
+  }
   a <- DBI::dbExecute(conn, glue::glue({
     "TRUNCATE TABLE {table};"
   }))
 }
 
+#' keep_rows_where
+#' Keeps the rows where the condition is met
+#' @param conn A db connection
+#' @param table Table name
+#' @param condition A string SQL condition
+#' @export
 keep_rows_where <- function(conn=NULL, table, condition) {
   if(is.null(conn)){
     conn <- get_db_connection()
@@ -521,6 +535,12 @@ keep_rows_where <- function(conn=NULL, table, condition) {
   if(config$verbose) message(glue::glue("Kept rows in {dif} seconds from {table}"))
 }
 
+#' drop_rows_where
+#' Drops the rows where the condition is met
+#' @param conn A db connection
+#' @param table Table name
+#' @param condition A string SQL condition
+#' @export
 drop_rows_where <- function(conn=NULL, table, condition) {
   if(is.null(conn)){
     conn <- get_db_connection()
