@@ -233,7 +233,7 @@ Task <- R6::R6Class(
         for (s in schema) s$db_connect()
         for (i in seq_along(self$plans)) {
           if(!interactive()){
-            message(glue::glue("Plan {i}/length(self$plans)"))
+            message(glue::glue("Plan {i}/{length(self$plans)}"))
           }
 
           self$plans[[i]]$set_progress(pb)
