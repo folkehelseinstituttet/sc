@@ -249,6 +249,7 @@ Schema <- R6Class("Schema",
                     },
                     db_keep_rows_where = function(condition){
                       keep_rows_where(self$conn, self$db_table, condition)
+                      self$db_add_constraint()
                     },
                     get_data = function(...) {
                       dots <- dplyr::quos(...)
