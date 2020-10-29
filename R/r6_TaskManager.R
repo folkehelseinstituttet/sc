@@ -98,6 +98,35 @@ tm_get_schema <- function(task_name, index_plan = NULL, index_argset = NULL) {
   return(schema)
 }
 
+analyses_to_dt <- function(analyses){
+  retval <- lapply(analyses, function(x){
+    data.table(t(x$argset))
+  })
+  retval <- rbindlist(retval)
+  retval[,index_argset := 1:.N]
+
+  return(retval)
+}
+
+plans_to_dt <- function(plans){
+  retval <- lapply(plans, function(x) analyses_to_dt(x$analyses))
+  for(i in seq_along(retval)) retval[[i]][, index_plan := i]
+  retval <- rbindlist(retval)
+  setcolorder(retval, c("index_plan", "index_argset"))
+  retval
+}
+
+#' Gets a data.table overview of index_plan and index_argset
+#' @param task_name Name of the task
+#' @param index_plan Not used
+#' @param index_argset Not used
+#' @export
+tm_get_plans_argsets_as_dt <- function(task_name){
+  p <- sc::tm_get_plans(task_name)
+  plans_to_dt(p)
+}
+
+
 #'
 #'
 #' TaskManager
