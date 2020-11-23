@@ -1,3 +1,7 @@
+# sc 7.0.5
+
+* `Task` now includes `action_before_fn` and `action_after_fn`
+
 # sc 7.0.4
 
 * `validator_field_contents_sykdomspulsen` now allows `baregion` as a valid `granularity_geo`

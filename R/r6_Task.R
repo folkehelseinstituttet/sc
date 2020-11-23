@@ -150,6 +150,8 @@ Task <- R6::R6Class(
     insert_at_end_of_each_plan = FALSE,
     name = NULL,
     update_plans_fn = NULL,
+    action_before_fn = NULL,
+    action_after_fn = NULL,
     initialize = function(
                               name,
                               type,
@@ -159,7 +161,9 @@ Task <- R6::R6Class(
                               schema,
                               cores = 1,
                               upsert_at_end_of_each_plan = FALSE,
-                              insert_at_end_of_each_plan = FALSE
+                              insert_at_end_of_each_plan = FALSE,
+                              action_before_fn = NULL,
+                              action_after_fn = NULL
                               ) {
       self$name <- name
       self$type <- type
@@ -170,6 +174,8 @@ Task <- R6::R6Class(
       self$cores <- cores
       self$upsert_at_end_of_each_plan <- upsert_at_end_of_each_plan
       self$insert_at_end_of_each_plan <- insert_at_end_of_each_plan
+      self$action_before_fn <- action_before_fn
+      self$action_after_fn <- action_after_fn
     },
     update_plans = function() {
       if (!is.null(self$update_plans_fn)) {
@@ -195,7 +201,10 @@ Task <- R6::R6Class(
       self$update_plans()
 
       message(glue::glue("Running task={self$name} with plans={length(self$plans)} and argsets={self$num_argsets()}"))
-
+      if(!is.null(self$action_before_fn)){
+        message("Running action_before_fn")
+        self$action_before_fn()
+      }
       if (cores != 1) {
         doFuture::registerDoFuture()
 
@@ -296,6 +305,11 @@ Task <- R6::R6Class(
       future::plan(future::sequential)
       foreach::registerDoSEQ()
       data.table::setDTthreads()
+
+      if(!is.null(self$action_after_fn)){
+        message("Running action_after_fn")
+        self$action_after_fn()
+      }
 
       update_rundate(task = self$name)
       if(!is.null(self$permission)) self$permission$revoke_permission()
