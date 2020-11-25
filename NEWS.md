@@ -1,3 +1,7 @@
+# sc 7.0.6
+
+* write_data_infile now checks for Infinite/NaN values and sets them to NA
+
 # sc 7.0.5
 
 * `Task` now includes `action_before_fn` and `action_after_fn`

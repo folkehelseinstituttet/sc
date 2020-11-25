@@ -61,6 +61,13 @@ write_data_infile <- function(
   na = "\\N",
   sep=","
   ) {
+  # infinites and NANs get written as text
+  # which destroys the upload
+  # we need to set them to NA
+  for(i in names(dt)){
+    dt[is.infinite(get(i)), (i) := NA]
+    dt[is.nan(get(i)), (i) := NA]
+  }
   fwrite(dt,
     file = file,
     logical01 = T,
