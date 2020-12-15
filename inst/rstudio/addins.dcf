@@ -1,0 +1,4 @@
+Name: Insert task_from_config_v2 (basic)
+Description: Insert task_from_config_v2 (basic).
+Binding: addin_task_from_config_v2_basic
+Interactive: false

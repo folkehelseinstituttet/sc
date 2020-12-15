@@ -2,6 +2,7 @@
 
 * `copy_into_new_table_where` allows for the creation of a new table from an old table
 * Including `task_from_config_v2` 
+* First RStudio addin
 
 # sc 7.0.6
 
