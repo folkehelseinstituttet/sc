@@ -121,8 +121,8 @@ plans_to_dt <- function(plans){
 #' @param index_plan Not used
 #' @param index_argset Not used
 #' @export
-tm_get_plans_argsets_as_dt <- function(task_name){
-  p <- sc::tm_get_plans(task_name)
+tm_get_plans_argsets_as_dt <- function(task_name, index_plan = NULL, index_argset = NULL){
+  p <- tm_get_plans(task_name)
   plans_to_dt(p)
 }
 

@@ -4,7 +4,7 @@
 \alias{tm_get_plans_argsets_as_dt}
 \title{Gets a data.table overview of index_plan and index_argset}
 \usage{
-tm_get_plans_argsets_as_dt(task_name)
+tm_get_plans_argsets_as_dt(task_name, index_plan = NULL, index_argset = NULL)
 }
 \arguments{
 \item{task_name}{Name of the task}

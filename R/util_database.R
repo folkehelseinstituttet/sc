@@ -517,7 +517,7 @@ copy_into_new_table_where <- function(
     on.exit(DBI::dbDisconnect(conn))
   }
   t0 <- Sys.time()
-  temp_name <- paste0("tmp",sc:::random_uuid())
+  temp_name <- paste0("tmp",random_uuid())
 
   sql <- glue::glue("SELECT * INTO {temp_name} FROM {table_from} WHERE {condition}")
   DBI::dbExecute(conn, sql)
@@ -558,7 +558,7 @@ keep_rows_where <- function(conn=NULL, table, condition) {
     on.exit(DBI::dbDisconnect(conn))
   }
   t0 <- Sys.time()
-  temp_name <- paste0("tmp",sc:::random_uuid())
+  temp_name <- paste0("tmp",random_uuid())
 
   sql <- glue::glue("SELECT * INTO {temp_name} FROM {table} WHERE {condition}")
   DBI::dbExecute(conn, sql)

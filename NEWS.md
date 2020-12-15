@@ -1,6 +1,7 @@
 # sc 7.0.7
 
 * `copy_into_new_table_where` allows for the creation of a new table from an old table
+* Including `task_from_config_v2` 
 
 # sc 7.0.6
 
