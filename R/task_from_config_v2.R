@@ -171,29 +171,4 @@ task_from_config_v2 <- function(
 }
 
 
-addin_task_from_config_v2_basic <- function(){
-  rstudioapi::insertText(
-'
-# TASK_NAME ----
-sc::add_task(
-  sc::task_from_config_v2(
-    name = "TASK_NAME",
-    cores = 1,
-    for_each_plan = plnr::expand_list(
-      x = 1
-    ),
-    for_each_argset = NULL,
-    universal_argset = NULL,
-    upsert_at_end_of_each_plan = FALSE,
-    insert_at_end_of_each_plan = FALSE,
-    action_name = "PACKAGE_NAME::TASK_NAME",
-    data_output_schemas = NULL,
-    data_selector_schemas = NULL,
-    data_selector_fn_default = NULL
-  )
-)
-'
-  )
-}
-
 
