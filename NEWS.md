@@ -1,3 +1,7 @@
+# sc 7.0.7
+
+* `copy_into_new_table_where` allows for the creation of a new table from an old table
+
 # sc 7.0.6
 
 * write_data_infile now checks for Infinite/NaN values and sets them to NA

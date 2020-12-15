@@ -1,6 +1,6 @@
 Package: sc
 Title: Sykdomspulsen Core - NIPH Infectious Disease Surveillance System
-Version: 7.0.6
+Version: 7.0.7
 Authors@R: c(
   person("Richard", "White", email = "hello@rwhite.no", role = c("aut", "cre")),
   person("Gunnar", "R\u00F8", email = "GunnarOyvindIsaksson.Ro@fhi.no", role = c("aut"))

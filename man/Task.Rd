@@ -32,7 +32,9 @@ Task
   schema,
   cores = 1,
   upsert_at_end_of_each_plan = FALSE,
-  insert_at_end_of_each_plan = FALSE
+  insert_at_end_of_each_plan = FALSE,
+  action_before_fn = NULL,
+  action_after_fn = NULL
 )}\if{html}{\out{</div>}}
 }
 

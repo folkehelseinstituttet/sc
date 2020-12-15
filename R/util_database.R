@@ -499,7 +499,37 @@ add_index.default <- function(conn, table, keys, index) {
   )
 }
 
+#' copy_into_new_table_where
+#' Keeps the rows where the condition is met
+#' @param conn A db connection
+#' @param table_from Table name
+#' @param table_to Table name
+#' @param condition A string SQL condition
+#' @export
+copy_into_new_table_where <- function(
+  conn=NULL,
+  table_from,
+  table_to,
+  condition = "1=1"
+  ) {
+  if(is.null(conn)){
+    conn <- get_db_connection()
+    on.exit(DBI::dbDisconnect(conn))
+  }
+  t0 <- Sys.time()
+  temp_name <- paste0("tmp",sc:::random_uuid())
 
+  sql <- glue::glue("SELECT * INTO {temp_name} FROM {table_from} WHERE {condition}")
+  DBI::dbExecute(conn, sql)
+
+  try(DBI::dbRemoveTable(conn, name = table), TRUE)
+
+  sql <- glue::glue("EXEC sp_rename '{temp_name}', '{table_to}'")
+  DBI::dbExecute(conn, sql)
+  t1 <- Sys.time()
+  dif <- round(as.numeric(difftime(t1, t0, units = "secs")), 1)
+  if(config$verbose) message(glue::glue("Copied rows in {dif} seconds from {table_from} to {table_to}"))
+}
 
 #' drop_all_rows
 #' Drops all rows
