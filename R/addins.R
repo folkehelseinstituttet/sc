@@ -23,6 +23,26 @@ sc::add_task(
   )
 }
 
+addin_task_inline_v1_copy_to_db <- function(){
+  rstudioapi::insertText(
+    '
+# TASK_NAME ----
+sc::add_task(
+  sc::task_inline_v1(
+    name = "TASK_NAME",
+    action_fn = function(data, argset, schema){
+      sc::copy_into_new_table_where(
+        table_from = "TABLE",
+        table_to = "web_TABLE",
+        condition = "1=1"
+      )
+    }
+  )
+)
+'
+  )
+}
+
 addin_db_schema <- function(){
   rstudioapi::insertText(
     '

@@ -1,3 +1,8 @@
+# sc 7.0.8
+
+* `task_inline_v1` allows for easy inline task creation
+* Corresponding RStudio addin for inline tasks that copy from one db table to another
+
 # sc 7.0.7
 
 * `copy_into_new_table_where` allows for the creation of a new table from an old table
