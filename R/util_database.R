@@ -522,7 +522,7 @@ copy_into_new_table_where <- function(
   sql <- glue::glue("SELECT * INTO {temp_name} FROM {table_from} WHERE {condition}")
   DBI::dbExecute(conn, sql)
 
-  try(DBI::dbRemoveTable(conn, name = table), TRUE)
+  try(DBI::dbRemoveTable(conn, name = table_to), TRUE)
 
   sql <- glue::glue("EXEC sp_rename '{temp_name}', '{table_to}'")
   DBI::dbExecute(conn, sql)
