@@ -69,6 +69,10 @@ validator_field_contents_sykdomspulsen <- function(data){
     "ward",
     "station",
     "baregion"
+    "missingcounty",
+    "missingmunicip",
+    "notmainlandcounty",
+    "notmainlandmunicip"
   ))>0){
     retval <- FALSE
     attr(retval, "var") <- "granularity_geo"
