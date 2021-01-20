@@ -1,0 +1,54 @@
+language: r
+cache:
+  - packages
+
+repos:
+  folkehelseinstituttet: https://folkehelseinstituttet.github.io/drat/
+  CRAN: https://cloud.r-project.org
+
+addons:
+  apt:
+  sources:
+  - sourceline: 'ppa:opencpu/jq'
+- sourceline: 'ppa:ubuntugis/ubuntugis-unstable'
+packages:
+  - libharfbuzz-dev
+- libfribidi-dev
+- libudunits2-dev
+- libprotobuf-dev
+- protobuf-compiler
+- libv8-3.14-dev
+- libjq-dev
+- libudunits2-dev
+- libproj-dev
+- libgeos-dev
+- libspatialite-dev
+- libgdal-dev
+- libjson-c-dev
+
+r_packages:
+  - drat
+- lintr
+- devtools
+- data.table
+- stringr
+- glue
+- lubridate
+- readxl
+- zoo
+- crayon
+- fs
+
+before_cache:
+  - Rscript -e 'remotes::install_cran("pkgdown")'
+after_success:
+- test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && Rscript
+-e 'devtools::install(); pkgdown::build_site()'
+deploy:
+  provider: pages
+skip-cleanup: true
+github-token: "$GITHUB_PAT"
+keep-history: true
+local-dir: docs
+on:
+  branch: master
