@@ -28,7 +28,7 @@ addons:
 
 r_packages:
   - drat
-  - lintr
+  - usethis
   - devtools
   - data.table
   - stringr
