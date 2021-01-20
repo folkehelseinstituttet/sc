@@ -68,7 +68,7 @@ validator_field_contents_sykdomspulsen <- function(data){
     "municip",
     "ward",
     "station",
-    "baregion"
+    "baregion",
     "missingcounty",
     "missingmunicip",
     "notmainlandcounty",
