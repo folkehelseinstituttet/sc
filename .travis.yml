@@ -8,23 +8,23 @@ repos:
 
 addons:
   apt:
-  sources:
-  - sourceline: 'ppa:opencpu/jq'
-  - sourceline: 'ppa:ubuntugis/ubuntugis-unstable'
-packages:
-  - libharfbuzz-dev
-  - libfribidi-dev
-  - libudunits2-dev
-  - libprotobuf-dev
-  - protobuf-compiler
-  - libv8-3.14-dev
-  - libjq-dev
-  - libudunits2-dev
-  - libproj-dev
-  - libgeos-dev
-  - libspatialite-dev
-  - libgdal-dev
-  - libjson-c-dev
+    sources:
+      - sourceline: 'ppa:opencpu/jq'
+      - sourceline: 'ppa:ubuntugis/ubuntugis-unstable'
+    packages:
+      - libharfbuzz-dev
+      - libfribidi-dev
+      - libudunits2-dev
+      - libprotobuf-dev
+      - protobuf-compiler
+      - libv8-3.14-dev
+      - libjq-dev
+      - libudunits2-dev
+      - libproj-dev
+      - libgeos-dev
+      - libspatialite-dev
+      - libgdal-dev
+      - libjson-c-dev
 
 r_packages:
   - drat
@@ -42,8 +42,7 @@ r_packages:
 before_cache:
   - Rscript -e 'remotes::install_cran("pkgdown")'
 after_success:
-- test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && Rscript
--e 'devtools::install(); pkgdown::build_site()'
+  - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && Rscript -e 'devtools::install(); pkgdown::build_site()'
 deploy:
   provider: pages
   skip-cleanup: true
