@@ -50,7 +50,8 @@ schema class description
   keys,
   indexes = NULL,
   validator_field_types = validator_field_types_blank,
-  validator_field_contents = validator_field_contents_blank
+  validator_field_contents = validator_field_contents_blank,
+  info = NULL
 )}\if{html}{\out{</div>}}
 }
 

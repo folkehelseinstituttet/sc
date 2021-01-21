@@ -34,7 +34,8 @@ Task
   upsert_at_end_of_each_plan = FALSE,
   insert_at_end_of_each_plan = FALSE,
   action_before_fn = NULL,
-  action_after_fn = NULL
+  action_after_fn = NULL,
+  info = NULL
 )}\if{html}{\out{</div>}}
 }
 
