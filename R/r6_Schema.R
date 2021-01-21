@@ -131,6 +131,7 @@ Schema <- R6Class("Schema",
                     keys_with_length = NULL,
                     indexes = NULL,
                     validator_field_contents = NULL,
+                    info = "No information given in schema definition",
                     initialize = function(
                       dt = NULL,
                       conn = NULL,
@@ -141,7 +142,8 @@ Schema <- R6Class("Schema",
                       keys,
                       indexes=NULL,
                       validator_field_types=validator_field_types_blank,
-                      validator_field_contents=validator_field_contents_blank
+                      validator_field_contents=validator_field_contents_blank,
+                      info = NULL
                     ) {
                       self$dt <- dt
                       self$conn <- conn
@@ -157,6 +159,10 @@ Schema <- R6Class("Schema",
                       if(!is.null(validator_field_types)) if(!validator_field_types(self$db_field_types)) stop(glue::glue("db_field_types not validated in {db_table}"))
                       self$validator_field_contents <- validator_field_contents
 
+                      # info
+                      if(!is.null(info)) self$info <- info
+
+                      # fixing indexes
                       ind <- self$db_field_types[self$keys] == "TEXT"
                       if (sum(ind) > 0) {
                         self$keys_with_length[ind] <- paste0(self$keys_with_length[ind], " (40)")

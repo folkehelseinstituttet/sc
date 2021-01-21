@@ -26,6 +26,7 @@ Task <- R6::R6Class(
     update_plans_fn = NULL,
     action_before_fn = NULL,
     action_after_fn = NULL,
+    info = "No information given in task definition.",
     initialize = function(
                               name,
                               type,
@@ -37,7 +38,8 @@ Task <- R6::R6Class(
                               upsert_at_end_of_each_plan = FALSE,
                               insert_at_end_of_each_plan = FALSE,
                               action_before_fn = NULL,
-                              action_after_fn = NULL
+                              action_after_fn = NULL,
+                              info = NULL
                               ) {
       self$name <- name
       self$type <- type
@@ -50,6 +52,7 @@ Task <- R6::R6Class(
       self$insert_at_end_of_each_plan <- insert_at_end_of_each_plan
       self$action_before_fn <- action_before_fn
       self$action_after_fn <- action_after_fn
+      if(!is.null(info)) self$info <- info
     },
     update_plans = function() {
       if (!is.null(self$update_plans_fn)) {

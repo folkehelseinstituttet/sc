@@ -1,3 +1,8 @@
+# sc 7.1.0
+
+* `task_from_config_v3` sets a new direction for creation of tasks and management of tasks
+* `describe_tasks` and `describe_schemas` help with automatic documentation
+
 # sc 7.0.8
 
 * `task_inline_v1` allows for easy inline task creation

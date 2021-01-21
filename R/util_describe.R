@@ -16,6 +16,7 @@ describe_schemas <- function(){
 
     retval[[i]] <- list(
       name = tab,
+      info = schema$info,
       details = schema$db_table
     )
   }
@@ -34,6 +35,7 @@ describe_tasks <- function(){
 
     retval[[i]] <- list(
       name = name,
+      info = task$info,
       schemas = schemas
     )
   }

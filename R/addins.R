@@ -1,9 +1,8 @@
-addin_task_from_config_v2_basic <- function(){
+addin_task_from_config_v3_basic <- function(){
   rstudioapi::insertText(
     '
-# TASK_NAME ----
 sc::add_task(
-  sc::task_from_config_v2(
+  task_from_config_v3(
     name = "TASK_NAME",
     cores = 1,
     for_each_plan = plnr::expand_list(
@@ -13,10 +12,12 @@ sc::add_task(
     universal_argset = NULL,
     upsert_at_end_of_each_plan = FALSE,
     insert_at_end_of_each_plan = FALSE,
-    action_name = "PACKAGE_NAME::TASK_NAME",
-    data_output_schemas = NULL,
-    data_selector_schemas = NULL,
-    data_selector_fn_default = NULL
+    action_fn_name = "PACKAGE::TASK_NAME_action",
+    data_selector_fn_name = "PACKAGE::TASK_NAME_data_selector",
+    schema = list(
+      "SCHEMA_NAME" = sc::config$schemas$SCHEMA_NAME
+    ),
+    info = "This task does..."
   )
 )
 '
@@ -64,7 +65,7 @@ sc::add_schema(
       "yrwk" = "TEXT",
       "season" = "TEXT",
       "x" = "DOUBLE",
-      "date" = "DATE"
+      "date" = "DATE",
 
       "XXXX" = "DOUBLE"
     ),
@@ -78,33 +79,58 @@ sc::add_schema(
       "date"
     ),
     validator_field_types = sc::validator_field_types_sykdomspulsen,
-    validator_field_contents = sc::validator_field_contents_sykdomspulsen
+    validator_field_contents = sc::validator_field_contents_sykdomspulsen,
+    info = "This db table is used for..."
   )
 )
 '
   )
 }
 
-addin_action <- function(){
+addin_action_and_data_selector <- function(){
   rstudioapi::insertText(
     '
-#\' TASK_NAME
+#\' TASK_NAME (action)
 #\' @param data Data
 #\' @param argset Argset
 #\' @param schema DB Schema
 #\' @export
-TASK_NAME <- function(data, argset, schema) {
+TASK_NAME_action <- function(data, argset, schema) {
   # tm_run_task("TASK_NAME")
 
   if(plnr::is_run_directly()){
     index_plan <- 1
+    index_argset <- 1
 
-    data <- sc::tm_get_data("TASK_NAME", index_plan=index_plan)
-    argset <- sc::tm_get_argset("TASK_NAME", index_plan=index_plan, index_argset = 1)
+    data <- sc::tm_get_data("TASK_NAME", index_plan = index_plan)
+    argset <- sc::tm_get_argset("TASK_NAME", index_plan = index_plan, index_argset = index_argset)
     schema <- sc::tm_get_schema("TASK_NAME")
   }
 
   # code goes here
+}
+
+#\' TASK_NAME (data selector)
+#\' @param argset Argset
+#\' @param schema DB Schema
+#\' @export
+TASK_NAME_data_selector = function(argset, schema){
+  if(plnr::is_run_directly()){
+    # inside here is just for testing/development
+    argset <- sc::tm_get_argset("TASK_NAME", index_plan=1)
+    schema <- sc::tm_get_schema("TASK_NAME", index_plan=1)
+  }
+
+  # The database schemas can be accessed here
+  d <- schema$SCHEMA_NAME$dplyr_tbl() %>%
+    dplyr::collect() %>%
+    as.data.table()
+
+  # The variable returned must be a named list
+  retval <- list(
+    "NAME" = d
+  )
+  retval
 }
 '
   )
