@@ -15,9 +15,9 @@ describe_schemas <- function(){
     tab[, Info := ""]
 
     retval[[i]] <- list(
-      name = tab,
+      name = schema$db_table,
       info = schema$info,
-      details = schema$db_table
+      details = tab
     )
   }
   return(retval)
