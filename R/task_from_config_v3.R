@@ -48,7 +48,14 @@ task_from_config_v3 <- function(
     list_plan[[length(list_plan)+1]] <- plnr::Plan$new()
 
     # add data
-    argset <- for_each_plan[[index_plan]]
+    argset <- c(
+      "**universal**"="*",
+      universal_argset,
+      "**plan**"="*",
+      for_each_plan[[index_plan]],
+      "**automatic**"="*",
+      index = index
+    )
     argset$today <- lubridate::today()
 
     if(!is.null(data_selector_fn_name)){
