@@ -1,3 +1,7 @@
+# sc 7.1.1
+
+* `qsenc_save` and `qsenc_read` to save/read to/from encrypted files.
+
 # sc 7.1.0
 
 * `task_from_config_v3` sets a new direction for creation of tasks and management of tasks

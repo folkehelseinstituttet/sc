@@ -1,6 +1,6 @@
 Package: sc
 Title: Sykdomspulsen Core - NIPH Infectious Diseases Surveillance System
-Version: 7.0.8
+Version: 7.1.1
 Authors@R: c(
   person("Richard", "White", email = "hello@rwhite.no", role = c("aut", "cre")),
   person("Gunnar", "R\u00F8", email = "GunnarOyvindIsaksson.Ro@fhi.no", role = c("aut"))
@@ -24,16 +24,18 @@ Imports:
   lubridate,
   magrittr,
   odbc,
+  openssl,
   plnr (>= 2020.5.11),
   processx,
   progress,
   progressr,
+  qs,
   R6,
   RODBC,
   rlang,
   stringr,
   tidyr,
-  uuid,
+  uuid
 Suggests: testthat,
     knitr,
     usethis
