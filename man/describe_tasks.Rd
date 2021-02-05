@@ -6,9 +6,6 @@
 \usage{
 describe_tasks()
 }
-\arguments{
-\item{data}{data passed to schema}
-}
 \description{
 Describe all available tasks
 }

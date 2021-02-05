@@ -24,7 +24,6 @@ describe_schemas <- function(){
 }
 
 #' Describe all available tasks
-#' @param data data passed to schema
 #' @export
 describe_tasks <- function(){
   retval <- vector("list", length = length(config$schemas))
