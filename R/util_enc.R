@@ -3,6 +3,7 @@
 #' @param file The file name/path (must end in '.qs.enc')
 #' @param nthreads Number of threads to use. Default 1.
 #' @param public_key_path Path to public key
+#' @export
 qsenc_save <- function(x, file, nthreads = 1, public_key_path = Sys.getenv("ENCRYPTR_ID_RSA_PUB")){
   if(!stringr::str_detect(file, ".qs.enc$")){
     error("file must end with '.qs.enc'")
@@ -22,6 +23,7 @@ qsenc_save <- function(x, file, nthreads = 1, public_key_path = Sys.getenv("ENCR
 #' Reads an object in an encrypted file serialized to disk
 #' @param file The file name/path (must end in '.qs.enc')
 #' @param private_key_path Path to private key
+#' @export
 qsenc_read <- function(file, private_key_path = Sys.getenv("ENCRYPTR_ID_RSA")){
   if(!stringr::str_detect(file, ".qs.enc$")){
     error("file must end with '.qs.enc'")
