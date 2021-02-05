@@ -2,7 +2,9 @@ Package: sc
 Title: Sykdomspulsen Core - NIPH Infectious Diseases Surveillance System
 Version: 7.1.1
 Authors@R: c(
-  person("Richard", "White", email = "hello@rwhite.no", role = c("aut", "cre")),
+  person(c("Richard","Aubrey"), "White", email = "hello@rwhite.no", role = c("aut", "cre"),
+    comment = c(ORCID = "0000-0002-6747-1726")
+  ),
   person("Gunnar", "R\u00F8", email = "GunnarOyvindIsaksson.Ro@fhi.no", role = c("aut"))
   )
 Description: Sykdomspulsen is a free and open-source health surveillance system designed and developed by the Norwegian Institute of Public Health. `sc` contains `Sykdomspulsen Core` the generic infrastructure that can be used to implement new surveillance systems.

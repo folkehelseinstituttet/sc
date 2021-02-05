@@ -6,7 +6,7 @@
 #' @export
 qsenc_save <- function(x, file, nthreads = 1, public_key_path = Sys.getenv("ENCRYPTR_ID_RSA_PUB")){
   if(!stringr::str_detect(file, ".qs.enc$")){
-    error("file must end with '.qs.enc'")
+    stop("file must end with '.qs.enc'")
   }
   tmp <- tempfile()
   on.exit(unlink(tmp))
@@ -26,7 +26,7 @@ qsenc_save <- function(x, file, nthreads = 1, public_key_path = Sys.getenv("ENCR
 #' @export
 qsenc_read <- function(file, private_key_path = Sys.getenv("ENCRYPTR_ID_RSA")){
   if(!stringr::str_detect(file, ".qs.enc$")){
-    error("file must end with '.qs.enc'")
+    stop("file must end with '.qs.enc'")
   }
   tmp <- tempfile()
   on.exit(unlink(tmp))
