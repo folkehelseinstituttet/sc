@@ -228,6 +228,8 @@ Schema <- R6Class("Schema",
                       return(retval)
                     },
                     db_load_data_infile = function(newdata, verbose = TRUE) {
+                      if(nrow(newdata)==0) return()
+
                       validated <- self$validator_field_contents(newdata)
                       if(!validated) stop(glue::glue("db_load_data_infile not validated in {self$db_table}. {attr(validated,'var')}"))
 
@@ -241,6 +243,8 @@ Schema <- R6Class("Schema",
                       )
                     },
                     db_upsert_load_data_infile = function(newdata, drop_indexes = names(self$indexes), verbose = TRUE) {
+                      if(nrow(newdata)==0) return()
+
                       validated <- self$validator_field_contents(newdata)
                       if(!validated) stop(glue::glue("db_upsert_load_data_infile not validated in {self$db_table}. {attr(validated,'var')}"))
 
