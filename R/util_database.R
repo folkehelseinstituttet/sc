@@ -88,7 +88,10 @@ load_data_infile <- function(
 ) UseMethod("load_data_infile")
 
 load_data_infile.default <- function(conn = NULL, db_config = NULL, table, dt = NULL, file = "/xtmp/x123.csv") {
+  if(is.null(dt)) return()
+
   t0 <- Sys.time()
+
 
   if (is.null(conn) & is.null(db_config)) {
     stop("conn and db_config both have error")
@@ -136,6 +139,8 @@ load_data_infile.default <- function(conn = NULL, db_config = NULL, table, dt = 
   dt,
   file = tempfile()
   ) {
+  if(is.null(dt)) return()
+
   a <- Sys.time()
 
   if (is.null(conn) & is.null(db_config)) {
