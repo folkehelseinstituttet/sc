@@ -14,7 +14,10 @@ generic_data_function_factory_v3 <- function(schema, argset, fn_name){
 #'
 #' This function is used to easily create a task
 #'
-#' @param name Name of the task
+#' @param name Name of the task (dont use)
+#' @param name_grouping Name of the task (grouping)
+#' @param name_action Name of the task (action)
+#' @param name_variant Name of the task (variant)
 #' @param cores Number of CPU cores
 #' @param for_each_plan A list, where each unit corresponds to one data extraction. Generally recommended to use \code{plnr::expand_list}.
 #' @param for_each_argset A list, where each unit corresponds to one analysis within a plan (data extraction). Generally recommended to use \code{plnr::expand_list}.
@@ -27,7 +30,10 @@ generic_data_function_factory_v3 <- function(schema, argset, fn_name){
 #' @param info Information for documentation
 #' @export
 task_from_config_v3 <- function(
-  name,
+  name = NULL,
+  name_grouping = NULL,
+  name_action= NULL,
+  name_variant = NULL,
   cores = 1,
   for_each_plan,
   for_each_argset = NULL,
@@ -39,6 +45,13 @@ task_from_config_v3 <- function(
   schema = NULL,
   info = NULL
 ){
+
+  stopifnot(!(is.null(name) & is.null(name_grouping) & is.null(name_action) & is.null(name_variant)))
+  name_description <- list(
+    grouping = name_grouping,
+    action = name_action,
+    variant = name_variant
+  )
 
   index <- 1
   list_plan <- list()
@@ -98,6 +111,7 @@ task_from_config_v3 <- function(
 
   task <- sc::Task$new(
     name = name,
+    name_description = name_description,
     type = "analysis",
     plans = list_plan,
     schema = schema,

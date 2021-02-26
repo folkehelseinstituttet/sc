@@ -1,9 +1,12 @@
 addin_task_from_config_v3_basic <- function(){
   rstudioapi::insertText(
     '
+# tm_run_task("TASK_NAME")
 sc::add_task(
-  task_from_config_v3(
-    name = "TASK_NAME",
+  sc::task_from_config_v3(
+    name_grouping = "TASK_GROUPING",
+    name_action = "TASK_ACTION",
+    name_variant = "TASK_VARIANT",
     cores = 1,
     for_each_plan = plnr::expand_list(
       x = 1
@@ -47,11 +50,11 @@ sc::add_task(
 addin_db_schema <- function(){
   rstudioapi::insertText(
     '
-# data_XXXXXX ----
+# XGROUPX_XVARIANTX ----
 sc::add_schema(
-  name = "data_XXXXXX",
+  name = "XGROUPX_XVARIANTX",
   schema = sc::Schema$new(
-    db_table = "data_XXXXXX",
+    db_table = "XGROUPX_XVARIANTX",
     db_config = sc::config$db_config,
     db_field_types =  c(
       "granularity_time" = "TEXT",
@@ -60,11 +63,11 @@ sc::add_schema(
       "border" = "INTEGER",
       "age" = "TEXT",
       "sex" = "TEXT",
-      "year" = "INTEGER",
-      "week" = "INTEGER",
-      "yrwk" = "TEXT",
+      "isoyear" = "INTEGER",
+      "isoweek" = "INTEGER",
+      "isoyearweek" = "TEXT",
       "season" = "TEXT",
-      "x" = "DOUBLE",
+      "seasonweek" = "DOUBLE",
       "date" = "DATE",
 
       "XXXX" = "DOUBLE"
@@ -75,8 +78,7 @@ sc::add_schema(
       "location_code",
       "date",
       "age",
-      "sex",
-      "date"
+      "sex"
     ),
     validator_field_types = sc::validator_field_types_sykdomspulsen,
     validator_field_contents = sc::validator_field_contents_sykdomspulsen,
@@ -99,6 +101,8 @@ TASK_NAME_action <- function(data, argset, schema) {
   # tm_run_task("TASK_NAME")
 
   if(plnr::is_run_directly()){
+    # sc::tm_get_plans_argsets_as_dt("TASK_NAME")
+
     index_plan <- 1
     index_argset <- 1
 
@@ -116,9 +120,12 @@ TASK_NAME_action <- function(data, argset, schema) {
 #\' @export
 TASK_NAME_data_selector = function(argset, schema){
   if(plnr::is_run_directly()){
-    # inside here is just for testing/development
-    argset <- sc::tm_get_argset("TASK_NAME", index_plan=1)
-    schema <- sc::tm_get_schema("TASK_NAME", index_plan=1)
+    # sc::tm_get_plans_argsets_as_dt("TASK_NAME")
+
+    index_plan <- 1
+
+    argset <- sc::tm_get_argset("TASK_NAME", index_plan = index_plan)
+    schema <- sc::tm_get_schema("TASK_NAME")
   }
 
   # The database schemas can be accessed here

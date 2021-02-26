@@ -23,12 +23,14 @@ Task <- R6::R6Class(
     upsert_at_end_of_each_plan = FALSE,
     insert_at_end_of_each_plan = FALSE,
     name = NULL,
+    name_description = list(),
     update_plans_fn = NULL,
     action_before_fn = NULL,
     action_after_fn = NULL,
     info = "No information given in task definition.",
     initialize = function(
-                              name,
+                              name = NULL,
+                              name_description = NULL,
                               type,
                               permission = NULL,
                               plans = NULL,
@@ -41,7 +43,20 @@ Task <- R6::R6Class(
                               action_after_fn = NULL,
                               info = NULL
                               ) {
+      stopifnot(!(is.null(name) & is.null(name_description)))
+      if(!is.null(name_description)){
+        stopifnot(is.list(name_description))
+        stopifnot(sum(c("grouping", "action", "variant") %in% names(name_description))==3)
+        name <- paste0(unlist(name_description), collapse="_")
+      } else {
+        name_description <- list(
+          grouping = NULL,
+          action = NULL,
+          variant = NULL
+        )
+      }
       self$name <- name
+      self$name_description <- name_description
       self$type <- type
       self$permission <- permission
       self$plans <- plans

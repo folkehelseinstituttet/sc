@@ -1,3 +1,7 @@
+# sc 7.1.2
+
+* Updating default db schemas to be more explicit with the useage of isotime.
+
 # sc 7.1.1
 
 * `qsenc_save` and `qsenc_read` to save/read to/from encrypted files.

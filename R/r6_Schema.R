@@ -19,21 +19,40 @@ validator_field_contents_blank <- function(data){
 validator_field_types_sykdomspulsen <- function(db_field_types){
   if(!inherits(db_field_types,"character")) return(FALSE)
   if(!length(db_field_types) >= 12) return(FALSE)
-  if(!identical(
-    db_field_types[1:12],
-    c(
-      "granularity_time" = "TEXT",
-      "granularity_geo" = "TEXT",
-      "location_code" = "TEXT",
-      "border" = "INTEGER",
-      "age" = "TEXT",
-      "sex" = "TEXT",
-      "year" = "INTEGER",
-      "week" = "INTEGER",
-      "yrwk" = "TEXT",
-      "season" = "TEXT",
-      "x" = "DOUBLE",
-      "date" = "DATE"
+  if(!(
+    identical(
+      db_field_types[1:12],
+      c(
+        "granularity_time" = "TEXT",
+        "granularity_geo" = "TEXT",
+        "location_code" = "TEXT",
+        "border" = "INTEGER",
+        "age" = "TEXT",
+        "sex" = "TEXT",
+        "year" = "INTEGER",
+        "week" = "INTEGER",
+        "yrwk" = "TEXT",
+        "season" = "TEXT",
+        "x" = "DOUBLE",
+        "date" = "DATE"
+      )
+    ) |
+    identical(
+      db_field_types[1:12],
+      c(
+        "granularity_time" = "TEXT",
+        "granularity_geo" = "TEXT",
+        "location_code" = "TEXT",
+        "border" = "INTEGER",
+        "age" = "TEXT",
+        "sex" = "TEXT",
+        "isoyear" = "INTEGER",
+        "isoweek" = "INTEGER",
+        "isoyearweek" = "TEXT",
+        "season" = "TEXT",
+        "seasonweek" = "DOUBLE",
+        "date" = "DATE"
+      )
     )
   )) return(FALSE)
 
@@ -47,9 +66,12 @@ validator_field_types_sykdomspulsen <- function(db_field_types){
 validator_field_contents_sykdomspulsen <- function(data){
   if(sum(!unique(data$granularity_time) %in% c(
     "total",
+    "isoyear",
+    "calyear",
     "year",
     "season",
     "month",
+    "isoweek",
     "week",
     "day",
     "hour",
@@ -70,6 +92,10 @@ validator_field_contents_sykdomspulsen <- function(data){
     "wardbergen",
     "wardtrondheim",
     "wardstavanger",
+    "missingwardoslo",
+    "missingwardbergen",
+    "missingwardtrondheim",
+    "missingwardstavanger",
     "ward",
     "station",
     "baregion",
