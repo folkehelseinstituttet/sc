@@ -47,11 +47,15 @@ task_from_config_v3 <- function(
 ){
 
   stopifnot(!(is.null(name) & is.null(name_grouping) & is.null(name_action) & is.null(name_variant)))
-  name_description <- list(
-    grouping = name_grouping,
-    action = name_action,
-    variant = name_variant
-  )
+  if(is.null(name_grouping) & is.null(name_action) & is.null(name_variant)){
+    name_description <- NULL
+  } else {
+    name_description <- list(
+      grouping = name_grouping,
+      action = name_action,
+      variant = name_variant
+    )
+  }
 
   index <- 1
   list_plan <- list()
