@@ -204,6 +204,7 @@ Task <- R6::R6Class(
       }
 
       update_rundate(task = self$name)
+      update_config_datetime(type = "task", tag = self$name)
       if(!is.null(self$permission)) self$permission$revoke_permission()
 
     }

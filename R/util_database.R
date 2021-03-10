@@ -221,6 +221,8 @@ load_data_infile.default <- function(conn = NULL, db_config = NULL, table, dt = 
   dif <- round(as.numeric(difftime(b, a, units = "secs")), 1)
   if(config$verbose) message(glue::glue("Uploaded {nrow(dt)} rows in {dif} seconds to {table}"))
 
+  if(!stringr::str_detect(table, "^tmp") & !table %in% c("config_datetime")) update_config_datetime(type = "data", tag = table)
+
   invisible()
 }
 
@@ -398,6 +400,7 @@ upsert_load_data_infile_internal.default <- function(
   dif <- round(as.numeric(difftime(b, a, units = "secs")), 1)
   if(config$verbose) message(glue::glue("Upserted {nrow(dt)} rows in {dif} seconds from {temp_name} to {table}"))
 
+  if(!stringr::str_detect(table, "^tmp") & !table %in% c("config_datetime")) update_config_datetime(type = "data", tag = table)
   invisible()
 }
 

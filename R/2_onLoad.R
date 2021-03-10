@@ -68,6 +68,26 @@ set_db <- function(){
       )
     )
   )
+
+  # rundate ----
+  add_schema(
+    name = "config_datetime",
+    schema = Schema$new(
+      db_config = config$db_config,
+      db_table = "config_datetime",
+      db_field_types = c(
+        "type" = "TEXT",
+        "tag" = "TEXT",
+        "date" = "DATE",
+        "datetime" = "DATETIME"
+      ),
+      db_load_folder = tempdir(),
+      keys = c(
+        "type",
+        "tag"
+      )
+    )
+  )
 }
 
 set_computer_type <- function() {

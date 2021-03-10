@@ -1,3 +1,7 @@
+# sc 7.1.3
+
+* update_config_datetime and get_config_datetime now automatically record database table updates as well
+
 # sc 7.1.2
 
 * Updating default db schemas to be more explicit with the useage of isotime.

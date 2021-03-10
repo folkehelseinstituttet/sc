@@ -24,7 +24,8 @@ Task
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Task$new(
-  name,
+  name = NULL,
+  name_description = NULL,
   type,
   permission = NULL,
   plans = NULL,

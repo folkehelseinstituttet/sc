@@ -5,7 +5,10 @@
 \title{Creating a task from config (v3)}
 \usage{
 task_from_config_v3(
-  name,
+  name = NULL,
+  name_grouping = NULL,
+  name_action = NULL,
+  name_variant = NULL,
   cores = 1,
   for_each_plan,
   for_each_argset = NULL,
@@ -19,7 +22,13 @@ task_from_config_v3(
 )
 }
 \arguments{
-\item{name}{Name of the task}
+\item{name}{Name of the task (dont use)}
+
+\item{name_grouping}{Name of the task (grouping)}
+
+\item{name_action}{Name of the task (action)}
+
+\item{name_variant}{Name of the task (variant)}
 
 \item{cores}{Number of CPU cores}
 
