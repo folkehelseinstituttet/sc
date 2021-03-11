@@ -4,7 +4,7 @@
 \alias{add_schema}
 \title{add schema}
 \usage{
-add_schema(name, schema)
+add_schema(name = NULL, schema)
 }
 \arguments{
 \item{name}{the name of the schema}
