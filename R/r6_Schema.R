@@ -89,6 +89,7 @@ validator_field_contents_sykdomspulsen <- function(data){
     "county",
     "municip",
     "wardoslo",
+    "extrawardoslo",
     "wardbergen",
     "wardtrondheim",
     "wardstavanger",
