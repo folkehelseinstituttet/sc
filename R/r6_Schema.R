@@ -255,7 +255,7 @@ Schema <- R6Class("Schema",
                       }
                       return(retval)
                     },
-                    db_load_data_infile = function(newdata, verbose = TRUE) {
+                    db_insert_data = function(newdata, verbose = TRUE) {
                       if(nrow(newdata)==0) return()
 
                       validated <- self$validator_field_contents(newdata)
@@ -270,7 +270,7 @@ Schema <- R6Class("Schema",
                         file = infile
                       )
                     },
-                    db_upsert_load_data_infile = function(newdata, drop_indexes = names(self$indexes), verbose = TRUE) {
+                    db_upsert_data = function(newdata, drop_indexes = names(self$indexes), verbose = TRUE) {
                       if(nrow(newdata)==0) return()
 
                       validated <- self$validator_field_contents(newdata)
@@ -288,6 +288,14 @@ Schema <- R6Class("Schema",
                         drop_indexes = drop_indexes
                       )
                     },
+                    db_load_data_infile = function(newdata, verbose = TRUE){
+                      .Deprecated(new="db_insert_data", old = "db_load_data_infile")
+                      self$db_load_data(newdata = newdata, verbose = verbose)
+                    },
+                    db_upsert_load_data_infile = function(newdata, verbose = TRUE){
+                      .Deprecated(new="db_upsert_data", old = "db_upsert_load_data_infile")
+                      self$db_upsert_load_data(newdata = newdata, verbose = verbose)
+                    },
                     db_drop_all_rows = function() {
                       drop_all_rows(self$conn, self$db_table)
                     },
@@ -297,6 +305,14 @@ Schema <- R6Class("Schema",
                     db_keep_rows_where = function(condition){
                       keep_rows_where(self$conn, self$db_table, condition)
                       self$db_add_constraint()
+                    },
+                    db_drop_all_rows_and_then_upsert_data =  function(newdata, drop_indexes = names(self$indexes), verbose = TRUE) {
+                      self$db_drop_all_rows()
+                      self$db_upsert_data(
+                        newdata = newdata,
+                        drop_indexes = drop_indexes,
+                        verbose = verbose
+                      )
                     },
                     get_data = function(...) {
                       dots <- dplyr::quos(...)

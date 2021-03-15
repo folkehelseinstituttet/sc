@@ -1,3 +1,7 @@
+# sc 7.1.4
+
+* db_insert_data, db_upsert_data, db_drop_all_rows_and_then_upsert_data are now the recommended ways of inserting data
+
 # sc 7.1.3
 
 * update_config_datetime and get_config_datetime now automatically record database table updates as well
