@@ -290,11 +290,11 @@ Schema <- R6Class("Schema",
                     },
                     db_load_data_infile = function(newdata, verbose = TRUE){
                       .Deprecated(new="db_insert_data", old = "db_load_data_infile")
-                      self$db_load_data(newdata = newdata, verbose = verbose)
+                      self$db_insert_data(newdata = newdata, verbose = verbose)
                     },
                     db_upsert_load_data_infile = function(newdata, verbose = TRUE){
                       .Deprecated(new="db_upsert_data", old = "db_upsert_load_data_infile")
-                      self$db_upsert_load_data(newdata = newdata, verbose = verbose)
+                      self$db_upsert_data(newdata = newdata, verbose = verbose)
                     },
                     db_drop_all_rows = function() {
                       drop_all_rows(self$conn, self$db_table)
