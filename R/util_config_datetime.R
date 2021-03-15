@@ -25,7 +25,7 @@ update_config_datetime <- function(type, tag, date = NULL, datetime = NULL){
     date = date,
     datetime = datetime
   )
-  config$schemas$config_datetime$db_upsert_load_data_infile(to_upload)
+  config$schemas$config_datetime$db_upsert_data(to_upload)
 }
 
 #' get_config_datetime

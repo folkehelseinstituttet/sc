@@ -9,7 +9,7 @@ update_rundate <- function(task){
     date = lubridate::today(),
     datetime = as.character(lubridate::now())
   )
-  config$schemas$rundate$db_upsert_load_data_infile(to_upload)
+  config$schemas$rundate$db_upsert_data(to_upload)
 }
 
 #' get_rundate
