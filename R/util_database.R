@@ -140,6 +140,13 @@ load_data_infile.default <- function(conn = NULL, db_config = NULL, table, dt = 
   file = tempfile()
   ) {
   if(is.null(dt)) return()
+  if(is.null(conn)){
+    conn <- get_db_connection()
+    on.exit(DBI::dbDisconnect(conn))
+  } else if(!DBI::dbIsValid(conn)){
+    conn <- get_db_connection()
+    on.exit(DBI::dbDisconnect(conn))
+  }
 
   a <- Sys.time()
 
@@ -345,6 +352,13 @@ upsert_load_data_infile_internal.default <- function(
   # fields <- schema$output$db_fields
   # keys <- schema$output$keys
   # drop_indexes <- NULL
+  if(is.null(conn)){
+    conn <- get_db_connection()
+    on.exit(DBI::dbDisconnect(conn))
+  } else if(!DBI::dbIsValid(conn)){
+    conn <- get_db_connection()
+    on.exit(DBI::dbDisconnect(conn))
+  }
 
   temp_name <- paste0("tmp",random_uuid())
 
@@ -523,6 +537,9 @@ copy_into_new_table_where <- function(
   if(is.null(conn)){
     conn <- get_db_connection()
     on.exit(DBI::dbDisconnect(conn))
+  } else if(!DBI::dbIsValid(conn)){
+    conn <- get_db_connection()
+    on.exit(DBI::dbDisconnect(conn))
   }
   t0 <- Sys.time()
   temp_name <- paste0("tmp",random_uuid())
@@ -548,6 +565,9 @@ drop_all_rows <- function(conn=NULL, table) {
   if(is.null(conn)){
     conn <- get_db_connection()
     on.exit(DBI::dbDisconnect(conn))
+  } else if(!DBI::dbIsValid(conn)){
+    conn <- get_db_connection()
+    on.exit(DBI::dbDisconnect(conn))
   }
   a <- DBI::dbExecute(conn, glue::glue({
     "TRUNCATE TABLE {table};"
@@ -562,6 +582,9 @@ drop_all_rows <- function(conn=NULL, table) {
 #' @export
 keep_rows_where <- function(conn=NULL, table, condition) {
   if(is.null(conn)){
+    conn <- get_db_connection()
+    on.exit(DBI::dbDisconnect(conn))
+  } else if(!DBI::dbIsValid(conn)){
     conn <- get_db_connection()
     on.exit(DBI::dbDisconnect(conn))
   }

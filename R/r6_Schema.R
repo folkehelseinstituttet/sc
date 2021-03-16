@@ -207,7 +207,9 @@ Schema <- R6Class("Schema",
                       self$db_create_table()
                     },
                     db_disconnect = function() {
-                      if (!is.null(self$conn)) DBI::dbDisconnect(self$conn)
+                      if (!is.null(self$conn)) if(DBI::dbIsValid(self$conn)){
+                        DBI::dbDisconnect(self$conn)
+                      }
                     },
                     db_add_constraint = function(){
                       add_constraint(
