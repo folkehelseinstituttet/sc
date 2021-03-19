@@ -27,6 +27,8 @@ update_config_datetime_internal <- function(type, tag, date = NULL, datetime = N
 #' Updates the config_datetime db tables
 #' @param type a
 #' @param tag a
+#' @param date Date to set in config_datetime
+#' @param datetime Datetime to set in config_datetime
 #' @export
 update_config_datetime <- function(type, tag, date = NULL, datetime = NULL){
   if(!stringr::str_detect(tag, "^tmp") & !tag %in% c("config_datetime")) update_config_datetime_internal(type = type, tag = tag)

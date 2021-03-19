@@ -11,6 +11,10 @@ update_config_datetime(type, tag, date = NULL, datetime = NULL)
 \item{type}{a}
 
 \item{tag}{a}
+
+\item{date}{Date to set in config_datetime}
+
+\item{datetime}{Datetime to set in config_datetime}
 }
 \description{
 update_config_datetime
