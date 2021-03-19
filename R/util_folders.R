@@ -31,6 +31,14 @@ path <- function(type="output", ..., create_dir=FALSE, trailing_slash = FALSE) {
   return(retval)
 }
 
+#' Creates folder if it doesn't exist
+#' @param path The path
+#' @export
+create_folder_if_doesnt_exist <- function(path){
+  retval <- glue::glue(path, .envir = parent.frame(n=1))
+  if(!fs::dir_exists(retval)) fs::dir_create(retval)
+  return(retval)
+}
 
 #' Create latest folder
 #'

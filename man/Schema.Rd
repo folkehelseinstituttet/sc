@@ -19,11 +19,14 @@ schema class description
 \item \href{#method-db_create_table}{\code{Schema$db_create_table()}}
 \item \href{#method-db_drop_table}{\code{Schema$db_drop_table()}}
 \item \href{#method-db_check_fields_match}{\code{Schema$db_check_fields_match()}}
+\item \href{#method-db_insert_data}{\code{Schema$db_insert_data()}}
+\item \href{#method-db_upsert_data}{\code{Schema$db_upsert_data()}}
 \item \href{#method-db_load_data_infile}{\code{Schema$db_load_data_infile()}}
 \item \href{#method-db_upsert_load_data_infile}{\code{Schema$db_upsert_load_data_infile()}}
 \item \href{#method-db_drop_all_rows}{\code{Schema$db_drop_all_rows()}}
 \item \href{#method-db_drop_rows_where}{\code{Schema$db_drop_rows_where()}}
 \item \href{#method-db_keep_rows_where}{\code{Schema$db_keep_rows_where()}}
+\item \href{#method-db_drop_all_rows_and_then_upsert_data}{\code{Schema$db_drop_all_rows_and_then_upsert_data()}}
 \item \href{#method-get_data}{\code{Schema$get_data()}}
 \item \href{#method-get_data_dt}{\code{Schema$get_data_dt()}}
 \item \href{#method-get_data_db}{\code{Schema$get_data_db()}}
@@ -120,6 +123,28 @@ schema class description
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-db_insert_data"></a>}}
+\if{latex}{\out{\hypertarget{method-db_insert_data}{}}}
+\subsection{Method \code{db_insert_data()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Schema$db_insert_data(newdata, verbose = TRUE)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-db_upsert_data"></a>}}
+\if{latex}{\out{\hypertarget{method-db_upsert_data}{}}}
+\subsection{Method \code{db_upsert_data()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Schema$db_upsert_data(
+  newdata,
+  drop_indexes = names(self$indexes),
+  verbose = TRUE
+)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-db_load_data_infile"></a>}}
 \if{latex}{\out{\hypertarget{method-db_load_data_infile}{}}}
 \subsection{Method \code{db_load_data_infile()}}{
@@ -133,11 +158,7 @@ schema class description
 \if{latex}{\out{\hypertarget{method-db_upsert_load_data_infile}{}}}
 \subsection{Method \code{db_upsert_load_data_infile()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Schema$db_upsert_load_data_infile(
-  newdata,
-  drop_indexes = names(self$indexes),
-  verbose = TRUE
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Schema$db_upsert_load_data_infile(newdata, verbose = TRUE)}\if{html}{\out{</div>}}
 }
 
 }
@@ -165,6 +186,19 @@ schema class description
 \subsection{Method \code{db_keep_rows_where()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Schema$db_keep_rows_where(condition)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-db_drop_all_rows_and_then_upsert_data"></a>}}
+\if{latex}{\out{\hypertarget{method-db_drop_all_rows_and_then_upsert_data}{}}}
+\subsection{Method \code{db_drop_all_rows_and_then_upsert_data()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Schema$db_drop_all_rows_and_then_upsert_data(
+  newdata,
+  drop_indexes = names(self$indexes),
+  verbose = TRUE
+)}\if{html}{\out{</div>}}
 }
 
 }

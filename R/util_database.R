@@ -228,7 +228,7 @@ load_data_infile.default <- function(conn = NULL, db_config = NULL, table, dt = 
   dif <- round(as.numeric(difftime(b, a, units = "secs")), 1)
   if(config$verbose) message(glue::glue("Uploaded {nrow(dt)} rows in {dif} seconds to {table}"))
 
-  if(!stringr::str_detect(table, "^tmp") & !table %in% c("config_datetime")) update_config_datetime(type = "data", tag = table)
+  update_config_datetime(type = "data", tag = table)
 
   invisible()
 }
@@ -414,7 +414,7 @@ upsert_load_data_infile_internal.default <- function(
   dif <- round(as.numeric(difftime(b, a, units = "secs")), 1)
   if(config$verbose) message(glue::glue("Upserted {nrow(dt)} rows in {dif} seconds from {temp_name} to {table}"))
 
-  if(!stringr::str_detect(table, "^tmp") & !table %in% c("config_datetime")) update_config_datetime(type = "data", tag = table)
+  update_config_datetime(type = "data", tag = table)
   invisible()
 }
 
@@ -554,6 +554,8 @@ copy_into_new_table_where <- function(
   t1 <- Sys.time()
   dif <- round(as.numeric(difftime(t1, t0, units = "secs")), 1)
   if(config$verbose) message(glue::glue("Copied rows in {dif} seconds from {table_from} to {table_to}"))
+
+  update_config_datetime(type = "data", tag = table_to)
 }
 
 #' drop_all_rows
@@ -572,6 +574,8 @@ drop_all_rows <- function(conn=NULL, table) {
   a <- DBI::dbExecute(conn, glue::glue({
     "TRUNCATE TABLE {table};"
   }))
+
+  update_config_datetime(type = "data", tag = table)
 }
 
 #' keep_rows_where
@@ -601,6 +605,8 @@ keep_rows_where <- function(conn=NULL, table, condition) {
   t1 <- Sys.time()
   dif <- round(as.numeric(difftime(t1, t0, units = "secs")), 1)
   if(config$verbose) message(glue::glue("Kept rows in {dif} seconds from {table}"))
+
+  update_config_datetime(type = "data", tag = table)
 }
 
 #' drop_rows_where
@@ -621,6 +627,8 @@ drop_rows_where <- function(conn=NULL, table, condition) {
   t1 <- Sys.time()
   dif <- round(as.numeric(difftime(t1, t0, units = "secs")), 1)
   if(config$verbose) message(glue::glue("Deleted rows in {dif} seconds from {table}"))
+
+  update_config_datetime(type = "data", tag = table)
 }
 
 

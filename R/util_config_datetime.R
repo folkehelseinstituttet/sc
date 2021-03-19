@@ -1,9 +1,4 @@
-#' update_config_datetime
-#' Updates the config_datetime db tables
-#' @param type a
-#' @param tag a
-#' @export
-update_config_datetime <- function(type, tag, date = NULL, datetime = NULL){
+update_config_datetime_internal <- function(type, tag, date = NULL, datetime = NULL){
   stopifnot(type %in% c("task","data"))
   if(is.null(config$schemas$config_datetime$conn)) config$schemas$config_datetime$db_connect()
 
@@ -26,6 +21,15 @@ update_config_datetime <- function(type, tag, date = NULL, datetime = NULL){
     datetime = datetime
   )
   config$schemas$config_datetime$db_upsert_data(to_upload)
+}
+
+#' update_config_datetime
+#' Updates the config_datetime db tables
+#' @param type a
+#' @param tag a
+#' @export
+update_config_datetime <- function(type, tag, date = NULL, datetime = NULL){
+  if(!stringr::str_detect(tag, "^tmp") & !tag %in% c("config_datetime")) update_config_datetime_internal(type = type, tag = tag)
 }
 
 #' get_config_datetime

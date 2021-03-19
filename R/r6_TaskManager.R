@@ -10,7 +10,9 @@ tm_get_task_names <- function(){
 #' @param index_argset Not used
 #' @export
 tm_get_task <- function(task_name, index_plan = NULL, index_argset = NULL) {
-  config$tasks$get_task(task_name)
+  retval <- config$tasks$get_task(task_name)
+  retval$update_plans()
+  return(retval)
 }
 
 #' Shortcut to update plans for a task

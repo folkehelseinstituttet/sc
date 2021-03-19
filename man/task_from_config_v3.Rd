@@ -10,7 +10,8 @@ task_from_config_v3(
   name_action = NULL,
   name_variant = NULL,
   cores = 1,
-  for_each_plan,
+  plan_argset_fn_name = NULL,
+  for_each_plan = NULL,
   for_each_argset = NULL,
   universal_argset = NULL,
   upsert_at_end_of_each_plan = FALSE,
@@ -31,6 +32,8 @@ task_from_config_v3(
 \item{name_variant}{Name of the task (variant)}
 
 \item{cores}{Number of CPU cores}
+
+\item{plan_argset_fn_name}{The name of a function that returns a named list \code{list(for_each_plan = list(), for_each_argset = NULL)}.}
 
 \item{for_each_plan}{A list, where each unit corresponds to one data extraction. Generally recommended to use \code{plnr::expand_list}.}
 

@@ -1,32 +1,3 @@
-addin_task_from_config_v3_basic <- function(){
-  rstudioapi::insertText(
-    '
-# tm_run_task("TASK_NAME")
-sc::add_task(
-  sc::task_from_config_v3(
-    name_grouping = "TASK_GROUPING",
-    name_action = "TASK_ACTION",
-    name_variant = "TASK_VARIANT",
-    cores = 1,
-    for_each_plan = plnr::expand_list(
-      x = 1
-    ),
-    for_each_argset = NULL,
-    universal_argset = NULL,
-    upsert_at_end_of_each_plan = FALSE,
-    insert_at_end_of_each_plan = FALSE,
-    action_fn_name = "PACKAGE::TASK_NAME_action",
-    data_selector_fn_name = "PACKAGE::TASK_NAME_data_selector",
-    schema = list(
-      "SCHEMA_NAME" = sc::config$schemas$SCHEMA_NAME
-    ),
-    info = "This task does..."
-  )
-)
-'
-  )
-}
-
 addin_task_inline_v1_copy_to_db <- function(){
   rstudioapi::insertText(
     '
@@ -47,12 +18,42 @@ sc::add_task(
   )
 }
 
+addin_task_from_config_v3_basic <- function(){
+  rstudioapi::insertText(
+    '
+# TASK_NAME ----
+# tm_run_task("TASK_NAME")
+sc::add_task(
+  sc::task_from_config_v3(
+    name_grouping = "TASK_GROUPING",
+    name_action = "TASK_ACTION",
+    name_variant = "TASK_VARIANT",
+    cores = 1,
+    plan_argset_fn_name = NULL, # "PACKAGE::TASK_NAME_plan_argset"
+    for_each_plan = plnr::expand_list(
+      x = 1
+    ),
+    for_each_argset = NULL,
+    universal_argset = NULL,
+    upsert_at_end_of_each_plan = FALSE,
+    insert_at_end_of_each_plan = FALSE,
+    action_fn_name = "PACKAGE::TASK_NAME_action",
+    data_selector_fn_name = "PACKAGE::TASK_NAME_data_selector",
+    schema = list(
+      "SCHEMA_NAME" = sc::config$schemas$SCHEMA_NAME
+    ),
+    info = "This task does..."
+  )
+)
+'
+  )
+}
+
 addin_db_schema <- function(){
   rstudioapi::insertText(
     '
 # XGROUPX_XVARIANTX ----
 sc::add_schema(
-  name = "XGROUPX_XVARIANTX",
   schema = sc::Schema$new(
     db_table = "XGROUPX_XVARIANTX",
     db_config = sc::config$db_config,
@@ -92,6 +93,7 @@ sc::add_schema(
 addin_action_and_data_selector <- function(){
   rstudioapi::insertText(
     '
+# **** action **** ----
 #\' TASK_NAME (action)
 #\' @param data Data
 #\' @param argset Argset
@@ -114,6 +116,7 @@ TASK_NAME_action <- function(data, argset, schema) {
   # code goes here
 }
 
+# **** data_selector **** ----
 #\' TASK_NAME (data selector)
 #\' @param argset Argset
 #\' @param schema DB Schema
@@ -139,6 +142,32 @@ TASK_NAME_data_selector = function(argset, schema){
   )
   retval
 }
+
+# **** plan_argset **** ----
+#\' TASK_NAME (plan/argset)
+#\' This function can be deleted if you are not using "plan_argset_fn_name"
+#\' inside sc::task_from_config_v3
+#\' @export
+TASK_NAME_plan_argset <- function(argset, schema) {
+  if(plnr::is_run_directly()){
+    argset <- sc::tm_get_argset("TASK_NAME")
+    schema <- sc::tm_get_schema("TASK_NAME")
+  }
+
+  # code goes here
+  for_each_plan <- plnr::expand_list(
+    x = 1
+  )
+
+  for_each_argset <- NULL
+
+  retval <- list(
+    for_each_plan = for_each_plan,
+    for_each_argset = for_each_argset
+  )
+}
+
+# **** functions **** ----
 '
   )
 }
