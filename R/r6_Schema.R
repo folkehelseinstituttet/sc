@@ -196,8 +196,14 @@ Schema <- R6Class("Schema",
 
                       # fixing indexes
                       ind <- self$db_field_types[self$keys] == "TEXT"
+                      ind_text_with_specific_length <- stringr::str_detect(self$db_field_types[self$keys], "TEXT")
+                      ind_text_with_specific_length[ind] <- FALSE
                       if (sum(ind) > 0) {
-                        self$keys_with_length[ind] <- paste0(self$keys_with_length[ind], " (40)")
+                        self$keys_with_length[ind] <- paste0(self$keys_with_length[ind], " (50)")
+                      }
+                      if (sum(ind_text_with_specific_length) > 0) {
+                        lengths <- stringr::str_extract(self$db_field_types[self$keys][ind_text_with_specific_length], "\\([0-9]*\\)")
+                        self$keys_with_length[ind_text_with_specific_length] <- paste0(self$keys_with_length[ind_text_with_specific_length], " ", lengths)
                       }
                       if (!is.null(self$conn)) self$db_create_table()
                     },
