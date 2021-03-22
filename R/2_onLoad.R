@@ -77,7 +77,7 @@ set_db <- function(){
       db_table = "config_datetime",
       db_field_types = c(
         "type" = "TEXT",
-        "tag" = "TEXT",
+        "tag" = "TEXT (500)",
         "date" = "DATE",
         "datetime" = "DATETIME"
       ),
