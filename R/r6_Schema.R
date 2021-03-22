@@ -203,7 +203,7 @@ Schema <- R6Class("Schema",
                       }
                       if (sum(ind_text_with_specific_length) > 0) {
                         lengths <- stringr::str_extract(self$db_field_types[self$keys][ind_text_with_specific_length], "\\([0-9]*\\)")
-                        self$keys_with_length[ind_text_with_specific_length] <- paste0(self$keys_with_length[ind_text_with_specific_length], " ", lengths)
+                        #self$keys_with_length[ind_text_with_specific_length] <- paste0(self$keys_with_length[ind_text_with_specific_length], " ", lengths)
                       }
                       if (!is.null(self$conn)) self$db_create_table()
                     },
