@@ -433,7 +433,7 @@ create_table.default <- function(conn, table, fields, keys=NULL) {
 
 `create_table.Microsoft SQL Server` <- function(conn, table, fields, keys=NULL) {
   fields_new <- fields
-  fields_new[fields == "TEXT"] <- "NVARCHAR (50)"
+  fields_new[fields == "TEXT"] <- "NVARCHAR (400)"
   fields_new[fields == "DOUBLE"] <- "FLOAT"
   fields_new[fields == "BOOLEAN"] <- "BIT"
 
