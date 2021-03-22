@@ -67,6 +67,7 @@ write_data_infile <- function(
   for(i in names(dt)){
     dt[is.infinite(get(i)), (i) := NA]
     dt[is.nan(get(i)), (i) := NA]
+    if(inherits(d[[i]],"POSIXt")) dt[, (i) := as.character(get(i))]
   }
   fwrite(dt,
     file = file,
