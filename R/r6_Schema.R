@@ -158,6 +158,7 @@ Schema <- R6Class("Schema",
                     db_config = NULL,
                     db_table = NULL,
                     db_field_types = NULL,
+                    db_field_types_with_length = NULL,
                     db_load_folder = NULL,
                     keys = NULL,
                     keys_with_length = NULL,
@@ -182,6 +183,7 @@ Schema <- R6Class("Schema",
                       self$db_config <- db_config
                       self$db_table <- db_table
                       self$db_field_types <- db_field_types
+                      self$db_field_types_with_length <- db_field_types
                       self$db_load_folder <- db_load_folder
                       self$keys <- keys
                       self$keys_with_length <- keys
@@ -194,17 +196,24 @@ Schema <- R6Class("Schema",
                       # info
                       if(!is.null(info)) self$info <- info
 
-                      # fixing indexes
-                      ind <- self$db_field_types[self$keys] == "TEXT"
-                      ind_text_with_specific_length <- stringr::str_detect(self$db_field_types[self$keys], "TEXT")
+                      # db_field_types_with_lengths
+                      ind <- self$db_field_types == "TEXT"
+                      ind_text_with_specific_length <- stringr::str_detect(self$db_field_types, "TEXT")
                       ind_text_with_specific_length[ind] <- FALSE
                       if (sum(ind) > 0) {
-                        self$keys_with_length[ind] <- paste0(self$keys_with_length[ind], " (50)")
+                        self$db_field_types_with_length[ind] <- paste0(self$db_field_types_with_length[ind], " (100)")
                       }
                       if (sum(ind_text_with_specific_length) > 0) {
-                        lengths <- stringr::str_extract(self$db_field_types[self$keys][ind_text_with_specific_length], "\\([0-9]*\\)")
-                        #self$keys_with_length[ind_text_with_specific_length] <- paste0(self$keys_with_length[ind_text_with_specific_length], " ", lengths)
+                        lengths <- stringr::str_extract(self$db_field_types[ind_text_with_specific_length], "\\([0-9]*\\)")
+                        self$db_field_types_with_length[ind_text_with_specific_length] <- paste0(self$db_field_types_with_length[ind_text_with_specific_length], " ", lengths)
                       }
+
+                      # remove numbers from db_field_types
+                      naming <- names(self$db_field_types)
+                      self$db_field_types <- stringr::str_remove(self$db_field_types, " \\([0-9]*\\)")
+                      names(self$db_field_types) <- naming
+                      # fixing indexes
+                      self$keys_with_length <- self$db_field_types_with_length[self$keys]
                       if (!is.null(self$conn)) self$db_create_table()
                     },
                     db_connect = function(db_config = self$db_config) {

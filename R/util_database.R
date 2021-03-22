@@ -433,15 +433,17 @@ create_table.default <- function(conn, table, fields, keys=NULL) {
 
 `create_table.Microsoft SQL Server` <- function(conn, table, fields, keys=NULL) {
   fields_new <- fields
-  fields_new[fields == "TEXT"] <- "NVARCHAR (50)"
-  # this lets people specify their own custom length via TEXT (400)
-  #fields_new <- stringr::str_replace_all(fields_new, "TEXT", "NVARCHAR")
+  fields_new[fields == "TEXT"] <- "NVARCHAR (1000)"
   fields_new[fields == "DOUBLE"] <- "FLOAT"
   fields_new[fields == "BOOLEAN"] <- "BIT"
 
   if(!is.null(keys)) fields_new[names(fields_new) %in% keys] <- paste0(fields_new[names(fields_new) %in% keys], " NOT NULL")
-  sql <- DBI::sqlCreateTable(conn, table, fields_new,
-                             row.names = F, temporary = F
+  sql <- DBI::sqlCreateTable(
+    conn,
+    table,
+    fields_new,
+    row.names = F,
+    temporary = F
   )
   DBI::dbExecute(conn, sql)
 }
