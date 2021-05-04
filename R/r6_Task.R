@@ -171,10 +171,10 @@ Task <- R6::R6Class(
               "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta",
               "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta\n"
             ),
-            interval = 5.0,
+            interval = 10.0,
             clear = FALSE
           ),
-          interval = 5,
+          interval = 10,
           delay_stdout = FALSE,
           delay_conditions = ""
         )
@@ -228,10 +228,10 @@ Task <- R6::R6Class(
               "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta",
               "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta\n"
             ),
-            interval = 5.0,
+            interval = 10.0,
             clear = FALSE
           ),
-          interval = 5,
+          interval = 10,
           delay_stdout = FALSE,
           delay_conditions = ""
         )
