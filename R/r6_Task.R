@@ -218,7 +218,7 @@ Task <- R6::R6Class(
             message("***** Running in sequential *****")
             private$run_sequential(1, pb)
             message("***** Running in parallel *****")
-            private$run_sequential(2:(length(self$plans)-1), pb)
+            private$run_parallel(2:(length(self$plans)-1), pb)
             message("***** Running in sequential *****")
             private$run_sequential(length(self$plans), pb)
           },
