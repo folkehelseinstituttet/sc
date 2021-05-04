@@ -29,7 +29,7 @@ Imports:
   magrittr,
   odbc,
   openssl,
-  plnr (>= 2020.5.11),
+  plnr (>= 2021.5.4),
   processx,
   progress,
   progressr,
