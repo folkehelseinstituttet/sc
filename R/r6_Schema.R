@@ -180,7 +180,7 @@ validator_field_contents_sykdomspulsen <- function(data){
   return(TRUE)
 }
 
-# schema_v3 ----
+# schema_v8 ----
 #' schema class description
 #'
 #' @import data.table

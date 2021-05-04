@@ -7,6 +7,7 @@
   set_computer_type()
   set_progressr()
   set_path()
+  set_plnr()
 
   invisible()
 }
@@ -154,4 +155,8 @@ set_progressr <- function(){
 set_path <- function(){
   config$path_input <- Sys.getenv("SYKDOMSPULSEN_PATH_INPUT")
   config$path_output <- Sys.getenv("SYKDOMSPULSEN_PATH_OUTPUT")
+}
+
+set_plnr <- function(){
+  plnr::set_opts(force_verbose = TRUE)
 }

@@ -168,8 +168,8 @@ Task <- R6::R6Class(
           handlers = progressr::handler_progress(
             format = ifelse(
               interactive(),
-              "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta",
-              "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta\n"
+              "(interactive) [:bar] :current/:total (:percent) in :elapsedfull, eta: :eta",
+              "(log) [:bar] :current/:total (:percent) in :elapsedfull, eta: :eta\n"
             ),
             clear = FALSE
           ),
