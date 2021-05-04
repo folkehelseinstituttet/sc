@@ -171,6 +171,7 @@ Task <- R6::R6Class(
               "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta",
               "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta\n"
             ),
+            interval = 5.0,
             clear = FALSE
           ),
           interval = 5,
@@ -227,6 +228,7 @@ Task <- R6::R6Class(
               "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta",
               "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta\n"
             ),
+            interval = 5.0,
             clear = FALSE
           ),
           interval = 5,
