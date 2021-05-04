@@ -118,7 +118,7 @@ Task <- R6::R6Class(
 
       self$update_plans()
 
-      if(cores == 1 | length(self$plans) <= 2){
+      if(cores == 1 | length(self$plans) <= 3){
         run_sequential <- TRUE
       } else {
         run_sequential <- FALSE
@@ -214,8 +214,11 @@ Task <- R6::R6Class(
         progressr::with_progress(
           {
             pb <- progressr::progressor(steps = self$num_argsets())
+            message("Sequential")
             private$run_sequential(1, pb)
+            message("Parallel")
             private$run_sequential(2:(length(self$plans)-1), pb)
+            message("Sequential")
             private$run_sequential(length(self$plans), pb)
           },
           handlers = progressr::handler_progress(
