@@ -217,8 +217,14 @@ Task <- R6::R6Class(
             pb <- progressr::progressor(steps = self$num_argsets())
             message("***** Running in sequential *****")
             private$run_sequential(1, pb)
+
+            message("*****")
+            message("*****")
             message("***** Running in parallel *****")
             private$run_parallel(2:(length(self$plans)-1), pb)
+
+            message("*****")
+            message("*****")
             message("***** Running in sequential *****")
             private$run_sequential(length(self$plans), pb)
           },
