@@ -49,7 +49,7 @@ random_uuid <- function() {
 }
 
 random_file <- function(folder, extension = ".csv") {
-  dir.create(folder)
+  dir.create(folder, showWarnings = FALSE, recursive = TRUE)
   fs::path(folder, paste0(random_uuid(), extension))
 }
 
