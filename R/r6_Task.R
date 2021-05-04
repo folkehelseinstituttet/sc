@@ -165,6 +165,14 @@ Task <- R6::R6Class(
             pb <- progressr::progressor(steps = self$num_argsets())
             private$run_sequential(1:length(self$plans), pb)
           },
+          handlers = progressr::handler_progress(
+            format = ifelse(
+              interactive(),
+              "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta",
+              "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta\n"
+            ),
+            clear = FALSE
+          ),
           delay_stdout = FALSE,
           delay_conditions = ""
         )
@@ -209,6 +217,14 @@ Task <- R6::R6Class(
             private$run_sequential(2:(length(self$plans)-1), pb)
             private$run_sequential(length(self$plans), pb)
           },
+          handlers = progressr::handler_progress(
+            format = ifelse(
+              interactive(),
+              "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta",
+              "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta\n"
+            ),
+            clear = FALSE
+          ),
           delay_stdout = FALSE,
           delay_conditions = ""
         )

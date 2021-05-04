@@ -143,10 +143,12 @@ set_computer_type <- function() {
 
 set_progressr <- function(){
   options("progressr.enable" = TRUE)
-  progressr::handlers(progressr::handler_progress(
-    format = "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta",
-    clear = FALSE
-  ))
+  progressr::handlers(
+    progressr::handler_progress(
+      format = "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta\n",
+      clear = FALSE
+    )
+  )
 }
 
 set_path <- function(){
