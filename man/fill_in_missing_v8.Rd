@@ -4,10 +4,12 @@
 \alias{fill_in_missing_v8}
 \title{fill_in_missing_v8}
 \usage{
-fill_in_missing_v8(d)
+fill_in_missing_v8(d, border = 2020)
 }
 \arguments{
 \item{d}{dataset}
+
+\item{border}{what border?}
 }
 \description{
 fill_in_missing_v8

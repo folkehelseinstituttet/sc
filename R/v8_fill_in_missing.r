@@ -24,8 +24,9 @@ x_season <- Vectorize(x_season_int, vectorize.args = c("yrwk"))
 
 #' fill_in_missing_v8
 #' @param d dataset
+#' @param border what border?
 #' @export
-fill_in_missing_v8 <- function(d){
+fill_in_missing_v8 <- function(d, border = 2020){
   fix_variables(d)
 
   stopifnot("granularity_time" %in% names(d))
@@ -66,7 +67,7 @@ fill_in_missing_v8 <- function(d){
     )]
   }
   if(!"border" %in% names(d)){
-    d[, border := config$border]
+    d[, border := border]
   }
   if(!"age" %in% names(d)){
     d[, age := "total"]
