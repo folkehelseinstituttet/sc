@@ -195,7 +195,7 @@ TASK_NAME_action <- function(data, argset, schema) {
   }
 
   # put data in db table
-  # sc::fill_in_missing_v8(d)
+  # sc::fill_in_missing_v8(d, border = config$border)
   # schema$SCHEMA_NAME$insert_data(d)
   # schema$SCHEMA_NAME$upsert_data(d)
   # schema$SCHEMA_NAME$drop_all_rows_and_then_upsert_data(d)
