@@ -42,7 +42,7 @@ Permission <- R6::R6Class(
         "xkey"
       )
 
-      db_schema <<- Schema$new(
+      db_schema <<- Schema_v8$new(
         db_config = config$db_config,
         db_table = "permission",
         db_field_types = field_types,
