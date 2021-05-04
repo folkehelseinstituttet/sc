@@ -12,6 +12,17 @@ schema class description
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{Schema$new()}}
+\item \href{#method-connect}{\code{Schema$connect()}}
+\item \href{#method-disconnect}{\code{Schema$disconnect()}}
+\item \href{#method-create_table}{\code{Schema$create_table()}}
+\item \href{#method-drop_table}{\code{Schema$drop_table()}}
+\item \href{#method-insert_data}{\code{Schema$insert_data()}}
+\item \href{#method-upsert_data}{\code{Schema$upsert_data()}}
+\item \href{#method-drop_all_rows}{\code{Schema$drop_all_rows()}}
+\item \href{#method-drop_rows_where}{\code{Schema$drop_rows_where()}}
+\item \href{#method-keep_rows_where}{\code{Schema$keep_rows_where()}}
+\item \href{#method-drop_all_rows_and_then_upsert_data}{\code{Schema$drop_all_rows_and_then_upsert_data()}}
+\item \href{#method-tbl}{\code{Schema$tbl()}}
 \item \href{#method-db_connect}{\code{Schema$db_connect()}}
 \item \href{#method-db_disconnect}{\code{Schema$db_disconnect()}}
 \item \href{#method-db_add_constraint}{\code{Schema$db_add_constraint()}}
@@ -56,6 +67,121 @@ schema class description
   validator_field_contents = validator_field_contents_blank,
   info = NULL
 )}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-connect"></a>}}
+\if{latex}{\out{\hypertarget{method-connect}{}}}
+\subsection{Method \code{connect()}}{
+Connect to a db
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Schema$connect(db_config = self$db_config)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{db_config}}{db_config}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-disconnect"></a>}}
+\if{latex}{\out{\hypertarget{method-disconnect}{}}}
+\subsection{Method \code{disconnect()}}{
+Disconnect from a db
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Schema$disconnect()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-create_table"></a>}}
+\if{latex}{\out{\hypertarget{method-create_table}{}}}
+\subsection{Method \code{create_table()}}{
+Create db table
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Schema$create_table()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-drop_table"></a>}}
+\if{latex}{\out{\hypertarget{method-drop_table}{}}}
+\subsection{Method \code{drop_table()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Schema$drop_table()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-insert_data"></a>}}
+\if{latex}{\out{\hypertarget{method-insert_data}{}}}
+\subsection{Method \code{insert_data()}}{
+Inserts data into db table
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Schema$insert_data(newdata, verbose = TRUE)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-upsert_data"></a>}}
+\if{latex}{\out{\hypertarget{method-upsert_data}{}}}
+\subsection{Method \code{upsert_data()}}{
+Upserts data into db table
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Schema$upsert_data(newdata, drop_indexes = names(self$indexes), verbose = TRUE)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-drop_all_rows"></a>}}
+\if{latex}{\out{\hypertarget{method-drop_all_rows}{}}}
+\subsection{Method \code{drop_all_rows()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Schema$drop_all_rows()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-drop_rows_where"></a>}}
+\if{latex}{\out{\hypertarget{method-drop_rows_where}{}}}
+\subsection{Method \code{drop_rows_where()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Schema$drop_rows_where(condition)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-keep_rows_where"></a>}}
+\if{latex}{\out{\hypertarget{method-keep_rows_where}{}}}
+\subsection{Method \code{keep_rows_where()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Schema$keep_rows_where(condition)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-drop_all_rows_and_then_upsert_data"></a>}}
+\if{latex}{\out{\hypertarget{method-drop_all_rows_and_then_upsert_data}{}}}
+\subsection{Method \code{drop_all_rows_and_then_upsert_data()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Schema$drop_all_rows_and_then_upsert_data(
+  newdata,
+  drop_indexes = names(self$indexes),
+  verbose = TRUE
+)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-tbl"></a>}}
+\if{latex}{\out{\hypertarget{method-tbl}{}}}
+\subsection{Method \code{tbl()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Schema$tbl()}\if{html}{\out{</div>}}
 }
 
 }

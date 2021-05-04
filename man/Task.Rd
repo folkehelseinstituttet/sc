@@ -12,6 +12,7 @@ Task
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{Task$new()}}
+\item \href{#method-insert_first_last_argset}{\code{Task$insert_first_last_argset()}}
 \item \href{#method-update_plans}{\code{Task$update_plans()}}
 \item \href{#method-num_argsets}{\code{Task$num_argsets()}}
 \item \href{#method-run}{\code{Task$run()}}
@@ -38,6 +39,15 @@ Task
   action_after_fn = NULL,
   info = NULL
 )}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-insert_first_last_argset"></a>}}
+\if{latex}{\out{\hypertarget{method-insert_first_last_argset}{}}}
+\subsection{Method \code{insert_first_last_argset()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Task$insert_first_last_argset()}\if{html}{\out{</div>}}
 }
 
 }

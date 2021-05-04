@@ -51,6 +51,51 @@ set_db <- function(){
     trusted_connection = Sys.getenv("SYKDOMSPULSEN_DB_TRUSTED_CONNECTION")
   )
 
+  config$db_configs <- list(
+    "restr" = config$db_config,
+    "anon" = config$db_config,
+    "config" = config$db_config
+  )
+  config$db_config_preferred <- "restr"
+
+  # config_last_updated ----
+  add_schema(
+    schema = Schema$new(
+      db_config = config$db_config,
+      db_table = "config_last_updated",
+      db_field_types = c(
+        "type" = "TEXT",
+        "tag" = "TEXT",
+        "date" = "DATE",
+        "datetime" = "DATETIME"
+      ),
+      db_load_folder = tempdir(),
+      keys = c(
+        "type",
+        "tag"
+      )
+    )
+  )
+
+  # config_structure_time ----
+  add_schema(
+    schema = Schema$new(
+      db_config = config$db_config,
+      db_table = "config_structure_time",
+      db_field_types = c(
+        "granularity_time" = "TEXT",
+        "isoyear" = "TEXT",
+        "isoyearweek" = "TEXT",
+        "date" = "DATE"
+      ),
+      db_load_folder = tempdir(),
+      keys = c(
+        "type",
+        "tag"
+      )
+    )
+  )
+
   # rundate ----
   add_schema(
     name = "rundate",
@@ -69,7 +114,7 @@ set_db <- function(){
     )
   )
 
-  # rundate ----
+  # config_datetime ----
   add_schema(
     name = "config_datetime",
     schema = Schema$new(
@@ -97,6 +142,7 @@ set_computer_type <- function() {
 }
 
 set_progressr <- function(){
+  options("progressr.enable" = TRUE)
   progressr::handlers(progressr::handler_progress(
     format = "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta",
     clear = FALSE

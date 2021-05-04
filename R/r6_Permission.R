@@ -67,26 +67,26 @@ Permission <- R6::R6Class(
       return(permission)
     },
     revoke_permission = function() {
-      db_schema$db_connect()
+      db_schema$connect()
 
       to_upload <- data.table(
         xkey = key,
         value = as.character(value)
       )
 
-      db_schema$db_upsert_load_data_infile(to_upload)
-      db_schema$db_disconnect()
+      db_schema$upset_data(to_upload)
+      db_schema$disconnect()
     },
     grant_permission = function() {
-      db_schema$db_connect()
+      db_schema$connect()
 
       to_upload <- data.table(
         xkey = key,
         value = uuid::UUIDgenerate()
       )
 
-      db_schema$db_upsert_load_data_infile(to_upload)
-      db_schema$db_disconnect()
+      db_schema$upset_data(to_upload)
+      db_schema$disconnect()
     },
     is_final = function() {
       today <- lubridate::wday(lubridate::today(), week_start = 1)
@@ -94,8 +94,8 @@ Permission <- R6::R6Class(
     },
     current_value = function() {
       if(!"permission" %in% list_tables()){
-        db_schema$db_connect()
-        db_schema$db_disconnect()
+        db_schema$connect()
+        db_schema$disconnect()
       }
       temp <- tbl("permission") %>%
         dplyr::collect() %>%

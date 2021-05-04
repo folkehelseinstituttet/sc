@@ -96,7 +96,7 @@ tm_get_schema <- function(task_name, index_plan = NULL, index_argset = NULL) {
   schema <- tm_get_task(
     task_name = task_name
   )$schema
-  for(s in schema) s$db_connect()
+  for(s in schema) s$connect()
   return(schema)
 }
 

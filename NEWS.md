@@ -1,3 +1,8 @@
+# sc 8.0.0
+
+* Release of schema redirects that allow for restricted and anonymous datasets to be seamlessly used by people with different access rights
+* Consistent naming of task_from_config_v8 and add_schema_v8
+
 # sc 7.1.4
 
 * db_insert_data, db_upsert_data, db_drop_all_rows_and_then_upsert_data are now the recommended ways of inserting data

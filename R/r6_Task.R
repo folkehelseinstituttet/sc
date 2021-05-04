@@ -69,6 +69,23 @@ Task <- R6::R6Class(
       self$action_after_fn <- action_after_fn
       if(!is.null(info)) self$info <- info
     },
+
+    insert_first_last_argset = function(){
+      for(i in seq_along(self$plans)) for(j in seq_along(self$plans[[i]]$analyses)){
+        if(i==1 & j==1){
+          self$plans[[i]]$analyses[[j]]$argset$first_argset <- TRUE
+        } else {
+          self$plans[[i]]$analyses[[j]]$argset$first_argset <- FALSE
+        }
+
+        if(i==length(self$plans) & j==length(self$plans[[i]]$analyses)){
+          self$plans[[i]]$analyses[[j]]$argset$last_argset <- TRUE
+        } else {
+          self$plans[[i]]$analyses[[j]]$argset$last_argset <- FALSE
+        }
+      }
+    },
+
     update_plans = function() {
       if (!is.null(self$update_plans_fn)) {
         message(glue::glue("Updating plans..."))
@@ -81,6 +98,7 @@ Task <- R6::R6Class(
         # }
         self$plans <- self$update_plans_fn()
         self$update_plans_fn <- NULL
+        self$insert_first_last_argset()
       }
     },
     num_argsets = function() {
@@ -100,12 +118,20 @@ Task <- R6::R6Class(
 
       self$update_plans()
 
+      if(cores == 1 | length(self$plans) <= 2){
+        run_sequential <- TRUE
+      } else {
+        run_sequential <- FALSE
+      }
+
       message(glue::glue("Running task={self$name} with plans={length(self$plans)} and argsets={self$num_argsets()}"))
+
       if(!is.null(self$action_before_fn)){
         message("Running action_before_fn")
         self$action_before_fn()
       }
-      if (cores != 1) {
+
+      if (!run_sequential) {
         doFuture::registerDoFuture()
 
         if (length(self$plans) == 1) {
@@ -132,75 +158,94 @@ Task <- R6::R6Class(
 
       message(glue::glue("{parallel} with cores={cores}"))
 
-      if (cores == 1) {
+      if (run_sequential) {
         # not running in parallel
-        pb <- progress::progress_bar$new(
-          format = "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta",
-          clear = FALSE,
-          force = TRUE,
-          total = self$num_argsets()
+        progressr::with_progress(
+          {
+            pb <- progressr::progressor(steps = self$num_argsets())
+            private$run_sequential(1:length(self$plans), pb)
+          },
+          delay_stdout = FALSE,
+          delay_conditions = ""
         )
-        for (s in schema) s$db_connect()
-        for (i in seq_along(self$plans)) {
-          if(!interactive()){
-            message(glue::glue("Plan {i}/{length(self$plans)}"))
-          }
 
-          self$plans[[i]]$set_progress(pb)
-          retval <- self$plans[[i]]$run_all(schema = schema)
-
-          if (upsert_at_end_of_each_plan) {
-            retval <- rbindlist(retval)
-            schema$output$db_upsert_load_data_infile(retval, verbose = F)
-          }
-
-          if (insert_at_end_of_each_plan) {
-            retval <- rbindlist(retval)
-            schema$output$db_load_data_infile(retval, verbose = F)
-          }
-
-          rm("retval")
-        }
-        for (s in schema) s$db_disconnect()
+        # pb <- progress::progress_bar$new(
+        #   format = "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta",
+        #   clear = FALSE,
+        #   force = TRUE,
+        #   total = self$num_argsets()
+        # )
+        # for (s in schema) s$connect()
+        # for (i in seq_along(self$plans)) {
+        #   self$plans[[i]]$set_progress(pb)
+        #   retval <- self$plans[[i]]$run_all(schema = schema)
+        #
+        #   if (upsert_at_end_of_each_plan) {
+        #     retval <- rbindlist(retval)
+        #     schema$output$upsert_data(retval, verbose = F)
+        #   }
+        #
+        #   if (insert_at_end_of_each_plan) {
+        #     retval <- rbindlist(retval)
+        #     schema$output$insert_data(retval, verbose = F)
+        #   }
+        #
+        #   rm("retval")
+        # }
+        # for (s in schema) s$disconnect()
       } else {
         # running in parallel
         message("\n***** REMEMBER TO INSTALL SYKDOMSPULSEN *****")
         message("***** OR ELSE THE PARALLEL PROCESSES WON'T HAVE ACCESS *****")
         message("***** TO THE NECESSARY FUNCTIONS *****\n")
 
-        progressr::with_progress({
-          pb <- progressr::progressor(steps = self$num_argsets())
-          y <- foreach(x = self$plans) %dopar% {
-            data.table::setDTthreads(1)
 
-            for (s in schema) s$db_connect()
-            x$set_progressor(pb)
-            retval <- x$run_all(schema = schema)
+        message("Running plans 1 and ", length(self$plans)," sequentially, and 2:", length(self$plans)-1, " in parallel\n")
 
-            if (upsert_at_end_of_each_plan) {
-              retval <- rbindlist(retval)
-              schema$output$db_upsert_load_data_infile(retval, verbose = F)
-            }
-
-            if (insert_at_end_of_each_plan) {
-              retval <- rbindlist(retval)
-              schema$output$db_load_data_infile(retval, verbose = F)
-            }
-            rm("retval")
-            for (s in schema) s$db_disconnect()
-
-            # ***************************** #
-            # NEVER DELETE gc()             #
-            # IT CAUSES 2x SPEEDUP          #
-            # AND 10x MEMORY EFFICIENCY     #
-            gc() #
-            # ***************************** #
-            1
-          }
-        },
-        delay_stdout = FALSE,
-        delay_conditions = ""
+        progressr::with_progress(
+          {
+            pb <- progressr::progressor(steps = self$num_argsets())
+            private$run_sequential(1, pb)
+            private$run_sequential(2:(length(self$plans)-1), pb)
+            private$run_sequential(length(self$plans), pb)
+          },
+          delay_stdout = FALSE,
+          delay_conditions = ""
         )
+
+        # progressr::with_progress({
+        #   pb <- progressr::progressor(steps = self$num_argsets())
+        #   y <- foreach(x = self$plans) %dopar% {
+        #     data.table::setDTthreads(1)
+        #
+        #     for (s in schema) s$connect()
+        #     x$set_progressor(pb)
+        #     retval <- x$run_all(schema = schema)
+        #
+        #     if (upsert_at_end_of_each_plan) {
+        #       retval <- rbindlist(retval)
+        #       schema$output$upsert_data(retval, verbose = F)
+        #     }
+        #
+        #     if (insert_at_end_of_each_plan) {
+        #       retval <- rbindlist(retval)
+        #       schema$output$insert_data(retval, verbose = F)
+        #     }
+        #     rm("retval")
+        #     for (s in schema) s$db_disconnect()
+        #
+        #     # ***************************** #
+        #     # NEVER DELETE gc()             #
+        #     # IT CAUSES 2x SPEEDUP          #
+        #     # AND 10x MEMORY EFFICIENCY     #
+        #     gc() #
+        #     # ***************************** #
+        #     1
+        #   }
+        # },
+        # delay_stdout = FALSE,
+        # delay_conditions = ""
+        # )
       }
 
       future::plan(future::sequential)
@@ -216,6 +261,57 @@ Task <- R6::R6Class(
       update_config_datetime(type = "task", tag = self$name)
       if(!is.null(self$permission)) self$permission$revoke_permission()
 
+    }
+  ),
+  private = list(
+    run_sequential = function(plans_index, pb){
+      for (s in schema) s$connect()
+      for (i in seq_along(self$plans[plans_index])) {
+        self$plans[plans_index][[i]]$set_progressor(pb)
+        retval <- self$plans[plans_index][[i]]$run_all(schema = schema)
+
+        if (upsert_at_end_of_each_plan) {
+          retval <- rbindlist(retval)
+          schema$output$upsert_data(retval, verbose = F)
+        }
+
+        if (insert_at_end_of_each_plan) {
+          retval <- rbindlist(retval)
+          schema$output$insert_data(retval, verbose = F)
+        }
+
+        rm("retval")
+      }
+      for (s in schema) s$disconnect()
+    },
+    run_parallel = function(plans_index, pb){
+      y <- foreach(x = self$plans[plans_index]) %dopar% {
+        data.table::setDTthreads(1)
+
+        for (s in schema) s$connect()
+        x$set_progressor(pb)
+        retval <- x$run_all(schema = schema)
+
+        if (upsert_at_end_of_each_plan) {
+          retval <- rbindlist(retval)
+          schema$output$upsert_data(retval, verbose = F)
+        }
+
+        if (insert_at_end_of_each_plan) {
+          retval <- rbindlist(retval)
+          schema$output$insert_data(retval, verbose = F)
+        }
+        rm("retval")
+        for (s in schema) s$db_disconnect()
+
+        # ***************************** #
+        # NEVER DELETE gc()             #
+        # IT CAUSES 2x SPEEDUP          #
+        # AND 10x MEMORY EFFICIENCY     #
+        gc() #
+        # ***************************** #
+        1
+      }
     }
   )
 )

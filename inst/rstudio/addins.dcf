@@ -1,16 +1,16 @@
-Name: Insert task_inline_v1 (copy to db)
-Description: Insert task_inline_v1 (copy to db).
-Binding: addin_task_inline_v1_copy_to_db
+Name: Insert task_from_config
+Description: Insert task_from_config.
+Binding: addin_add_task_from_config_v8_basic
 Interactive: false
 
-Name: Insert task_from_config_v3 (basic)
-Description: Insert task_from_config_v3 (basic).
-Binding: addin_task_from_config_v3_basic
+Name: Insert db schema (anon)
+Description: Insert db schema (anon).
+Binding: addin_db_schema_v8_anon
 Interactive: false
 
-Name: Insert db schema
-Description: Insert db schema.
-Binding: addin_db_schema
+Name: Insert db schema (restr, anon)
+Description: Insert db schema (restr, anon).
+Binding: addin_db_schema_v8_restr_anon
 Interactive: false
 
 Name: Insert action and data selector

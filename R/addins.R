@@ -18,73 +18,148 @@ sc::add_task(
   )
 }
 
-addin_task_from_config_v3_basic <- function(){
+addin_add_task_from_config_v8_basic <- function(){
   rstudioapi::insertText(
     '
 # TASK_NAME ----
 # tm_run_task("TASK_NAME")
-sc::add_task(
-  sc::task_from_config_v3(
-    name_grouping = "TASK_GROUPING",
-    name_action = "TASK_ACTION",
-    name_variant = "TASK_VARIANT",
-    cores = 1,
-    plan_argset_fn_name = NULL, # "PACKAGE::TASK_NAME_plan_argset"
-    for_each_plan = plnr::expand_list(
-      x = 1
-    ),
-    for_each_argset = NULL,
-    universal_argset = NULL,
-    upsert_at_end_of_each_plan = FALSE,
-    insert_at_end_of_each_plan = FALSE,
-    action_fn_name = "PACKAGE::TASK_NAME_action",
-    data_selector_fn_name = "PACKAGE::TASK_NAME_data_selector",
-    schema = list(
-      "SCHEMA_NAME" = sc::config$schemas$SCHEMA_NAME
-    ),
-    info = "This task does..."
-  )
+sc::add_task_from_config_v8(
+  name_grouping = "TASK_GROUPING",
+  name_action = "TASK_ACTION",
+  name_variant = "TASK_VARIANT",
+  cores = 1,
+  plan_argset_fn_name = NULL, # "PACKAGE::TASK_NAME_plan_argset"
+  for_each_plan = plnr::expand_list(
+    x = 1
+  ),
+  for_each_argset = NULL,
+  universal_argset = NULL,
+  upsert_at_end_of_each_plan = FALSE,
+  insert_at_end_of_each_plan = FALSE,
+  action_fn_name = "PACKAGE::TASK_NAME_action",
+  data_selector_fn_name = "PACKAGE::TASK_NAME_data_selector",
+  schema = list(
+    # input
+    "SCHEMA_NAME_1" = sc::config$schemas$SCHEMA_NAME_1,
+
+    # output
+    "SCHEMA_NAME_2" = sc::config$schemas$SCHEMA_NAME_2
+  ),
+  info = "This task does..."
 )
 '
   )
 }
 
-addin_db_schema <- function(){
+addin_db_schema_v8_anon <- function(){
   rstudioapi::insertText(
     '
-# XGROUPX_XVARIANTX ----
-sc::add_schema(
-  schema = sc::Schema$new(
-    db_table = "XGROUPX_XVARIANTX",
-    db_config = sc::config$db_config,
-    db_field_types =  c(
-      "granularity_time" = "TEXT",
-      "granularity_geo" = "TEXT",
-      "location_code" = "TEXT",
-      "border" = "INTEGER",
-      "age" = "TEXT",
-      "sex" = "TEXT",
-      "isoyear" = "INTEGER",
-      "isoweek" = "INTEGER",
-      "isoyearweek" = "TEXT",
-      "season" = "TEXT",
-      "seasonweek" = "DOUBLE",
-      "date" = "DATE",
+# anon_GROUPING_VARIANT ----
+sc::add_schema_v8(
+  name_access = c("anon"),
+  name_grouping = NULL,
+  name_variant = NULL,
+  db_configs = sc::config$db_configs,
+  field_types =  c(
+    "granularity_time" = "TEXT",
+    "granularity_geo" = "TEXT",
+    "country_iso3" = "TEXT",
+    "location_code" = "TEXT",
+    "border" = "INTEGER",
+    "age" = "TEXT",
+    "sex" = "TEXT",
 
-      "XXXX" = "DOUBLE"
-    ),
-    db_load_folder = tempdir(),
-    keys =  c(
-      "granularity_time",
-      "location_code",
-      "date",
-      "age",
-      "sex"
-    ),
-    validator_field_types = sc::validator_field_types_sykdomspulsen,
-    validator_field_contents = sc::validator_field_contents_sykdomspulsen,
-    info = "This db table is used for..."
+    "date" = "DATE",
+
+    "isoyear" = "INTEGER",
+    "isoweek" = "INTEGER",
+    "isoyearweek" = "TEXT",
+    "season" = "TEXT",
+    "seasonweek" = "DOUBLE",
+
+    "calyear" = "INTEGER",
+    "calmonth" = "INTEGER",
+    "calyearmonth" = "TEXT",
+
+    "XXXX_n" = "INTEGER",
+    "XXXX_pr" = "DOUBLE"
+  ),
+  keys = c(
+    "granularity_time",
+    "location_code",
+    "date",
+    "age",
+    "sex"
+  ),
+  censors = list(
+    anon = list(
+      XXXX_n = sc::censor_function_factory_values_nothing(column_name_to_be_censored = "XXXX_n"),
+      XXXX_pr = sc::censor_function_factory_values_nothing(column_name_to_be_censored = "XXXX_pr")
+    )
+  ),
+  validator_field_types = sc::validator_field_types_sykdomspulsen,
+  validator_field_contents = sc::validator_field_contents_sykdomspulsen,
+  info = "This db table is used for..."
+)
+'
   )
+}
+
+addin_db_schema_v8_restr_anon <- function(){
+  rstudioapi::insertText(
+    '
+# redirect_GROUPING_VARIANT ----
+# restr_GROUPING_VARIANT ----
+# anon_GROUPING_VARIANT ----
+sc::add_schema_v8(
+  name_access = c("restr", "anon"),
+  name_grouping = NULL,
+  name_variant = NULL,
+  db_configs = sc::config$db_configs,
+  field_types =  c(
+    "granularity_time" = "TEXT",
+    "granularity_geo" = "TEXT",
+    "country_iso3" = "TEXT",
+    "location_code" = "TEXT",
+    "border" = "INTEGER",
+    "age" = "TEXT",
+    "sex" = "TEXT",
+
+    "date" = "DATE",
+
+    "isoyear" = "INTEGER",
+    "isoweek" = "INTEGER",
+    "isoyearweek" = "TEXT",
+    "season" = "TEXT",
+    "seasonweek" = "DOUBLE",
+
+    "calyear" = "INTEGER",
+    "calmonth" = "INTEGER",
+    "calyearmonth" = "TEXT",
+
+    "XXXX_n" = "INTEGER",
+    "XXXX_pr" = "DOUBLE"
+  ),
+  keys = c(
+    "granularity_time",
+    "location_code",
+    "date",
+    "age",
+    "sex"
+  ),
+  censors = list(
+    restr = list(
+      XXXX_n = sc::censor_function_factory_values_0_4(column_name_to_be_censored = "XXXX_n", column_name_value = "XXXX_n"),
+      XXXX_pr = sc::censor_function_factory_values_0_4(column_name_to_be_censored = "XXXX_pr", column_name_value = "XXXX_n")
+    ),
+    anon = list(
+      XXXX_n = sc::censor_function_factory_values_nothing(column_name_to_be_censored = "XXXX_n"),
+      XXXX_pr = sc::censor_function_factory_values_nothing(column_name_to_be_censored = "XXXX_pr")
+    )
+  ),
+  validator_field_types = sc::validator_field_types_sykdomspulsen,
+  validator_field_contents = sc::validator_field_contents_sykdomspulsen,
+  info = "This db table is used for..."
 )
 '
   )
@@ -114,6 +189,25 @@ TASK_NAME_action <- function(data, argset, schema) {
   }
 
   # code goes here
+  # special case that runs before everything
+  if(argset$first_argset == TRUE){
+
+  }
+
+  # put data in db table
+  # sc::fill_in_missing_v8(d)
+  # schema$SCHEMA_NAME$insert_data(d)
+  # schema$SCHEMA_NAME$upsert_data(d)
+  # schema$SCHEMA_NAME$drop_all_rows_and_then_upsert_data(d)
+
+  # special case that runs after everything
+  # copy to anon_web?
+  if(argset$last_argset == TRUE){
+    # sc::copy_into_new_table_where(
+    #   table_from = "anon_X",
+    #   table_to = "anon_webkht"
+    # )
+  }
 }
 
 # **** data_selector **** ----
@@ -132,9 +226,46 @@ TASK_NAME_data_selector = function(argset, schema){
   }
 
   # The database schemas can be accessed here
-  d <- schema$SCHEMA_NAME$dplyr_tbl() %>%
+  d <- schema$SCHEMA_NAME$tbl() %>%
+    mandatory_db_filter(
+      granularity_time = NULL,
+      granularity_time_not = NULL,
+      granularity_geo = NULL,
+      granularity_geo_not = NULL,
+      country_iso3 = NULL,
+      location_code = NULL,
+      age = NULL,
+      age_not = NULL,
+      sex = NULL,
+      sex_not = NULL
+    ) %>%
+    dplyr::select(
+      granularity_time,
+      granularity_geo,
+      country_iso3,
+      location_code,
+      border,
+      age,
+      sex,
+
+      date,
+
+      isoyear,
+      isoweek,
+      isoyearweek,
+      season,
+      seasonweek,
+
+      calyear,
+      calmonth,
+      calyearmonth
+    )
     dplyr::collect() %>%
-    as.data.table()
+    as.data.table() %>%
+    setorder(
+      location_code,
+      date
+    )
 
   # The variable returned must be a named list
   retval <- list(
@@ -168,6 +299,10 @@ TASK_NAME_plan_argset <- function(argset, schema) {
 }
 
 # **** functions **** ----
+
+
+
+
 '
   )
 }

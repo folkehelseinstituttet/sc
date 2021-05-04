@@ -1,6 +1,6 @@
 Package: sc
 Title: Sykdomspulsen Core - NIPH Infectious Diseases Surveillance System
-Version: 7.1.4
+Version: 8.0.0
 Authors@R: c(
   person(c("Richard","Aubrey"), "White", email = "hello@rwhite.no", role = c("aut", "cre"),
     comment = c(ORCID = "0000-0002-6747-1726")
@@ -19,6 +19,8 @@ Imports:
   DBI,
   devtools,
   dplyr,
+  fhidata,
+  fhiplot,
   foreach,
   fs,
   future,
