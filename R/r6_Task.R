@@ -168,11 +168,12 @@ Task <- R6::R6Class(
           handlers = progressr::handler_progress(
             format = ifelse(
               interactive(),
-              "(interactive) [:bar] :current/:total (:percent) in :elapsedfull, eta: :eta",
-              "(log) [:bar] :current/:total (:percent) in :elapsedfull, eta: :eta\n"
+              "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta",
+              "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta\n"
             ),
             clear = FALSE
           ),
+          interval = 5,
           delay_stdout = FALSE,
           delay_conditions = ""
         )
@@ -225,6 +226,7 @@ Task <- R6::R6Class(
             ),
             clear = FALSE
           ),
+          interval = 5,
           delay_stdout = FALSE,
           delay_conditions = ""
         )
