@@ -417,7 +417,7 @@ Schema_v8 <- R6Class(
     },
     db_disconnect = function() {
       .Deprecated("disconnect")
-      self$disconnect(db_config)
+      self$disconnect()
     }
   ),
 
