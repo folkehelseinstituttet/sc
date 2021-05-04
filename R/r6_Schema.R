@@ -408,6 +408,16 @@ Schema_v8 <- R6Class(
           index = i
         )
       }
+    },
+
+    # to be deleted soon ----
+    db_connect = function(db_config = self$db_config) {
+      .Deprecated("connect")
+      self$connect(db_config)
+    },
+    db_disconnect = function() {
+      .Deprecated("disconnect")
+      self$disconnect(db_config)
     }
   ),
 
