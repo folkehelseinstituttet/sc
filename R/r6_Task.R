@@ -260,6 +260,7 @@ Task <- R6::R6Class(
             message("*****")
             message("*****")
             message("***** Running plans 2:", (length(self$plans)-1)," in parallel *****")
+            print(names(self$schema))
             private$run_parallel_plans(
               plans_index = 2:(length(self$plans)-1),
               schema = self$schema,
@@ -355,12 +356,19 @@ Task <- R6::R6Class(
       for (s in schema) s$disconnect()
     },
     run_parallel_plans = function(plans_index, schema, upsert_at_end_of_each_plan, insert_at_end_of_each_plan, pb, cores){
-      y <- pbmcapply::pbmcmapply(
+      y <- pbmcapply::pbmclapply(
+        self$plans[plans_index],
         function(x, schema, upsert_at_end_of_each_plan, insert_at_end_of_each_plan, pb){
           data.table::setDTthreads(1)
 
+          #for (s in schema) s$disconnect()
           for (s in schema) s$connect()
+          #library(magrittr)
+          #return(schema[[1]]$tbl() %>% head() %>% dplyr::collect())
           x$set_progressor(pb)
+          #return(x$data)
+          #retval <- x$get_data()
+          #return(retval)
           retval <- x$run_all(schema = schema)
 
           if (upsert_at_end_of_each_plan) {
@@ -383,15 +391,16 @@ Task <- R6::R6Class(
           # ***************************** #
           1
         },
-        self$plans[plans_index],
-        MoreArgs = list(
-          schema, upsert_at_end_of_each_plan, insert_at_end_of_each_plan, pb
-        ),
+        schema = schema,
+        upsert_at_end_of_each_plan = upsert_at_end_of_each_plan,
+        insert_at_end_of_each_plan = insert_at_end_of_each_plan,
+        pb = pb,
         ignore.interactive = TRUE,
         mc.cores = cores,
         mc.style = "ETA",
         mc.substyle = 2
       )
+      #print(y)
     },
     # run_parallel = function(plans_index, schema, upsert_at_end_of_each_plan, insert_at_end_of_each_plan, pb){
     #   y <- foreach(x = self$plans[plans_index]) %dopar% {

@@ -723,10 +723,10 @@ get_db_connection <- function(
 #' @param db db
 #' @export
 tbl <- function(table, db = config$db_config$db) {
-  if (is.null(connections[[db]])) {
+  #if (is.null(connections[[db]])) {
     connections[[db]] <- get_db_connection()
     use_db(connections[[db]], db)
-  }
+  #}
   return(dplyr::tbl(connections[[db]], table))
 }
 
