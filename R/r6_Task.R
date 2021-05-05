@@ -89,17 +89,10 @@ Task <- R6::R6Class(
     update_plans = function() {
       if (!is.null(self$update_plans_fn)) {
         message(glue::glue("Updating plans..."))
-        # if("schema" %in% names(formals(self$update_plans_fn))){
-        #   for (s in self$schema) s$db_connect()
-        #   self$plans <- self$update_plans_fn(schema = self$schema)
-        #   for (s in self$schema) s$db_disconnect()
-        # } else {
-        #   self$plans <- self$update_plans_fn()
-        # }
         self$plans <- self$update_plans_fn()
         self$update_plans_fn <- NULL
-        self$insert_first_last_argset()
       }
+      self$insert_first_last_argset()
     },
     num_argsets = function() {
       retval <- 0
