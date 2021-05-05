@@ -167,7 +167,13 @@ Task <- R6::R6Class(
         progressr::with_progress(
           {
             pb <- progressr::progressor(steps = self$num_argsets())
-            private$run_sequential(1:length(self$plans), pb)
+            private$run_sequential(
+              plans_index = 1:length(self$plans),
+              schema = self$schema,
+              upsert_at_end_of_each_plan = self$upsert_at_end_of_each_plan,
+              insert_at_end_of_each_plan = self$insert_at_end_of_each_plan,
+              pb = pb
+            )
           },
           handlers = progressr::handler_progress(
             format = ifelse(
@@ -220,17 +226,35 @@ Task <- R6::R6Class(
           {
             pb <- progressr::progressor(steps = self$num_argsets())
             message("***** Running in sequential *****")
-            private$run_sequential(1, pb)
+            private$run_sequential(
+              plans_index = 1,
+              schema = self$schema,
+              upsert_at_end_of_each_plan = self$upsert_at_end_of_each_plan,
+              insert_at_end_of_each_plan = self$insert_at_end_of_each_plan,
+              pb = pb
+            )
 
             message("*****")
             message("*****")
             message("***** Running in parallel *****")
-            private$run_parallel(2:(length(self$plans)-1), pb)
+            private$run_parallel(
+              plans_index = 2:(length(self$plans)-1),
+              schema = self$schema,
+              upsert_at_end_of_each_plan = self$upsert_at_end_of_each_plan,
+              insert_at_end_of_each_plan = self$insert_at_end_of_each_plan,
+              pb = pb
+            )
 
             message("*****")
             message("*****")
             message("***** Running in sequential *****")
-            private$run_sequential(length(self$plans), pb)
+            private$run_sequential(
+              plans_index = length(self$plans),
+              schema = self$schema,
+              upsert_at_end_of_each_plan = self$upsert_at_end_of_each_plan,
+              insert_at_end_of_each_plan = self$insert_at_end_of_each_plan,
+              pb = pb
+            )
           },
           handlers = progressr::handler_progress(
             format = ifelse(
@@ -297,7 +321,7 @@ Task <- R6::R6Class(
     }
   ),
   private = list(
-    run_sequential = function(plans_index, pb){
+    run_sequential = function(plans_index, schema, upsert_at_end_of_each_plan, insert_at_end_of_each_plan, pb){
       for (s in schema) s$connect()
       for (i in seq_along(self$plans[plans_index])) {
         self$plans[plans_index][[i]]$set_progressor(pb)
@@ -317,7 +341,7 @@ Task <- R6::R6Class(
       }
       for (s in schema) s$disconnect()
     },
-    run_parallel = function(plans_index, pb){
+    run_parallel = function(plans_index, schema, upsert_at_end_of_each_plan, insert_at_end_of_each_plan, pb){
       y <- foreach(x = self$plans[plans_index]) %dopar% {
         data.table::setDTthreads(1)
 
