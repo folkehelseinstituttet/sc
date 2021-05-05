@@ -73,7 +73,7 @@ Permission <- R6::R6Class(
         value = as.character(value)
       )
 
-      db_schema$upset_data(to_upload)
+      db_schema$upsert_data(to_upload)
       db_schema$disconnect()
     },
     grant_permission = function() {
