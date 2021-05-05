@@ -1,3 +1,5 @@
+# 2 cores, x=1:80, 1800 MB, 51s
+# 2 cores, x=1:40, 630 MB, 24s
 # sc:::set_test_task()
 # sc::tm_run_task("sc_test")
 set_test_task <- function(){
@@ -9,7 +11,7 @@ set_test_task <- function(){
     cores = 2,
     plan_argset_fn_name = NULL, # "PACKAGE::TASK_NAME_plan_argset"
     for_each_plan = plnr::expand_list(
-      x = 1:30
+      x = 1:80
     ),
     for_each_argset = NULL,
     universal_argset = NULL,
@@ -20,6 +22,20 @@ set_test_task <- function(){
     schema = list(
     ),
     info = "This task does..."
+  )
+
+  p <- plnr::Plan$new(use_foreach=T)
+  for(i in 1:1){
+    p$add_analysis(fn = function(data, argset, schema){Sys.sleep(1)})
+  }
+  sc::add_task(
+    sc::Task$new(
+      name = "sc_test_2",
+      type = "analysis",
+      plans = list(p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p),
+      schema = c("output" = sc::config$schemas$results_normomo_standard),
+      cores = 2
+    )
   )
 
 }
@@ -67,7 +83,7 @@ sc_test_action <- function(data, argset, schema) {
     # )
   }
 
-  return(TRUE)
+  return(data)
 }
 
 # **** data_selector **** ----
