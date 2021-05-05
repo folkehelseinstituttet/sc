@@ -111,10 +111,7 @@ task_from_config_v8_list_plan <- function(
   return(list_plan)
 }
 
-#' Creating a task from config (v8)
-#'
-#' This function is used to easily create a task
-#'
+
 task_from_config_v8 <- function(
   name = NULL,
   name_grouping = NULL,

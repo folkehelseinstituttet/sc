@@ -33,6 +33,8 @@ schema class description
 \item \href{#method-list_indexes_db}{\code{Schema_v8$list_indexes_db()}}
 \item \href{#method-add_indexes}{\code{Schema_v8$add_indexes()}}
 \item \href{#method-drop_indexes}{\code{Schema_v8$drop_indexes()}}
+\item \href{#method-db_connect}{\code{Schema_v8$db_connect()}}
+\item \href{#method-db_disconnect}{\code{Schema_v8$db_disconnect()}}
 \item \href{#method-clone}{\code{Schema_v8$clone()}}
 }
 }
@@ -211,6 +213,24 @@ Upserts data into db table
 \subsection{Method \code{drop_indexes()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Schema_v8$drop_indexes()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-db_connect"></a>}}
+\if{latex}{\out{\hypertarget{method-db_connect}{}}}
+\subsection{Method \code{db_connect()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Schema_v8$db_connect(db_config = self$db_config)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-db_disconnect"></a>}}
+\if{latex}{\out{\hypertarget{method-db_disconnect}{}}}
+\subsection{Method \code{db_disconnect()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Schema_v8$db_disconnect()}\if{html}{\out{</div>}}
 }
 
 }
