@@ -71,6 +71,13 @@ Task <- R6::R6Class(
     },
 
     insert_first_last_argset = function(){
+      if(is.null(self$plans)) return()
+      if(length(self$plans)==0) return()
+      if(is.null(self$plans[[1]]$analyses)) return()
+      if(length(self$plans[[1]]$analyses)==0) return()
+      if(is.null(self$plans[[1]]$analyses[[1]]$argset)) return()
+      if(!is.null(self$plans[[1]]$analyses[[1]]$argset$first_argset)) return()
+
       for(i in seq_along(self$plans)) for(j in seq_along(self$plans[[i]]$analyses)){
         if(i==1 & j==1){
           self$plans[[i]]$analyses[[j]]$argset$first_argset <- TRUE
@@ -111,13 +118,17 @@ Task <- R6::R6Class(
 
       self$update_plans()
 
+      message(glue::glue("Running task={self$name} with plans={length(self$plans)} and argsets={self$num_argsets()}"))
+      if(self$num_argsets() == 0){
+        message("Quitting because there is nothing to do (0 argsets)")
+        return()
+      }
+
       if(cores == 1 | length(self$plans) <= 3){
         run_sequential <- TRUE
       } else {
         run_sequential <- FALSE
       }
-
-      message(glue::glue("Running task={self$name} with plans={length(self$plans)} and argsets={self$num_argsets()}"))
 
       if(!is.null(self$action_before_fn)){
         message("Running action_before_fn")
