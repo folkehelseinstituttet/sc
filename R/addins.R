@@ -93,8 +93,8 @@ sc::add_schema_v8(
   ),
   censors = list(
     anon = list(
-      XXXX_n = sc::censor_function_factory_values_nothing(column_name_to_be_censored = "XXXX_n"),
-      XXXX_pr = sc::censor_function_factory_values_nothing(column_name_to_be_censored = "XXXX_pr")
+      XXXX_n = sc::censor_function_factory_values_0_4(column_name_to_be_censored = "XXXX_n", column_name_value = "XXXX_n"),
+      XXXX_pr = sc::censor_function_factory_values_0_4(column_name_to_be_censored = "XXXX_pr", column_name_value = "XXXX_n")
     )
   ),
   validator_field_types = sc::validator_field_types_sykdomspulsen,
@@ -149,12 +149,12 @@ sc::add_schema_v8(
   ),
   censors = list(
     restr = list(
-      XXXX_n = sc::censor_function_factory_values_0_4(column_name_to_be_censored = "XXXX_n", column_name_value = "XXXX_n"),
-      XXXX_pr = sc::censor_function_factory_values_0_4(column_name_to_be_censored = "XXXX_pr", column_name_value = "XXXX_n")
+      XXXX_n = sc::censor_function_factory_nothing(column_name_to_be_censored = "XXXX_n"),
+      XXXX_pr = sc::censor_function_factory_nothing(column_name_to_be_censored = "XXXX_pr")
     ),
     anon = list(
-      XXXX_n = sc::censor_function_factory_values_nothing(column_name_to_be_censored = "XXXX_n"),
-      XXXX_pr = sc::censor_function_factory_values_nothing(column_name_to_be_censored = "XXXX_pr")
+      XXXX_n = sc::censor_function_factory_values_0_4(column_name_to_be_censored = "XXXX_n", column_name_value = "XXXX_n"),
+      XXXX_pr = sc::censor_function_factory_values_0_4(column_name_to_be_censored = "XXXX_pr", column_name_value = "XXXX_n")
     )
   ),
   validator_field_types = sc::validator_field_types_sykdomspulsen,

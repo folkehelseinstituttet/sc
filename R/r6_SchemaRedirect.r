@@ -1,6 +1,7 @@
 #' censor 0-4 function factory
 #' @param column_name_to_be_censored Name of the column to be censored
 #' @param column_name_value Name of the column whose value is determining if something should be censored
+#' @export
 censor_function_factory_nothing <- function(column_name_to_be_censored, column_name_value = column_name_to_be_censored){
   force(column_name_to_be_censored)
   force(column_name_value)
@@ -13,6 +14,7 @@ censor_function_factory_nothing <- function(column_name_to_be_censored, column_n
 #' censor 0-4 function factory
 #' @param column_name_to_be_censored Name of the column to be censored
 #' @param column_name_value Name of the column whose value is determining if something should be censored
+#' @export
 censor_function_factory_values_0_4 <- function(column_name_to_be_censored, column_name_value = column_name_to_be_censored){
   force(column_name_to_be_censored)
   force(column_name_value)
