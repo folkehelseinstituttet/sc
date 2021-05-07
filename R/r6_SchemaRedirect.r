@@ -22,7 +22,6 @@ censor_function_factory_values_0_4 <- function(column_name_to_be_censored, colum
     censored_column_name <- paste0(column_name_to_be_censored, "_censored")
     d[, (censored_column_name) := FALSE]
     d[get(column_name_value) >= 0 & get(column_name_value) <= 4, c(censored_column_name, column_name_to_be_censored) := list(TRUE, 0)]
-    print(d)
   }
 }
 
