@@ -38,6 +38,7 @@ SchemaRedirect_v3 <- R6Class(
     table_accesses = NULL,
     preferred_table_name = NULL,
     censors = NULL,
+    schemas = NULL,
 
     initialize = function(
       name_access = NULL,
@@ -65,6 +66,7 @@ SchemaRedirect_v3 <- R6Class(
       force(info)
 
       self$censors <- censors
+      self$schemas <- list()
 
       if(sum(!names(censors) %in% name_access)>0) stop("censors are not listed in name_access")
       if(sum(!name_access %in% names(censors))>0) stop("missing censors")
@@ -104,6 +106,7 @@ SchemaRedirect_v3 <- R6Class(
         )
 
         config$schemas[[table_name]] <- schema
+        self$schemas[[table_name]] <- schema$clone(deep = TRUE)
         self$table_names <- c(self$table_names, table_name)
         self$table_accesses <- c(self$table_accesses, name_access[i])
 
@@ -113,23 +116,23 @@ SchemaRedirect_v3 <- R6Class(
     #' @description
     #' Connect to a db
     connect = function() {
-      for(i in self$table_names) config$schemas[[i]]$connect()
+      for(i in self$table_names) self$schemas[[i]]$connect()
     },
 
     #' @description
     #' Disconnect from a db
     disconnect = function() {
-      for(i in self$table_names) config$schemas[[i]]$disconnect()
+      for(i in self$table_names) self$schemas[[i]]$disconnect()
     },
 
     #' @description
     #' Create db table
     create_table = function() {
-      for(i in self$table_names) config$schemas[[i]]$create_table()
+      for(i in self$table_names) self$schemas[[i]]$create_table()
     },
 
     drop_table = function() {
-      for(i in self$table_names) config$schemas[[i]]$drop_table()
+      for(i in self$table_names) self$schemas[[i]]$drop_table()
     },
 
     #' @description
@@ -140,7 +143,7 @@ SchemaRedirect_v3 <- R6Class(
         table_access <- self$table_accesses[i]
 
         censored_data <- private$make_censored_data(newdata, table_access)
-        config$schemas[[table_name]]$insert_data(
+        self$schemas[[table_name]]$insert_data(
           newdata = censored_data,
           verbose = verbose
         )
@@ -155,7 +158,7 @@ SchemaRedirect_v3 <- R6Class(
         table_access <- self$table_accesses[i]
 
         censored_data <- private$make_censored_data(newdata, table_access)
-        config$schemas[[table_name]]$upsert_data(
+        self$schemas[[table_name]]$upsert_data(
           newdata = censored_data,
           drop_indexes = drop_indexes,
           verbose = verbose
@@ -164,15 +167,15 @@ SchemaRedirect_v3 <- R6Class(
     },
 
     drop_all_rows = function() {
-      for(i in self$table_names) config$schemas[[i]]$drop_all_rows()
+      for(i in self$table_names) self$schemas[[i]]$drop_all_rows()
     },
 
     drop_rows_where = function(condition){
-      for(i in self$table_names) config$schemas[[i]]$drop_rows_where(condition = condition)
+      for(i in self$table_names) self$schemas[[i]]$drop_rows_where(condition = condition)
     },
 
     keep_rows_where = function(condition){
-      for(i in self$table_names) config$schemas[[i]]$keep_rows_where(condition = condition)
+      for(i in self$table_names) self$schemas[[i]]$keep_rows_where(condition = condition)
     },
 
     drop_all_rows_and_then_upsert_data =  function(newdata, drop_indexes = names(self$indexes), verbose = TRUE) {
@@ -181,7 +184,7 @@ SchemaRedirect_v3 <- R6Class(
         table_access <- self$table_accesses[i]
 
         censored_data <- private$make_censored_data(newdata, table_access)
-        config$schemas[[table_name]]$drop_all_rows_and_then_upsert_data(
+        self$schemas[[table_name]]$drop_all_rows_and_then_upsert_data(
           newdata = censored_data,
           drop_indexes = drop_indexes,
           verbose = verbose
@@ -190,19 +193,19 @@ SchemaRedirect_v3 <- R6Class(
     },
 
     tbl = function() {
-      config$schemas[[self$preferred_table_name]]$tbl()
+      self$schemas[[self$preferred_table_name]]$tbl()
     },
 
     list_indexes_db = function(){
-      config$schemas[[self$preferred_table_name]]$list_indexes_db()
+      self$schemas[[self$preferred_table_name]]$list_indexes_db()
     },
 
     add_indexes = function() {
-      for(i in self$table_names) config$schemas[[i]]$add_indexes()
+      for(i in self$table_names) self$schemas[[i]]$add_indexes()
     },
 
     drop_indexes = function() {
-      for(i in self$table_names) config$schemas[[i]]$drop_indexes()
+      for(i in self$table_names) self$schemas[[i]]$drop_indexes()
     }
   ),
   private = list(

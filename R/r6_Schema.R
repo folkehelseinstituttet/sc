@@ -273,9 +273,17 @@ Schema_v8 <- R6Class(
     #' Connect to a db
     #' @param db_config db_config
     connect = function(db_config = self$db_config) {
-      self$conn <- get_db_connection(db_config = db_config)
-      use_db(self$conn, db_config$db)
-      self$create_table()
+      needs_to_connect <- FALSE
+      if(is.null(self$conn)){
+        needs_to_connect <- TRUE
+      } else if(!DBI::dbIsValid(self$conn)){
+        needs_to_connect <- TRUE
+      }
+      if(needs_to_connect){
+        self$conn <- get_db_connection(db_config = db_config)
+        use_db(self$conn, db_config$db)
+        self$create_table()
+      }
     },
 
     #' @description
@@ -360,6 +368,7 @@ Schema_v8 <- R6Class(
     },
 
     keep_rows_where = function(condition){
+      self$connect()
       keep_rows_where(self$conn, self$table_name, condition)
       private$add_constraint()
     },
