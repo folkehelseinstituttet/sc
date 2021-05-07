@@ -297,6 +297,7 @@ Schema_v8 <- R6Class(
     #' @description
     #' Create db table
     create_table = function() {
+      self$connect()
       create_tab <- TRUE
       if (DBI::dbExistsTable(self$conn, self$table_name)) {
         if (!private$check_fields_match()) {
@@ -314,6 +315,7 @@ Schema_v8 <- R6Class(
     },
 
     drop_table = function() {
+      self$connect()
       if (DBI::dbExistsTable(self$conn, self$table_name)) {
         message(glue::glue("Dropping table {self$table_name}"))
         DBI::dbRemoveTable(self$conn, self$table_name)
@@ -323,6 +325,7 @@ Schema_v8 <- R6Class(
     #' @description
     #' Inserts data into db table
     insert_data = function(newdata, verbose = TRUE) {
+      self$connect()
       if(nrow(newdata)==0) return()
 
       validated <- self$validator_field_contents(newdata)
@@ -341,6 +344,7 @@ Schema_v8 <- R6Class(
     #' @description
     #' Upserts data into db table
     upsert_data = function(newdata, drop_indexes = names(self$indexes), verbose = TRUE) {
+      self$connect()
       if(nrow(newdata)==0) return()
 
       validated <- self$validator_field_contents(newdata)
@@ -360,10 +364,12 @@ Schema_v8 <- R6Class(
     },
 
     drop_all_rows = function() {
+      self$connect()
       drop_all_rows(self$conn, self$table_name)
     },
 
     drop_rows_where = function(condition){
+      self$connect()
       drop_rows_where(self$conn, self$table_name, condition)
     },
 
@@ -383,6 +389,7 @@ Schema_v8 <- R6Class(
     },
 
     tbl = function() {
+      self$connect()
       retval <- self$conn %>%
         dplyr::tbl(self$table_name)
       return(retval)
@@ -396,6 +403,7 @@ Schema_v8 <- R6Class(
     },
 
     add_indexes = function() {
+      self$connect()
       for(i in names(self$indexes)){
         message(glue::glue("Adding index {i}"))
 
@@ -409,6 +417,7 @@ Schema_v8 <- R6Class(
     },
 
     drop_indexes = function() {
+      self$connect()
       for(i in names(self$indexes)){
         message(glue::glue("Dropping index {i}"))
         drop_index(
