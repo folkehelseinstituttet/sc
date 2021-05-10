@@ -107,19 +107,23 @@ validator_field_types_sykdomspulsen <- function(db_field_types){
 #' @param data data passed to schema
 #' @export
 validator_field_contents_sykdomspulsen <- function(data){
-  if(sum(!unique(data$granularity_time) %in% c(
-    "total",
-    "isoyear",
-    "calyear",
-    "year",
-    "season",
-    "month",
-    "isoweek",
-    "week",
-    "day",
-    "hour",
-    "minute"
-  ))>0){
+  for(i in unique(data$granularity_time)) if(sum(stringr::str_detect(
+    i,
+    c(
+      "total",
+      "isoyear",
+      "calyear",
+      "year",
+      "season",
+      "month",
+      "isoweek",
+      "week",
+      "day",
+      "hour",
+      "minute",
+      "^event"
+    )
+  )) == 0){
     retval <- FALSE
     attr(retval, "var") <- "granularity_time"
     return(retval)
