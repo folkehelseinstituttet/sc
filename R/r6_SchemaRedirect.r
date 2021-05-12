@@ -29,9 +29,9 @@ censor_function_factory_values_0_4 <- function(column_name_to_be_censored, colum
 #'
 #' @import data.table
 #' @import R6
-#' @export SchemaRedirect_v3
-SchemaRedirect_v3 <- R6Class(
-  "SchemaRedirect_v3",
+#' @export SchemaRedirect_v8
+SchemaRedirect_v8 <- R6Class(
+  "SchemaRedirect_v8",
 
   public = list(
     table_names = NULL,
@@ -75,7 +75,7 @@ SchemaRedirect_v3 <- R6Class(
       self$table_names <- c()
       self$table_accesses <- c()
       for(i in seq_along(name_access)){
-        stopifnot(name_access[i] %in% c("restr", "anon"))
+        stopifnot(name_access[i] %in% c("restr", "anon", "config"))
         table_name <- paste0(c(name_access[i], name_grouping, name_variant), collapse = "_")
         force(table_name)
 

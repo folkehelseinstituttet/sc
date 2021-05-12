@@ -37,7 +37,7 @@ add_schema_v8 <- function(
   force(validator_field_contents)
   force(info)
 
-  redirect <- SchemaRedirect_v3$new(
+  redirect <- SchemaRedirect_v8$new(
     name_access = name_access,
     name_grouping = name_grouping,
     name_variant = name_variant,

@@ -3,7 +3,7 @@
 export("%>%")
 export(Permission)
 export(Schema)
-export(SchemaRedirect_v3)
+export(SchemaRedirect_v8)
 export(Schema_v8)
 export(Task)
 export(TaskManager)
