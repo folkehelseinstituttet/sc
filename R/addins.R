@@ -190,7 +190,7 @@ TASK_NAME_action <- function(data, argset, schema) {
 
   # code goes here
   # special case that runs before everything
-  if(argset$first_argset == TRUE){
+  if(argset$first_analysis == TRUE){
 
   }
 
@@ -202,7 +202,7 @@ TASK_NAME_action <- function(data, argset, schema) {
 
   # special case that runs after everything
   # copy to anon_web?
-  if(argset$last_argset == TRUE){
+  if(argset$last_analysis == TRUE){
     # sc::copy_into_new_table_where(
     #   table_from = "anon_X",
     #   table_to = "anon_webkht"

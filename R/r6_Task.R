@@ -76,19 +76,23 @@ Task <- R6::R6Class(
       if(is.null(self$plans[[1]]$analyses)) return()
       if(length(self$plans[[1]]$analyses)==0) return()
       if(is.null(self$plans[[1]]$analyses[[1]]$argset)) return()
-      if(!is.null(self$plans[[1]]$analyses[[1]]$argset$first_argset)) return()
+      if(!is.null(self$plans[[1]]$analyses[[1]]$argset$first_analysis)) return()
 
       for(i in seq_along(self$plans)) for(j in seq_along(self$plans[[i]]$analyses)){
         self$plans[[i]]$use_foreach <- FALSE
         if(i==1 & j==1){
+          self$plans[[i]]$analyses[[j]]$argset$first_analysis <- TRUE
           self$plans[[i]]$analyses[[j]]$argset$first_argset <- TRUE
         } else {
+          self$plans[[i]]$analyses[[j]]$argset$first_analysis <- FALSE
           self$plans[[i]]$analyses[[j]]$argset$first_argset <- FALSE
         }
 
         if(i==length(self$plans) & j==length(self$plans[[i]]$analyses)){
+          self$plans[[i]]$analyses[[j]]$argset$last_analysis <- TRUE
           self$plans[[i]]$analyses[[j]]$argset$last_argset <- TRUE
         } else {
+          self$plans[[i]]$analyses[[j]]$argset$last_analysis <- FALSE
           self$plans[[i]]$analyses[[j]]$argset$last_argset <- FALSE
         }
       }

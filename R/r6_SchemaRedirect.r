@@ -170,12 +170,22 @@ SchemaRedirect_v8 <- R6Class(
       for(i in self$table_names) self$schemas[[i]]$drop_all_rows()
     },
 
-    drop_rows_where = function(condition){
-      for(i in self$table_names) self$schemas[[i]]$drop_rows_where(condition = condition)
+    drop_rows_where = function(condition, cores = 1){
+      stopifnot(cores == 1)
+      if(cores == 1){
+        for(i in self$table_names) self$schemas[[i]]$drop_rows_where(condition = condition)
+      } else {
+        parallel::mclapply(self$schemas, function(x, condition) drop_rows_where(condition = condition), mc.cores = 3, condition = condition)
+      }
     },
 
-    keep_rows_where = function(condition){
-      for(i in self$table_names) self$schemas[[i]]$keep_rows_where(condition = condition)
+    keep_rows_where = function(condition, cores = 1){
+      stopifnot(cores == 1)
+      if(cores == 1){
+        for(i in self$table_names) self$schemas[[i]]$keep_rows_where(condition = condition)
+      } else {
+        parallel::mclapply(self$schemas, function(x, condition) keep_rows_where(condition = condition), mc.cores = 3, condition = condition)
+      }
     },
 
     drop_all_rows_and_then_upsert_data =  function(newdata, drop_indexes = names(self$indexes), verbose = TRUE) {
