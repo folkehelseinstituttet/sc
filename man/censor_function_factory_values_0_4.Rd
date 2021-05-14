@@ -6,13 +6,22 @@
 \usage{
 censor_function_factory_values_0_4(
   column_name_to_be_censored,
-  column_name_value = column_name_to_be_censored
+  column_name_value = column_name_to_be_censored,
+  censored_value = 0,
+  granularity_geo = NULL,
+  granularity_geo_not = NULL
 )
 }
 \arguments{
 \item{column_name_to_be_censored}{Name of the column to be censored}
 
 \item{column_name_value}{Name of the column whose value is determining if something should be censored}
+
+\item{censored_value}{The value that censored data will be set to}
+
+\item{granularity_geo}{Which granularity geos to use this function on}
+
+\item{granularity_geo_not}{Which granularity_geos to not use this function on}
 }
 \description{
 censor 0-4 function factory

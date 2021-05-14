@@ -50,6 +50,7 @@ Create a new Schema_v3 object.
   table_name,
   field_types,
   keys,
+  censors = NULL,
   indexes = NULL,
   validator_field_types = validator_field_types_blank,
   validator_field_contents = validator_field_contents_blank,

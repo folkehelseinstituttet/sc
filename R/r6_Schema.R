@@ -207,6 +207,7 @@ Schema_v8 <- R6Class(
     validator_field_contents = NULL,
     info = "No information given in schema definition",
     load_folder = tempdir(),
+    censors = NULL,
 
     #' @description
     #' Create a new Schema_v3 object.
@@ -219,6 +220,7 @@ Schema_v8 <- R6Class(
       table_name,
       field_types,
       keys,
+      censors = NULL,
       indexes=NULL,
       validator_field_types=validator_field_types_blank,
       validator_field_contents=validator_field_contents_blank,
@@ -241,6 +243,9 @@ Schema_v8 <- R6Class(
       force(keys)
       self$keys <- keys
       self$keys_with_length <- keys
+
+      force(censors)
+      self$censors <- censors
 
       force(indexes)
       self$indexes <- indexes
@@ -332,6 +337,8 @@ Schema_v8 <- R6Class(
       self$connect()
       if(nrow(newdata)==0) return()
 
+      newdata <- private$make_censored_data(newdata)
+
       validated <- self$validator_field_contents(newdata)
       if(!validated) stop(glue::glue("load_data_infile not validated in {self$table_name}. {attr(validated,'var')}"))
 
@@ -350,6 +357,8 @@ Schema_v8 <- R6Class(
     upsert_data = function(newdata, drop_indexes = names(self$indexes), verbose = TRUE) {
       self$connect()
       if(nrow(newdata)==0) return()
+
+      newdata <- private$make_censored_data(newdata)
 
       validated <- self$validator_field_contents(newdata)
       if(!validated) stop(glue::glue("upsert_load_data_infile not validated in {self$table_name}. {attr(validated,'var')}"))
@@ -474,6 +483,14 @@ Schema_v8 <- R6Class(
         conn = self$conn,
         table = self$table_name
       )
+    },
+
+    make_censored_data = function(newdata){
+      d <- copy(newdata)
+      for(i in seq_along(self$censors)){
+        self$censors[[i]](d)
+      }
+      return(d)
     },
 
     finalize = function() {

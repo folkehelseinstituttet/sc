@@ -127,7 +127,7 @@ Upserts data into db table
 \if{latex}{\out{\hypertarget{method-drop_rows_where}{}}}
 \subsection{Method \code{drop_rows_where()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{SchemaRedirect_v8$drop_rows_where(condition)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{SchemaRedirect_v8$drop_rows_where(condition, cores = 1)}\if{html}{\out{</div>}}
 }
 
 }
@@ -136,7 +136,7 @@ Upserts data into db table
 \if{latex}{\out{\hypertarget{method-keep_rows_where}{}}}
 \subsection{Method \code{keep_rows_where()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{SchemaRedirect_v8$keep_rows_where(condition)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{SchemaRedirect_v8$keep_rows_where(condition, cores = 1)}\if{html}{\out{</div>}}
 }
 
 }

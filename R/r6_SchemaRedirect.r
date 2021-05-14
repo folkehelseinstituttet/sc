@@ -1,27 +1,105 @@
 #' censor 0-4 function factory
 #' @param column_name_to_be_censored Name of the column to be censored
 #' @param column_name_value Name of the column whose value is determining if something should be censored
+#' @param censored_value The value that censored data will be set to
+#' @param granularity_geo Which granularity geos to use this function on
+#' @param granularity_geo_not Which granularity_geos to not use this function on
 #' @export
-censor_function_factory_nothing <- function(column_name_to_be_censored, column_name_value = column_name_to_be_censored){
+censor_function_factory_nothing <- function(
+  column_name_to_be_censored,
+  column_name_value = column_name_to_be_censored,
+  censored_value = 0,
+  granularity_geo = NULL,
+  granularity_geo_not = NULL
+){
   force(column_name_to_be_censored)
   force(column_name_value)
+  force(granularity_geo)
+  force(granularity_geo_not)
+  if(!is.null(granularity_geo) & !is.null(granularity_geo_not)) stop("you can't use both granularity_geo and granularity_geo_not")
   function(d){
     censored_column_name <- paste0(column_name_to_be_censored, "_censored")
-    d[, (censored_column_name) := FALSE]
+    if(!censored_column_name %in% names(d)) d[, (censored_column_name) := FALSE]
   }
 }
 
 #' censor 0-4 function factory
 #' @param column_name_to_be_censored Name of the column to be censored
 #' @param column_name_value Name of the column whose value is determining if something should be censored
+#' @param censored_value The value that censored data will be set to
+#' @param granularity_geo Which granularity geos to use this function on
+#' @param granularity_geo_not Which granularity_geos to not use this function on
 #' @export
-censor_function_factory_values_0_4 <- function(column_name_to_be_censored, column_name_value = column_name_to_be_censored){
+censor_function_factory_everything <- function(
+  column_name_to_be_censored,
+  column_name_value = column_name_to_be_censored,
+  censored_value = 0,
+  granularity_geo = NULL,
+  granularity_geo_not = NULL
+){
   force(column_name_to_be_censored)
   force(column_name_value)
+  force(granularity_geo)
+  force(granularity_geo_not)
+  if(!is.null(granularity_geo) & !is.null(granularity_geo_not)) stop("you can't use both granularity_geo and granularity_geo_not")
   function(d){
     censored_column_name <- paste0(column_name_to_be_censored, "_censored")
-    d[, (censored_column_name) := FALSE]
-    d[get(column_name_value) >= 0 & get(column_name_value) <= 4, c(censored_column_name, column_name_to_be_censored) := list(TRUE, 0)]
+    if(!censored_column_name %in% names(d)) d[, (censored_column_name) := FALSE]
+
+    if(is.null(granularity_geo) & is.null(granularity_geo_not)){
+      d[, c(censored_column_name, column_name_to_be_censored) := list(TRUE, censored_value)]
+    } else if(!is.null(granularity_geo)){
+      x_granularity_geo <- granularity_geo
+      d[granularity_geo %in% x_granularity_geo, c(censored_column_name, column_name_to_be_censored) := list(TRUE, censored_value)]
+    } else if(!is.null(granularity_geo_not)){
+      d[!granularity_geo %in% granularity_geo_not, c(censored_column_name, column_name_to_be_censored) := list(TRUE, censored_value)]
+    }
+  }
+}
+
+#' censor 0-4 function factory
+#' @param column_name_to_be_censored Name of the column to be censored
+#' @param column_name_value Name of the column whose value is determining if something should be censored
+#' @param censored_value The value that censored data will be set to
+#' @param granularity_geo Which granularity geos to use this function on
+#' @param granularity_geo_not Which granularity_geos to not use this function on
+#' @export
+censor_function_factory_values_0_4 <- function(
+  column_name_to_be_censored,
+  column_name_value = column_name_to_be_censored,
+  censored_value = 0,
+  granularity_geo = NULL,
+  granularity_geo_not = NULL
+  ){
+  force(column_name_to_be_censored)
+  force(column_name_value)
+  force(granularity_geo)
+  force(granularity_geo_not)
+  if(!is.null(granularity_geo) & !is.null(granularity_geo_not)) stop("you can't use both granularity_geo and granularity_geo_not")
+  function(d){
+    censored_column_name <- paste0(column_name_to_be_censored, "_censored")
+    if(!censored_column_name %in% names(d)) d[, (censored_column_name) := FALSE]
+
+    if(is.null(granularity_geo) & is.null(granularity_geo_not)){
+      d[get(column_name_value) >= 0 & get(column_name_value) <= 4, c(censored_column_name, column_name_to_be_censored) := list(TRUE, censored_value)]
+    } else if(!is.null(granularity_geo)){
+      x_granularity_geo <- granularity_geo
+      d[granularity_geo %in% x_granularity_geo & get(column_name_value) >= 0 & get(column_name_value) <= 4, c(censored_column_name, column_name_to_be_censored) := list(TRUE, censored_value)]
+    } else if(!is.null(granularity_geo_not)){
+      d[!granularity_geo %in% granularity_geo_not & get(column_name_value) >= 0 & get(column_name_value) <= 4, c(censored_column_name, column_name_to_be_censored) := list(TRUE, censored_value)]
+    }
+  }
+}
+
+#' censor 0-4 function factory
+#' @param list_of_censors List of censors
+#' @export
+censor_list_function_factory <- function(
+  list_of_censors
+){
+  force(list_of_censors)
+  function(d){
+    for(i in list_of_censors) i(d)
   }
 }
 
@@ -99,6 +177,7 @@ SchemaRedirect_v8 <- R6Class(
           table_name = table_name,
           field_types = field_types_with_censoring,
           keys = keys,
+          censors = censors[[name_access[i]]],
           indexes = indexes,
           validator_field_types = validator_field_types,
           validator_field_contents = validator_field_contents,
@@ -141,10 +220,8 @@ SchemaRedirect_v8 <- R6Class(
       for(i in seq_along(self$table_names)){
         table_name <- self$table_names[i]
         table_access <- self$table_accesses[i]
-
-        censored_data <- private$make_censored_data(newdata, table_access)
         self$schemas[[table_name]]$insert_data(
-          newdata = censored_data,
+          newdata = newdata,
           verbose = verbose
         )
       }
@@ -157,9 +234,8 @@ SchemaRedirect_v8 <- R6Class(
         table_name <- self$table_names[i]
         table_access <- self$table_accesses[i]
 
-        censored_data <- private$make_censored_data(newdata, table_access)
         self$schemas[[table_name]]$upsert_data(
-          newdata = censored_data,
+          newdata = newdata,
           drop_indexes = drop_indexes,
           verbose = verbose
         )
@@ -193,7 +269,6 @@ SchemaRedirect_v8 <- R6Class(
         table_name <- self$table_names[i]
         table_access <- self$table_accesses[i]
 
-        censored_data <- private$make_censored_data(newdata, table_access)
         self$schemas[[table_name]]$drop_all_rows_and_then_upsert_data(
           newdata = censored_data,
           drop_indexes = drop_indexes,
@@ -219,14 +294,6 @@ SchemaRedirect_v8 <- R6Class(
     }
   ),
   private = list(
-    make_censored_data = function(newdata, access){
-      d <- copy(newdata)
-      for(i in seq_along(self$censors[[access]])){
-        self$censors[[access]][[i]](d)
-      }
-      return(d)
-    },
-
     finalize = function() {
       # self$db_disconnect()
     }
