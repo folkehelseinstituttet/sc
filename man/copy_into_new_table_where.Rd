@@ -2,10 +2,15 @@
 % Please edit documentation in R/util_database.R
 \name{copy_into_new_table_where}
 \alias{copy_into_new_table_where}
-\title{copy_into_new_table_where
-Keeps the rows where the condition is met}
+\title{Keeps the rows where the condition is met}
 \usage{
-copy_into_new_table_where(conn = NULL, table_from, table_to, condition = "1=1")
+copy_into_new_table_where(
+  conn = NULL,
+  table_from,
+  table_to,
+  condition = "1=1",
+  columns = "*"
+)
 }
 \arguments{
 \item{conn}{A db connection}
@@ -15,8 +20,9 @@ copy_into_new_table_where(conn = NULL, table_from, table_to, condition = "1=1")
 \item{table_to}{Table name}
 
 \item{condition}{A string SQL condition}
+
+\item{columns}{The columns to be copied}
 }
 \description{
-copy_into_new_table_where
 Keeps the rows where the condition is met
 }

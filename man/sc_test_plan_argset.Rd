@@ -8,6 +8,11 @@ inside sc::task_from_config_v3}
 \usage{
 sc_test_plan_argset(argset, schema)
 }
+\arguments{
+\item{argset}{argset}
+
+\item{schema}{schema}
+}
 \description{
 sc_test (plan/argset)
 This function can be deleted if you are not using "plan_argset_fn_name"

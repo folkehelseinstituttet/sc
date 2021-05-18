@@ -527,18 +527,19 @@ add_index.default <- function(conn, table, keys, index) {
   )
 }
 
-#' copy_into_new_table_where
 #' Keeps the rows where the condition is met
 #' @param conn A db connection
 #' @param table_from Table name
 #' @param table_to Table name
 #' @param condition A string SQL condition
+#' @param columns The columns to be copied
 #' @export
 copy_into_new_table_where <- function(
   conn=NULL,
   table_from,
   table_to,
-  condition = "1=1"
+  condition = "1=1",
+  columns = "*"
   ) {
   if(is.null(conn)){
     conn <- get_db_connection()
@@ -550,7 +551,7 @@ copy_into_new_table_where <- function(
   t0 <- Sys.time()
   temp_name <- paste0("tmp",random_uuid())
 
-  sql <- glue::glue("SELECT * INTO {temp_name} FROM {table_from} WHERE {condition}")
+  sql <- glue::glue("SELECT {columns} INTO {temp_name} FROM {table_from} WHERE {condition}")
   DBI::dbExecute(conn, sql)
 
   try(DBI::dbRemoveTable(conn, name = table_to), TRUE)
