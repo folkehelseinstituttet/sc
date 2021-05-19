@@ -344,23 +344,24 @@ Task <- R6::R6Class(
     run_sequential = function(plans_index, schema, upsert_at_end_of_each_plan, insert_at_end_of_each_plan, pb = NULL, cores){
       for (s in schema) s$connect()
       for (i in seq_along(self$plans[plans_index])) {
-        if(is.null(pb)){
-          #verbose <- FALSE
+        if(!is.null(pb)) self$plans[plans_index][[i]]$set_progressor(pb)
+
+        if(length(plans_index) == 1 & is.null(pb)){
+          verbose <- TRUE
         } else {
-          self$plans[plans_index][[i]]$set_progressor(pb)
-          #verbose <- TRUE
+          verbose <- FALSE
         }
 
         retval <- self$plans[plans_index][[i]]$run_all(schema = schema)
 
         if (upsert_at_end_of_each_plan) {
           #retval <- rbindlist(retval, use.names = T, fill = T)
-          for(i in seq_along(retval)) schema$output$upsert_data(retval[[i]], verbose = F)
+          for(i in seq_along(retval)) schema$output$upsert_data(retval[[i]], verbose = verbose)
         }
 
         if (insert_at_end_of_each_plan) {
           #retval <- rbindlist(retval, use.names = T, fill = T)
-          for(i in seq_along(retval)) schema$output$insert_data(retval[[i]], verbose = F)
+          for(i in seq_along(retval)) schema$output$insert_data(retval[[i]], verbose = verbose)
         }
 
         rm("retval")
