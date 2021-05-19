@@ -248,45 +248,47 @@ Task <- R6::R6Class(
 
         message("Running plans 1 and ", length(self$plans)," sequentially, and 2:", length(self$plans)-1, " in parallel\n")
 
-        progressr::without_progress(
-          {
-            pb <- progressr::progressor(steps = self$num_argsets())
-            message("***** Running plan 1 in sequential *****")
-            private$run_sequential(
-              plans_index = 1,
-              schema = self$schema,
-              upsert_at_end_of_each_plan = self$upsert_at_end_of_each_plan,
-              insert_at_end_of_each_plan = self$insert_at_end_of_each_plan,
-              pb = pb,
-              cores = cores
-            )
-
-            message("*****")
-            message("*****")
-            message("***** Running plans 2:", (length(self$plans)-1)," in parallel *****")
-            print(names(self$schema))
-            private$run_parallel_plans(
-              plans_index = 2:(length(self$plans)-1),
-              schema = self$schema,
-              upsert_at_end_of_each_plan = self$upsert_at_end_of_each_plan,
-              insert_at_end_of_each_plan = self$insert_at_end_of_each_plan,
-              pb = pb,
-              cores = cores
-            )
-
-            message("*****")
-            message("*****")
-            message("***** Running plan ", length(self$plans)," in sequential *****")
-            private$run_sequential(
-              plans_index = length(self$plans),
-              schema = self$schema,
-              upsert_at_end_of_each_plan = self$upsert_at_end_of_each_plan,
-              insert_at_end_of_each_plan = self$insert_at_end_of_each_plan,
-              pb = pb,
-              cores = cores
-            )
-          }
+        message("*****")
+        message("*****")
+        message("***** Running plan 1 sequentially at ", lubridate::now(), " *****")
+        a0 <- Sys.time()
+        #pb <- progressr::progressor(steps = self$plans[[1]]$len())
+        private$run_sequential(
+          plans_index = 1,
+          schema = self$schema,
+          upsert_at_end_of_each_plan = self$upsert_at_end_of_each_plan,
+          insert_at_end_of_each_plan = self$insert_at_end_of_each_plan,
+          cores = cores
         )
+        b0 <- Sys.time()
+        message("\nPlan 1 ran in ", round(as.numeric(difftime(b0, a0, units = "mins")), 1), " mins\n")
+
+        message("*****")
+        message("*****")
+        message("***** Running plans 2:", (length(self$plans)-1)," in parallel at ", lubridate::now(), " *****")
+
+        private$run_parallel_plans(
+          plans_index = 2:(length(self$plans)-1),
+          schema = self$schema,
+          upsert_at_end_of_each_plan = self$upsert_at_end_of_each_plan,
+          insert_at_end_of_each_plan = self$insert_at_end_of_each_plan,
+          cores = cores
+        )
+
+        message("*****")
+        message("*****")
+        message("***** Running plan ", length(self$plans)," sequentially at ", lubridate::now(), " *****")
+        a1 <- Sys.time()
+        private$run_sequential(
+          plans_index = length(self$plans),
+          schema = self$schema,
+          upsert_at_end_of_each_plan = self$upsert_at_end_of_each_plan,
+          insert_at_end_of_each_plan = self$insert_at_end_of_each_plan,
+          cores = cores
+        )
+        b1 <- Sys.time()
+        message("\nPlan ", length(self$plans), " ran in ", round(as.numeric(difftime(b1, a1, units = "mins")), 1), " mins")
+        message("Task ran in ", round(as.numeric(difftime(b1, a0, units = "mins")), 1), " mins\n")
 
         # progressr::with_progress({
         #   pb <- progressr::progressor(steps = self$num_argsets())
@@ -339,53 +341,55 @@ Task <- R6::R6Class(
     }
   ),
   private = list(
-    run_sequential = function(plans_index, schema, upsert_at_end_of_each_plan, insert_at_end_of_each_plan, pb, cores){
+    run_sequential = function(plans_index, schema, upsert_at_end_of_each_plan, insert_at_end_of_each_plan, pb = NULL, cores){
       for (s in schema) s$connect()
       for (i in seq_along(self$plans[plans_index])) {
-        self$plans[plans_index][[i]]$set_progressor(pb)
+        if(is.null(pb)){
+          #verbose <- FALSE
+        } else {
+          self$plans[plans_index][[i]]$set_progressor(pb)
+          #verbose <- TRUE
+        }
+
         retval <- self$plans[plans_index][[i]]$run_all(schema = schema)
 
         if (upsert_at_end_of_each_plan) {
-          retval <- rbindlist(retval)
-          schema$output$upsert_data(retval, verbose = F)
+          #retval <- rbindlist(retval, use.names = T, fill = T)
+          for(i in seq_along(retval)) schema$output$upsert_data(retval[[i]], verbose = F)
         }
 
         if (insert_at_end_of_each_plan) {
-          retval <- rbindlist(retval)
-          schema$output$insert_data(retval, verbose = F)
+          #retval <- rbindlist(retval, use.names = T, fill = T)
+          for(i in seq_along(retval)) schema$output$insert_data(retval[[i]], verbose = F)
         }
 
         rm("retval")
       }
       for (s in schema) s$disconnect()
     },
-    run_parallel_plans = function(plans_index, schema, upsert_at_end_of_each_plan, insert_at_end_of_each_plan, pb, cores){
+    run_parallel_plans = function(plans_index, schema, upsert_at_end_of_each_plan, insert_at_end_of_each_plan, cores){
       y <- pbmcapply::pbmclapply(
         self$plans[plans_index],
-        function(x, schema, upsert_at_end_of_each_plan, insert_at_end_of_each_plan, pb){
+        function(x, schema, upsert_at_end_of_each_plan, insert_at_end_of_each_plan){
           data.table::setDTthreads(1)
 
           #for (s in schema) s$disconnect()
           for (s in schema) s$connect()
-          #library(magrittr)
-          #return(schema[[1]]$tbl() %>% head() %>% dplyr::collect())
-          x$set_progressor(pb)
-          #return(x$data)
-          #retval <- x$get_data()
-          #return(retval)
+
+          x$set_verbose(FALSE)
           retval <- x$run_all(schema = schema)
 
           if (upsert_at_end_of_each_plan) {
-            retval <- rbindlist(retval)
+            retval <- rbindlist(retval, use.names = T, fill = T)
             schema$output$upsert_data(retval, verbose = F)
           }
 
           if (insert_at_end_of_each_plan) {
-            retval <- rbindlist(retval)
+            retval <- rbindlist(retval, use.names = T, fill = T)
             schema$output$insert_data(retval, verbose = F)
           }
           rm("retval")
-          for (s in schema) s$db_disconnect()
+          for (s in schema) s$disconnect()
 
           # ***************************** #
           # NEVER DELETE gc()             #
@@ -398,13 +402,12 @@ Task <- R6::R6Class(
         schema = schema,
         upsert_at_end_of_each_plan = upsert_at_end_of_each_plan,
         insert_at_end_of_each_plan = insert_at_end_of_each_plan,
-        pb = pb,
         ignore.interactive = TRUE,
         mc.cores = cores,
         mc.style = "ETA",
         mc.substyle = 2
       )
-      #print(y)
+      # print(y)
     },
     # run_parallel = function(plans_index, schema, upsert_at_end_of_each_plan, insert_at_end_of_each_plan, pb){
     #   y <- foreach(x = self$plans[plans_index]) %dopar% {
