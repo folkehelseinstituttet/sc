@@ -189,6 +189,8 @@ Task <- R6::R6Class(
 
       message(glue::glue("{run_description} with cores={cores}"))
 
+      a0 <- Sys.time()
+
       if (run_type == "sequential") {
         # not running in parallel
         progressr::with_progress(
@@ -217,41 +219,14 @@ Task <- R6::R6Class(
           delay_conditions = ""
         )
 
-        # pb <- progress::progress_bar$new(
-        #   format = "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta",
-        #   clear = FALSE,
-        #   force = TRUE,
-        #   total = self$num_argsets()
-        # )
-        # for (s in schema) s$connect()
-        # for (i in seq_along(self$plans)) {
-        #   self$plans[[i]]$set_progress(pb)
-        #   retval <- self$plans[[i]]$run_all(schema = schema)
-        #
-        #   if (upsert_at_end_of_each_plan) {
-        #     retval <- rbindlist(retval)
-        #     schema$output$upsert_data(retval, verbose = F)
-        #   }
-        #
-        #   if (insert_at_end_of_each_plan) {
-        #     retval <- rbindlist(retval)
-        #     schema$output$insert_data(retval, verbose = F)
-        #   }
-        #
-        #   rm("retval")
-        # }
-        # for (s in schema) s$disconnect()
       } else if(run_type == "parallel_plans") {
         # running in parallel
-
-
 
         message("Running plans 1 and ", length(self$plans)," sequentially, and 2:", length(self$plans)-1, " in parallel\n")
 
         message("*****")
         message("*****")
         message("***** Running plan 1 sequentially at ", lubridate::now(), " *****")
-        a0 <- Sys.time()
         #pb <- progressr::progressor(steps = self$plans[[1]]$len())
         private$run_sequential(
           plans_index = 1,
@@ -275,7 +250,7 @@ Task <- R6::R6Class(
           cores = cores
         )
 
-        message("*****")
+        message("\n*****")
         message("*****")
         message("***** Running plan ", length(self$plans)," sequentially at ", lubridate::now(), " *****")
         a1 <- Sys.time()
@@ -288,42 +263,10 @@ Task <- R6::R6Class(
         )
         b1 <- Sys.time()
         message("\nPlan ", length(self$plans), " ran in ", round(as.numeric(difftime(b1, a1, units = "mins")), 1), " mins")
-        message("Task ran in ", round(as.numeric(difftime(b1, a0, units = "mins")), 1), " mins\n")
-
-        # progressr::with_progress({
-        #   pb <- progressr::progressor(steps = self$num_argsets())
-        #   y <- foreach(x = self$plans) %dopar% {
-        #     data.table::setDTthreads(1)
-        #
-        #     for (s in schema) s$connect()
-        #     x$set_progressor(pb)
-        #     retval <- x$run_all(schema = schema)
-        #
-        #     if (upsert_at_end_of_each_plan) {
-        #       retval <- rbindlist(retval)
-        #       schema$output$upsert_data(retval, verbose = F)
-        #     }
-        #
-        #     if (insert_at_end_of_each_plan) {
-        #       retval <- rbindlist(retval)
-        #       schema$output$insert_data(retval, verbose = F)
-        #     }
-        #     rm("retval")
-        #     for (s in schema) s$db_disconnect()
-        #
-        #     # ***************************** #
-        #     # NEVER DELETE gc()             #
-        #     # IT CAUSES 2x SPEEDUP          #
-        #     # AND 10x MEMORY EFFICIENCY     #
-        #     gc() #
-        #     # ***************************** #
-        #     1
-        #   }
-        # },
-        # delay_stdout = FALSE,
-        # delay_conditions = ""
-        # )
       }
+
+      b1 <- Sys.time()
+      message("Task ran in ", round(as.numeric(difftime(b1, a0, units = "mins")), 1), " mins\n")
 
       future::plan(future::sequential)
       foreach::registerDoSEQ()
@@ -352,16 +295,17 @@ Task <- R6::R6Class(
           verbose <- FALSE
         }
 
+        # self$plans[plans_index][[i]]$set_verbose(FALSE)
         retval <- self$plans[plans_index][[i]]$run_all(schema = schema)
 
         if (upsert_at_end_of_each_plan) {
-          #retval <- rbindlist(retval, use.names = T, fill = T)
-          for(i in seq_along(retval)) schema$output$upsert_data(retval[[i]], verbose = verbose)
+          retval <- rbindlist(retval, use.names = T, fill = T)
+          schema$output$upsert_data(retval, verbose = verbose)
         }
 
         if (insert_at_end_of_each_plan) {
-          #retval <- rbindlist(retval, use.names = T, fill = T)
-          for(i in seq_along(retval)) schema$output$insert_data(retval[[i]], verbose = verbose)
+          retval <- rbindlist(retval, use.names = T, fill = T)
+          schema$output$insert_data(retval, verbose = verbose)
         }
 
         rm("retval")
@@ -408,7 +352,7 @@ Task <- R6::R6Class(
         mc.style = "ETA",
         mc.substyle = 2
       )
-      # print(y)
+      print(y)
     },
     # run_parallel = function(plans_index, schema, upsert_at_end_of_each_plan, insert_at_end_of_each_plan, pb){
     #   y <- foreach(x = self$plans[plans_index]) %dopar% {
