@@ -335,6 +335,7 @@ Schema_v8 <- R6Class(
     #' Inserts data into db table
     insert_data = function(newdata, verbose = TRUE) {
       self$connect()
+      if(is.null(newdata)) return()
       if(nrow(newdata)==0) return()
 
       newdata <- private$make_censored_data(newdata)
@@ -356,6 +357,7 @@ Schema_v8 <- R6Class(
     #' Upserts data into db table
     upsert_data = function(newdata, drop_indexes = names(self$indexes), verbose = TRUE) {
       self$connect()
+      if(is.null(newdata)) return()
       if(nrow(newdata)==0) return()
 
       newdata <- private$make_censored_data(newdata)
@@ -712,6 +714,7 @@ Schema <- R6Class(
       return(retval)
     },
     db_insert_data = function(newdata, verbose = TRUE) {
+      if(is.null(newdata)) return()
       if(nrow(newdata)==0) return()
 
       validated <- self$validator_field_contents(newdata)
@@ -727,6 +730,7 @@ Schema <- R6Class(
       )
     },
     db_upsert_data = function(newdata, drop_indexes = names(self$indexes), verbose = TRUE) {
+      if(is.null(newdata)) return()
       if(nrow(newdata)==0) return()
 
       validated <- self$validator_field_contents(newdata)
