@@ -314,7 +314,7 @@ Task <- R6::R6Class(
     },
     run_parallel_plans = function(plans_index, schema, upsert_at_end_of_each_plan, insert_at_end_of_each_plan, cores){
       y <- pbmcapply::pbmclapply(
-        self$plans[plans_index[1:3]],
+        self$plans[plans_index],
         function(x, schema, upsert_at_end_of_each_plan, insert_at_end_of_each_plan){
           data.table::setDTthreads(1)
           #for (s in schema) s$disconnect()
