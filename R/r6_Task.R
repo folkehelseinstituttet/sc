@@ -351,6 +351,7 @@ Task <- R6::R6Class(
         mc.style = "ETA",
         mc.substyle = 2
       )
+      if(sum(unlist(lapply(y, function(x) inherits(x, "try-error"))))>0) stop("Error running in parallel")
       # print(y)
     },
     # run_parallel = function(plans_index, schema, upsert_at_end_of_each_plan, insert_at_end_of_each_plan, pb){
