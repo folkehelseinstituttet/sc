@@ -174,7 +174,10 @@ task_from_config_v8 <- function(
     cores = cores,
     upsert_at_end_of_each_plan = upsert_at_end_of_each_plan,
     insert_at_end_of_each_plan = insert_at_end_of_each_plan,
-    info = info
+    info = info,
+    info_plan_argset_fn_name = plan_argset_fn_name,
+    info_action_fn_name = action_fn_name,
+    info_data_selector_fn_name = data_selector_fn_name
   )
 
   return(task)

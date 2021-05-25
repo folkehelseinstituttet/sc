@@ -37,7 +37,10 @@ Task
   insert_at_end_of_each_plan = FALSE,
   action_before_fn = NULL,
   action_after_fn = NULL,
-  info = NULL
+  info = NULL,
+  info_plan_argset_fn_name = NULL,
+  info_action_fn_name = NULL,
+  info_data_selector_fn_name = NULL
 )}\if{html}{\out{</div>}}
 }
 

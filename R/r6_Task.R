@@ -28,6 +28,9 @@ Task <- R6::R6Class(
     action_before_fn = NULL,
     action_after_fn = NULL,
     info = "No information given in task definition.",
+    info_plan_argset_fn_name = NULL,
+    info_action_fn_name = NULL,
+    info_data_selector_fn_name = NULL,
     initialize = function(
                               name = NULL,
                               name_description = NULL,
@@ -41,7 +44,10 @@ Task <- R6::R6Class(
                               insert_at_end_of_each_plan = FALSE,
                               action_before_fn = NULL,
                               action_after_fn = NULL,
-                              info = NULL
+                              info = NULL,
+                              info_plan_argset_fn_name = NULL,
+                              info_action_fn_name = NULL,
+                              info_data_selector_fn_name = NULL
                               ) {
       stopifnot(!(is.null(name) & is.null(name_description)))
       if(!is.null(name_description)){
@@ -68,6 +74,9 @@ Task <- R6::R6Class(
       self$action_before_fn <- action_before_fn
       self$action_after_fn <- action_after_fn
       if(!is.null(info)) self$info <- info
+      self$info_plan_argset_fn_name <- info_plan_argset_fn_name
+      self$info_action_fn_name <- info_action_fn_name
+      self$info_data_selector_fn_name <- info_data_selector_fn_name
     },
 
     insert_first_last_argset = function(){
