@@ -28,11 +28,11 @@ sc::add_task_from_config_v8(
   name_action = "TASK_ACTION",
   name_variant = "TASK_VARIANT",
   cores = 1,
-  plan_argset_fn_name = NULL, # "PACKAGE::TASK_NAME_plan_argset"
+  plan_analysis_fn_name = NULL, # "PACKAGE::TASK_NAME_plan_analysis"
   for_each_plan = plnr::expand_list(
     x = 1
   ),
-  for_each_argset = NULL,
+  for_each_analysis = NULL,
   universal_argset = NULL,
   upsert_at_end_of_each_plan = FALSE,
   insert_at_end_of_each_plan = FALSE,
@@ -274,12 +274,12 @@ TASK_NAME_data_selector = function(argset, schema){
   retval
 }
 
-# **** plan_argset **** ----
+# **** plan_analysis **** ----
 #\' TASK_NAME (plan/argset)
-#\' This function can be deleted if you are not using "plan_argset_fn_name"
+#\' This function can be deleted if you are not using "plan_analysis_fn_name"
 #\' inside sc::task_from_config_v3
 #\' @export
-TASK_NAME_plan_argset <- function(argset, schema) {
+TASK_NAME_plan_analysis <- function(argset, schema) {
   if(plnr::is_run_directly()){
     argset <- sc::tm_get_argset("TASK_NAME")
     schema <- sc::tm_get_schema("TASK_NAME")
@@ -290,11 +290,11 @@ TASK_NAME_plan_argset <- function(argset, schema) {
     x = 1
   )
 
-  for_each_argset <- NULL
+  for_each_analysis <- NULL
 
   retval <- list(
     for_each_plan = for_each_plan,
-    for_each_argset = for_each_argset
+    for_each_analysis = for_each_analysis
   )
 }
 

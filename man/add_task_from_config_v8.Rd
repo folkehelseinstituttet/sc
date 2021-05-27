@@ -10,9 +10,9 @@ add_task_from_config_v8(
   name_action = NULL,
   name_variant = NULL,
   cores = 1,
-  plan_argset_fn_name = NULL,
+  plan_analysis_fn_name = NULL,
   for_each_plan = NULL,
-  for_each_argset = NULL,
+  for_each_analysis = NULL,
   universal_argset = NULL,
   upsert_at_end_of_each_plan = FALSE,
   insert_at_end_of_each_plan = FALSE,
@@ -33,11 +33,11 @@ add_task_from_config_v8(
 
 \item{cores}{Number of CPU cores}
 
-\item{plan_argset_fn_name}{The name of a function that returns a named list \code{list(for_each_plan = list(), for_each_argset = NULL)}.}
+\item{plan_analysis_fn_name}{The name of a function that returns a named list \code{list(for_each_plan = list(), for_each_analysis = NULL)}.}
 
 \item{for_each_plan}{A list, where each unit corresponds to one data extraction. Generally recommended to use \code{plnr::expand_list}.}
 
-\item{for_each_argset}{A list, where each unit corresponds to one analysis within a plan (data extraction). Generally recommended to use \code{plnr::expand_list}.}
+\item{for_each_analysis}{A list, where each unit corresponds to one analysis within a plan (data extraction). Generally recommended to use \code{plnr::expand_list}.}
 
 \item{universal_argset}{A list, where these argsets are applied to all analyses univerally}
 

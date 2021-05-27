@@ -13,7 +13,7 @@ set_test_task <- function(){
     for_each_plan = plnr::expand_list(
       x = 1:80
     ),
-    for_each_argset = NULL,
+    for_each_analysis = NULL,
     universal_argset = NULL,
     upsert_at_end_of_each_plan = FALSE,
     insert_at_end_of_each_plan = FALSE,
@@ -168,11 +168,11 @@ sc_test_plan_argset <- function(argset, schema) {
     x = 1
   )
 
-  for_each_argset <- NULL
+  for_each_analysis <- NULL
 
   retval <- list(
     for_each_plan = for_each_plan,
-    for_each_argset = for_each_argset
+    for_each_analysis = for_each_analysis
   )
 }
 

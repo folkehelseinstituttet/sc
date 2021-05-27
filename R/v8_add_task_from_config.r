@@ -13,14 +13,14 @@ generic_data_function_factory_v8 <- function(schema, argset, fn_name){
 generic_list_plan_function_factory_v8 <- function(
   universal_argset,
   schema,
-  plan_argset_fn_name,
+  plan_analysis_fn_name,
   action_fn_name,
   data_selector_fn_name
 ){
 
   force(universal_argset)
   force(schema)
-  force(plan_argset_fn_name)
+  force(plan_analysis_fn_name)
   force(action_fn_name)
   force(data_selector_fn_name)
 
@@ -28,11 +28,11 @@ generic_list_plan_function_factory_v8 <- function(
     for(i in schema) i$connect()
     on.exit(for(i in schema) i$disconnect())
 
-    fn <- plnr::get_anything(plan_argset_fn_name)
-    plan_argset <- fn(universal_argset, schema)
+    fn <- plnr::get_anything(plan_analysis_fn_name)
+    plan_analysis <- fn(universal_argset, schema)
     list_plan <- task_from_config_v8_list_plan(
-      for_each_plan = plan_argset$for_each_plan,
-      for_each_argset = plan_argset$for_each_argset,
+      for_each_plan = plan_analysis$for_each_plan,
+      for_each_analysis = plan_analysis$for_each_analysis,
       universal_argset = universal_argset,
       action_fn_name = action_fn_name,
       data_selector_fn_name = data_selector_fn_name,
@@ -44,7 +44,7 @@ generic_list_plan_function_factory_v8 <- function(
 
 task_from_config_v8_list_plan <- function(
   for_each_plan,
-  for_each_argset = NULL,
+  for_each_analysis = NULL,
   universal_argset = NULL,
   action_fn_name,
   data_selector_fn_name,
@@ -81,10 +81,10 @@ task_from_config_v8_list_plan <- function(
     }
 
     # add analyses
-    if(is.null(for_each_argset)){
-      for_each_argset <- list(NULL)
+    if(is.null(for_each_analysis)){
+      for_each_analysis <- list(NULL)
     }
-    for(index_analysis in seq_along(for_each_argset)){
+    for(index_analysis in seq_along(for_each_analysis)){
       # add analysis
       argset <- c(
         "**universal**"="*",
@@ -92,7 +92,7 @@ task_from_config_v8_list_plan <- function(
         "**plan**"="*",
         for_each_plan[[index_plan]],
         "**analysis**"="*",
-        for_each_argset[[index_analysis]],
+        for_each_analysis[[index_analysis]],
         "**automatic**"="*",
         index = index
       )
@@ -118,9 +118,9 @@ task_from_config_v8 <- function(
   name_action= NULL,
   name_variant = NULL,
   cores = 1,
-  plan_argset_fn_name = NULL,
+  plan_analysis_fn_name = NULL,
   for_each_plan = NULL,
-  for_each_argset = NULL,
+  for_each_analysis = NULL,
   universal_argset = NULL,
   upsert_at_end_of_each_plan = FALSE,
   insert_at_end_of_each_plan = FALSE,
@@ -130,7 +130,7 @@ task_from_config_v8 <- function(
   info = NULL
 ){
 
-  if(is.null(for_each_plan) & is.null(plan_argset_fn_name)) stop("You must provide at least one of for_each_plan or plan_argset_fn_name")
+  if(is.null(for_each_plan) & is.null(plan_analysis_fn_name)) stop("You must provide at least one of for_each_plan or plan_analysis_fn_name")
   stopifnot(!(is.null(name) & is.null(name_grouping) & is.null(name_action) & is.null(name_variant)))
   if(is.null(name_grouping) & is.null(name_action) & is.null(name_variant)){
     name_description <- NULL
@@ -146,19 +146,19 @@ task_from_config_v8 <- function(
     stopifnot(is.list(for_each_plan))
     list_plan <- task_from_config_v8_list_plan(
       for_each_plan = for_each_plan,
-      for_each_argset = for_each_argset,
+      for_each_analysis = for_each_analysis,
       universal_argset = universal_argset,
       action_fn_name = action_fn_name,
       data_selector_fn_name = data_selector_fn_name,
       schema = schema
     )
     update_plans_fn <- NULL
-  } else if(!is.null(plan_argset_fn_name)){
+  } else if(!is.null(plan_analysis_fn_name)){
     list_plan <- NULL
     update_plans_fn <- generic_list_plan_function_factory_v8(
       universal_argset = universal_argset,
       schema = schema,
-      plan_argset_fn_name = plan_argset_fn_name,
+      plan_analysis_fn_name = plan_analysis_fn_name,
       action_fn_name = action_fn_name,
       data_selector_fn_name = data_selector_fn_name
     )
@@ -175,7 +175,7 @@ task_from_config_v8 <- function(
     upsert_at_end_of_each_plan = upsert_at_end_of_each_plan,
     insert_at_end_of_each_plan = insert_at_end_of_each_plan,
     info = info,
-    info_plan_argset_fn_name = plan_argset_fn_name,
+    info_plan_analysis_fn_name = plan_analysis_fn_name,
     info_action_fn_name = action_fn_name,
     info_data_selector_fn_name = data_selector_fn_name
   )
@@ -189,9 +189,9 @@ task_from_config_v8 <- function(
 #' @param name_action Name of the task (action)
 #' @param name_variant Name of the task (variant)
 #' @param cores Number of CPU cores
-#' @param plan_argset_fn_name The name of a function that returns a named list \code{list(for_each_plan = list(), for_each_argset = NULL)}.
+#' @param plan_analysis_fn_name The name of a function that returns a named list \code{list(for_each_plan = list(), for_each_analysis = NULL)}.
 #' @param for_each_plan A list, where each unit corresponds to one data extraction. Generally recommended to use \code{plnr::expand_list}.
-#' @param for_each_argset A list, where each unit corresponds to one analysis within a plan (data extraction). Generally recommended to use \code{plnr::expand_list}.
+#' @param for_each_analysis A list, where each unit corresponds to one analysis within a plan (data extraction). Generally recommended to use \code{plnr::expand_list}.
 #' @param universal_argset A list, where these argsets are applied to all analyses univerally
 #' @param upsert_at_end_of_each_plan Do you want to upsert your results automatically at the end of each plan?
 #' @param insert_at_end_of_each_plan Do you want to insert your results automatically at the end of each plan?
@@ -206,9 +206,9 @@ add_task_from_config_v8 <- function(
   name_action= NULL,
   name_variant = NULL,
   cores = 1,
-  plan_argset_fn_name = NULL,
+  plan_analysis_fn_name = NULL,
   for_each_plan = NULL,
-  for_each_argset = NULL,
+  for_each_analysis = NULL,
   universal_argset = NULL,
   upsert_at_end_of_each_plan = FALSE,
   insert_at_end_of_each_plan = FALSE,
@@ -222,9 +222,9 @@ add_task_from_config_v8 <- function(
   force(name_action)
   force(name_variant)
   force(cores)
-  force(plan_argset_fn_name)
+  force(plan_analysis_fn_name)
   force(for_each_plan)
-  force(for_each_argset)
+  force(for_each_analysis)
   force(universal_argset)
   force(upsert_at_end_of_each_plan)
   force(insert_at_end_of_each_plan)
@@ -240,9 +240,9 @@ add_task_from_config_v8 <- function(
       name_action = name_action,
       name_variant = name_variant,
       cores = cores,
-      plan_argset_fn_name = plan_argset_fn_name,
+      plan_analysis_fn_name = plan_analysis_fn_name,
       for_each_plan = for_each_plan,
-      for_each_argset = for_each_argset,
+      for_each_analysis = for_each_analysis,
       universal_argset = universal_argset,
       upsert_at_end_of_each_plan = upsert_at_end_of_each_plan,
       insert_at_end_of_each_plan = insert_at_end_of_each_plan,

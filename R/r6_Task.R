@@ -28,7 +28,7 @@ Task <- R6::R6Class(
     action_before_fn = NULL,
     action_after_fn = NULL,
     info = "No information given in task definition.",
-    info_plan_argset_fn_name = NULL,
+    info_plan_analysis_fn_name = NULL,
     info_action_fn_name = NULL,
     info_data_selector_fn_name = NULL,
     initialize = function(
@@ -45,7 +45,7 @@ Task <- R6::R6Class(
                               action_before_fn = NULL,
                               action_after_fn = NULL,
                               info = NULL,
-                              info_plan_argset_fn_name = NULL,
+                              info_plan_analysis_fn_name = NULL,
                               info_action_fn_name = NULL,
                               info_data_selector_fn_name = NULL
                               ) {
@@ -74,7 +74,7 @@ Task <- R6::R6Class(
       self$action_before_fn <- action_before_fn
       self$action_after_fn <- action_after_fn
       if(!is.null(info)) self$info <- info
-      self$info_plan_argset_fn_name <- info_plan_argset_fn_name
+      self$info_plan_analysis_fn_name <- info_plan_analysis_fn_name
       self$info_action_fn_name <- info_action_fn_name
       self$info_data_selector_fn_name <- info_data_selector_fn_name
     },
@@ -122,6 +122,13 @@ Task <- R6::R6Class(
       }
       return(retval)
     },
+    num_analyses = function() {
+      retval <- 0
+      for (i in seq_along(plans)) {
+        retval <- retval + plans[[i]]$len()
+      }
+      return(retval)
+    },
     run = function(log = TRUE, cores = self$cores) {
       # task <- tm_get_task("analysis_norsyss_qp_gastro")
 
@@ -132,9 +139,9 @@ Task <- R6::R6Class(
 
       self$update_plans()
 
-      message(glue::glue("Running task={self$name} with plans={length(self$plans)} and argsets={self$num_argsets()}"))
-      if(self$num_argsets() == 0){
-        message("Quitting because there is nothing to do (0 argsets)")
+      message(glue::glue("Running task={self$name} with plans={length(self$plans)} and analyses={self$num_analyses()}"))
+      if(self$num_analyses() == 0){
+        message("Quitting because there is nothing to do (0 analyses)")
         return()
       }
 
@@ -161,7 +168,7 @@ Task <- R6::R6Class(
         message("***** GOOD LUCK!! *****\n")
       } else {
         run_type <- "parallel_plans"
-        run_description <- "plans=multicore, argset=sequential"
+        run_description <- "plans=multicore, analyses=sequential"
       }
 
       if(!is.null(self$action_before_fn)){
@@ -204,7 +211,7 @@ Task <- R6::R6Class(
         # not running in parallel
         progressr::with_progress(
           {
-            pb <- progressr::progressor(steps = self$num_argsets())
+            pb <- progressr::progressor(steps = self$num_analyses())
             private$run_sequential(
               plans_index = 1:length(self$plans),
               schema = self$schema,

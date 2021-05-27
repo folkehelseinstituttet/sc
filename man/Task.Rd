@@ -15,6 +15,7 @@ Task
 \item \href{#method-insert_first_last_argset}{\code{Task$insert_first_last_argset()}}
 \item \href{#method-update_plans}{\code{Task$update_plans()}}
 \item \href{#method-num_argsets}{\code{Task$num_argsets()}}
+\item \href{#method-num_analyses}{\code{Task$num_analyses()}}
 \item \href{#method-run}{\code{Task$run()}}
 \item \href{#method-clone}{\code{Task$clone()}}
 }
@@ -38,7 +39,7 @@ Task
   action_before_fn = NULL,
   action_after_fn = NULL,
   info = NULL,
-  info_plan_argset_fn_name = NULL,
+  info_plan_analysis_fn_name = NULL,
   info_action_fn_name = NULL,
   info_data_selector_fn_name = NULL
 )}\if{html}{\out{</div>}}
@@ -69,6 +70,15 @@ Task
 \subsection{Method \code{num_argsets()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Task$num_argsets()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-num_analyses"></a>}}
+\if{latex}{\out{\hypertarget{method-num_analyses}{}}}
+\subsection{Method \code{num_analyses()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Task$num_analyses()}\if{html}{\out{</div>}}
 }
 
 }
