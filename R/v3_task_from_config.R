@@ -83,15 +83,15 @@ task_from_config_v3_list_plan <- function(
     if(is.null(for_each_argset)){
       for_each_argset <- list(NULL)
     }
-    for(index_argset in seq_along(for_each_argset)){
+    for(index_analysis in seq_along(for_each_argset)){
       # add analysis
       argset <- c(
         "**universal**"="*",
         universal_argset,
         "**plan**"="*",
         for_each_plan[[index_plan]],
-        "**argset**"="*",
-        for_each_argset[[index_argset]],
+        "**analysis**"="*",
+        for_each_argset[[index_analysis]],
         "**automatic**"="*",
         index = index
       )

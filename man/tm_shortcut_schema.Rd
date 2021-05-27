@@ -4,12 +4,19 @@
 \alias{tm_shortcut_schema}
 \title{Shortcut to schema within task}
 \usage{
-tm_shortcut_schema(task_name, index_plan = NULL, index_argset = NULL)
+tm_shortcut_schema(
+  task_name,
+  index_plan = NULL,
+  index_analysis = NULL,
+  index_argset = NULL
+)
 }
 \arguments{
 \item{task_name}{Name of the task}
 
 \item{index_plan}{Not used}
+
+\item{index_analysis}{Not used}
 
 \item{index_argset}{Not used}
 }

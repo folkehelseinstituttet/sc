@@ -4,12 +4,19 @@
 \alias{tm_get_argset}
 \title{Shortcut to argset within plan within task}
 \usage{
-tm_get_argset(task_name, index_plan = 1, index_argset = 1)
+tm_get_argset(
+  task_name,
+  index_plan = 1,
+  index_analysis = NULL,
+  index_argset = 1
+)
 }
 \arguments{
 \item{task_name}{Name of the task}
 
 \item{index_plan}{Plan within task}
+
+\item{index_analysis}{Not used}
 
 \item{index_argset}{Argset within plan}
 }

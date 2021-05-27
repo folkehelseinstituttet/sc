@@ -4,14 +4,21 @@
 \alias{tm_get_plan}
 \title{Shortcut to plan within task}
 \usage{
-tm_get_plan(task_name, index_plan = 1, index_argset = NULL)
+tm_get_plan(
+  task_name,
+  index_plan = 1,
+  index_analysis = NULL,
+  index_argset = NULL
+)
 }
 \arguments{
 \item{task_name}{Name of the task}
 
 \item{index_plan}{Plan within task}
 
-\item{index_argset}{Not used}
+\item{index_analysis}{Not used}
+
+\item{index_argset}{Deprecated}
 }
 \description{
 Shortcut to plan within task

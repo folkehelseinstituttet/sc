@@ -2,17 +2,24 @@
 % Please edit documentation in R/r6_TaskManager.R
 \name{tm_get_plans_argsets_as_dt}
 \alias{tm_get_plans_argsets_as_dt}
-\title{Gets a data.table overview of index_plan and index_argset}
+\title{Gets a data.table overview of index_plan and index_analysis}
 \usage{
-tm_get_plans_argsets_as_dt(task_name, index_plan = NULL, index_argset = NULL)
+tm_get_plans_argsets_as_dt(
+  task_name,
+  index_plan = NULL,
+  index_analysis = NULL,
+  index_argset = NULL
+)
 }
 \arguments{
 \item{task_name}{Name of the task}
 
 \item{index_plan}{Not used}
 
-\item{index_argset}{Not used}
+\item{index_analysis}{Not used}
+
+\item{index_argset}{Deprecated}
 }
 \description{
-Gets a data.table overview of index_plan and index_argset
+Gets a data.table overview of index_plan and index_analysis
 }

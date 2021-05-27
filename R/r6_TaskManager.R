@@ -7,9 +7,10 @@ tm_get_task_names <- function(){
 #' Shortcut to task
 #' @param task_name Name of the task
 #' @param index_plan Not used
-#' @param index_argset Not used
+#' @param index_analysis Not used
+#' @param index_argset Deprecated
 #' @export
-tm_get_task <- function(task_name, index_plan = NULL, index_argset = NULL) {
+tm_get_task <- function(task_name, index_plan = NULL, index_analysis = NULL, index_argset = NULL) {
   retval <- config$tasks$get_task(task_name)
   retval$update_plans()
   return(retval)
@@ -18,13 +19,14 @@ tm_get_task <- function(task_name, index_plan = NULL, index_argset = NULL) {
 #' Shortcut to update plans for a task
 #' @param task_name Name of the task
 #' @param index_plan Not used
-#' @param index_argset Not used
+#' @param index_analysis Not used
+#' @param index_argset Deprecated
 #' @export
-tm_update_plans <- function(task_name, index_plan = NULL, index_argset = NULL) {
+tm_update_plans <- function(task_name, index_plan = NULL, index_analysis = NULL, index_argset = NULL) {
   task <- tm_get_task(
     task_name = task_name,
     index_plan = index_plan,
-    index_argset = index_argset
+    index_analysis = index_analysis
   )
   task$update_plans()
 }
@@ -32,15 +34,16 @@ tm_update_plans <- function(task_name, index_plan = NULL, index_argset = NULL) {
 #' Shortcut to run task
 #' @param task_name Name of the task
 #' @param index_plan Not used
-#' @param index_argset Not used
+#' @param index_analysis Not used
+#' @param index_argset Deprecated
 #' @export
-tm_run_task <- function(task_name, index_plan = NULL, index_argset = NULL) {
+tm_run_task <- function(task_name, index_plan = NULL, index_analysis = NULL, index_argset = NULL) {
   # message(glue::glue("spulscore {utils::packageVersion('sc')}"))
 
   task <- tm_get_task(
     task_name = task_name,
     index_plan = index_plan,
-    index_argset = index_argset
+    index_analysis = index_analysis
   )
   task$run(log=FALSE)
 }
@@ -48,27 +51,30 @@ tm_run_task <- function(task_name, index_plan = NULL, index_argset = NULL) {
 #' Shortcut to plan within task
 #' @param task_name Name of the task
 #' @param index_plan Not used
-#' @param index_argset Not used
+#' @param index_analysis Not used
+#' @param index_argset Deprecated
 #' @export
-tm_get_plans <- function(task_name, index_plan = NULL, index_argset = NULL) {
+tm_get_plans <- function(task_name, index_plan = NULL, index_analysis = NULL, index_argset = NULL) {
   tm_get_task(task_name = task_name)$plans
 }
 
 #' Shortcut to plan within task
 #' @param task_name Name of the task
 #' @param index_plan Plan within task
-#' @param index_argset Not used
+#' @param index_analysis Not used
+#' @param index_argset Deprecated
 #' @export
-tm_get_plan <- function(task_name, index_plan = 1, index_argset = NULL) {
+tm_get_plan <- function(task_name, index_plan = 1, index_analysis = NULL, index_argset = NULL) {
   tm_get_task(task_name = task_name)$plans[[index_plan]]
 }
 
 #' Shortcut to data within plan within task
 #' @param task_name Name of the task
 #' @param index_plan Plan within task
-#' @param index_argset Not used
+#' @param index_analysis Not used
+#' @param index_argset Deprecated
 #' @export
-tm_get_data <- function(task_name, index_plan = 1, index_argset = NULL) {
+tm_get_data <- function(task_name, index_plan = 1, index_analysis = NULL, index_argset = NULL) {
   tm_get_plan(
     task_name = task_name,
     index_plan = index_plan
@@ -78,21 +84,23 @@ tm_get_data <- function(task_name, index_plan = 1, index_argset = NULL) {
 #' Shortcut to argset within plan within task
 #' @param task_name Name of the task
 #' @param index_plan Plan within task
+#' @param index_analysis Not used
 #' @param index_argset Argset within plan
 #' @export
-tm_get_argset <- function(task_name, index_plan = 1, index_argset = 1) {
+tm_get_argset <- function(task_name, index_plan = 1, index_analysis = NULL, index_argset = 1) {
   tm_get_plan(
     task_name = task_name,
     index_plan = index_plan
-  )$get_argset(index_argset)
+  )$get_argset(index_analysis)
 }
 
 #' Shortcut to schema within task
 #' @param task_name Name of the task
 #' @param index_plan Not used
-#' @param index_argset Not used
+#' @param index_analysis Not used
+#' @param index_argset Deprecated
 #' @export
-tm_get_schema <- function(task_name, index_plan = NULL, index_argset = NULL) {
+tm_get_schema <- function(task_name, index_plan = NULL, index_analysis = NULL, index_argset = NULL) {
   schema <- tm_get_task(
     task_name = task_name
   )$schema
@@ -105,7 +113,7 @@ analyses_to_dt <- function(analyses){
     data.table(t(x$argset))
   })
   retval <- rbindlist(retval)
-  retval[,index_argset := 1:.N]
+  retval[,index_analysis := 1:.N]
 
   return(retval)
 }
@@ -114,16 +122,17 @@ plans_to_dt <- function(plans){
   retval <- lapply(plans, function(x) analyses_to_dt(x$analyses))
   for(i in seq_along(retval)) retval[[i]][, index_plan := i]
   retval <- rbindlist(retval)
-  setcolorder(retval, c("index_plan", "index_argset"))
+  setcolorder(retval, c("index_plan", "index_analysis"))
   retval
 }
 
-#' Gets a data.table overview of index_plan and index_argset
+#' Gets a data.table overview of index_plan and index_analysis
 #' @param task_name Name of the task
 #' @param index_plan Not used
-#' @param index_argset Not used
+#' @param index_analysis Not used
+#' @param index_argset Deprecated
 #' @export
-tm_get_plans_argsets_as_dt <- function(task_name, index_plan = NULL, index_argset = NULL){
+tm_get_plans_argsets_as_dt <- function(task_name, index_plan = NULL, index_analysis = NULL, index_argset = NULL){
   p <- tm_get_plans(task_name)
   plans_to_dt(p)
 }

@@ -53,10 +53,10 @@ sc_test_action <- function(data, argset, schema) {
     # sc::tm_get_plans_argsets_as_dt("sc_test")
 
     index_plan <- 1
-    index_argset <- 1
+    index_analysis <- 1
 
     data <- sc::tm_get_data("sc_test", index_plan = index_plan)
-    argset <- sc::tm_get_argset("sc_test", index_plan = index_plan, index_argset = index_argset)
+    argset <- sc::tm_get_argset("sc_test", index_plan = index_plan, index_analysis = index_analysis)
     schema <- sc::tm_get_schema("sc_test")
   }
 

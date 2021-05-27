@@ -181,10 +181,10 @@ TASK_NAME_action <- function(data, argset, schema) {
     # sc::tm_get_plans_argsets_as_dt("TASK_NAME")
 
     index_plan <- 1
-    index_argset <- 1
+    index_analysis <- 1
 
     data <- sc::tm_get_data("TASK_NAME", index_plan = index_plan)
-    argset <- sc::tm_get_argset("TASK_NAME", index_plan = index_plan, index_argset = index_argset)
+    argset <- sc::tm_get_argset("TASK_NAME", index_plan = index_plan, index_analysis = index_analysis)
     schema <- sc::tm_get_schema("TASK_NAME")
   }
 
@@ -227,7 +227,7 @@ TASK_NAME_data_selector = function(argset, schema){
 
   # The database schemas can be accessed here
   d <- schema$SCHEMA_NAME$tbl() %>%
-    mandatory_db_filter(
+    sc::mandatory_db_filter(
       granularity_time = NULL,
       granularity_time_not = NULL,
       granularity_geo = NULL,
@@ -259,7 +259,7 @@ TASK_NAME_data_selector = function(argset, schema){
       calyear,
       calmonth,
       calyearmonth
-    )
+    ) %>%
     dplyr::collect() %>%
     as.data.table() %>%
     setorder(

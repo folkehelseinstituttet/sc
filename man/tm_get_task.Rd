@@ -4,14 +4,21 @@
 \alias{tm_get_task}
 \title{Shortcut to task}
 \usage{
-tm_get_task(task_name, index_plan = NULL, index_argset = NULL)
+tm_get_task(
+  task_name,
+  index_plan = NULL,
+  index_analysis = NULL,
+  index_argset = NULL
+)
 }
 \arguments{
 \item{task_name}{Name of the task}
 
 \item{index_plan}{Not used}
 
-\item{index_argset}{Not used}
+\item{index_analysis}{Not used}
+
+\item{index_argset}{Deprecated}
 }
 \description{
 Shortcut to task
