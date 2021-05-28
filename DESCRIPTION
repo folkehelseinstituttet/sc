@@ -32,6 +32,7 @@ Imports:
   pbmcapply,
   plnr (>= 2021.5.4),
   processx,
+  progress,
   progressr,
   qs,
   R6,
