@@ -6,18 +6,16 @@ development:
 reference:
 - title: Environments
   desc: >
-    These functions and datasets have been modernized
-    and updated. They should be used.
+    Environments that contain information.
 - contents:
   - config
   - connections
-- title: Databases
+- title: Data and databases
   desc: >
-    These functions and datasets have been modernized
-    and updated. They should be used.
+    These functions relate to data and databases.
 - subtitle: R6 classes
   desc: >
-    These functions access datasets.
+    R6 classes that are used.
 - contents:
   - SchemaRedirect_v8
   - Schema_v8
@@ -26,26 +24,22 @@ reference:
   desc: >
     These functions access datasets.
 - contents:
-  - add_schema_v8
   - add_permission
-  - mandatory_db_filter
-  - tbl
+  - add_schema_v8
   - fill_in_missing_v8
   - get_config_datetime
   - get_config_last_updated
+  - mandatory_db_filter
+  - tbl
   - update_config_datetime
   - update_config_last_updated
 - subtitle: Censoring
-  desc: >
-    These functions access datasets.
 - contents:
   - censor_function_factory_everything
   - censor_function_factory_nothing
   - censor_function_factory_values_0_4
   - censor_list_function_factory
 - subtitle: Validators
-  desc: >
-    These functions access datasets.
 - contents:
   - validator_field_contents_blank
   - validator_field_contents_sykdomspulsen
@@ -53,8 +47,7 @@ reference:
   - validator_field_types_sykdomspulsen
 - subtitle: Utility functions
   desc: >
-    These are utility functions to help you work
-    with your data and the fhidata package..
+    These are utility functions for databases. You probably won't work with them.
 - contents:
   - drop_all_rows
   - drop_rows_where
@@ -68,11 +61,10 @@ reference:
 
 - title: Tasks
   desc: >
-    These functions and datasets have been modernized
-    and updated. They should be used.
+    A task is the basic operational unit of Sykdomspulsen Core.
 - subtitle: R6 classes
   desc: >
-    These functions access datasets.
+    R6 classes that are used.
 - contents:
   - Task
   - TaskManager
@@ -99,8 +91,7 @@ reference:
 
 - title: Utility functions
   desc: >
-    These functions and datasets are out of date,
-    and should not be used.
+    Utility functions.
 - contents:
   - copy_into_new_table_where
   - create_folder_if_doesnt_exist
@@ -114,15 +105,15 @@ reference:
 
 - title: Tests
   desc: >
-    These functions and datasets are out of date,
-    and should not be used.
+    Simple functions used for testing.
 - contents:
   - sc_test_action
   - sc_test_data_selector
-  - sc_test_plan_argset
+  - sc_test_plan_analysis
+
 - title: Deprecated
   desc: >
-    These functions and datasets are out of date,
+    These functions are out of date,
     and should not be used.
 - contents:
   - Schema

@@ -150,11 +150,11 @@ sc_test_data_selector = function(argset, schema){
   retval
 }
 
-# **** plan_argset **** ----
-#' sc_test (plan/argset)
+# **** plan_analysis **** ----
+#' sc_test (plan/analysis)
 #' This function can be deleted if you are not using "plan_argset_fn_name"
 #' inside sc::task_from_config_v3
-#' @param argset argset
+#' @param analysis analysis
 #' @param schema schema
 #' @export
 sc_test_plan_argset <- function(argset, schema) {
