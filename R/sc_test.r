@@ -9,7 +9,7 @@ set_test_task <- function(){
     name_action = NULL,
     name_variant = NULL,
     cores = 2,
-    plan_argset_fn_name = NULL, # "PACKAGE::TASK_NAME_plan_argset"
+    plan_analysis_fn_name = NULL, # "PACKAGE::TASK_NAME_plan_analysis"
     for_each_plan = plnr::expand_list(
       x = 1:80
     ),

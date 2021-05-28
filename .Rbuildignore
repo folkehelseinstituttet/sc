@@ -5,3 +5,4 @@ nul
 travis/*
 ^Makefile$
 ^Jenkinsfile$
+_pkgdown.yaml
