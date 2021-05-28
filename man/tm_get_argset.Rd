@@ -7,8 +7,8 @@
 tm_get_argset(
   task_name,
   index_plan = 1,
-  index_analysis = NULL,
-  index_argset = 1
+  index_analysis = 1,
+  index_argset = NULL
 )
 }
 \arguments{

@@ -87,7 +87,7 @@ tm_get_data <- function(task_name, index_plan = 1, index_analysis = NULL, index_
 #' @param index_analysis Not used
 #' @param index_argset Argset within plan
 #' @export
-tm_get_argset <- function(task_name, index_plan = 1, index_analysis = NULL, index_argset = 1) {
+tm_get_argset <- function(task_name, index_plan = 1, index_analysis = 1, index_argset = NULL) {
   tm_get_plan(
     task_name = task_name,
     index_plan = index_plan

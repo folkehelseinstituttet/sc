@@ -2,19 +2,19 @@
 % Please edit documentation in R/sc_test.r
 \name{sc_test_plan_argset}
 \alias{sc_test_plan_argset}
-\title{sc_test (plan/argset)
+\title{sc_test (plan/analysis)
 This function can be deleted if you are not using "plan_argset_fn_name"
 inside sc::task_from_config_v3}
 \usage{
 sc_test_plan_argset(argset, schema)
 }
 \arguments{
-\item{argset}{argset}
-
 \item{schema}{schema}
+
+\item{analysis}{analysis}
 }
 \description{
-sc_test (plan/argset)
+sc_test (plan/analysis)
 This function can be deleted if you are not using "plan_argset_fn_name"
 inside sc::task_from_config_v3
 }
