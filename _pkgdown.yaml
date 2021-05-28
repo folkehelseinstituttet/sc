@@ -1,8 +1,137 @@
-template:
-  package: quillt
+url: https://folkehelseinstituttet.github.io/sc
 
 development:
   mode: auto
 
-home:
-  strip_header: false
+reference:
+- title: Environments
+  desc: >
+    These functions and datasets have been modernized
+    and updated. They should be used.
+- contents:
+  - config
+  - connections
+- title: Databases
+  desc: >
+    These functions and datasets have been modernized
+    and updated. They should be used.
+- subtitle: R6 classes
+  desc: >
+    These functions access datasets.
+- contents:
+  - SchemaRedirect_v8
+  - Schema_v8
+  - Permission
+- subtitle: Functions to access datasets
+  desc: >
+    These functions access datasets.
+- contents:
+  - add_schema_v8
+  - add_permission
+  - mandatory_db_filter
+  - tbl
+  - fill_in_missing_v8
+  - get_config_datetime
+  - get_config_last_updated
+  - update_config_datetime
+  - update_config_last_updated
+- subtitle: Censoring
+  desc: >
+    These functions access datasets.
+- contents:
+  - censor_function_factory_everything
+  - censor_function_factory_nothing
+  - censor_function_factory_values_0_4
+  - censor_list_function_factory
+- subtitle: Validators
+  desc: >
+    These functions access datasets.
+- contents:
+  - validator_field_contents_blank
+  - validator_field_contents_sykdomspulsen
+  - validator_field_types_blank
+  - validator_field_types_sykdomspulsen
+- subtitle: Utility functions
+  desc: >
+    These are utility functions to help you work
+    with your data and the fhidata package..
+- contents:
+  - drop_all_rows
+  - drop_rows_where
+  - drop_table
+  - get_db_connection
+  - get_field_types
+  - keep_rows_where
+  - list_indexes
+  - list_tables
+  - use_db
+
+- title: Tasks
+  desc: >
+    These functions and datasets have been modernized
+    and updated. They should be used.
+- subtitle: R6 classes
+  desc: >
+    These functions access datasets.
+- contents:
+  - Task
+  - TaskManager
+- subtitle: Functions
+  desc: >
+    These functions access datasets.
+- contents:
+  - add_task_from_config_v8
+  - tm_get_argset
+  - tm_get_data
+  - tm_get_plan
+  - tm_get_plans
+  - tm_get_plans_argsets_as_dt
+  - tm_get_schema
+  - tm_get_task
+  - tm_get_task_names
+  - tm_run_task
+  - tm_shortcut_argset
+  - tm_shortcut_data
+  - tm_shortcut_plan
+  - tm_shortcut_schema
+  - tm_shortcut_task
+  - tm_update_plans
+
+- title: Utility functions
+  desc: >
+    These functions and datasets are out of date,
+    and should not be used.
+- contents:
+  - copy_into_new_table_where
+  - create_folder_if_doesnt_exist
+  - create_latest_folder
+  - describe_schemas
+  - describe_tasks
+  - mv
+  - path
+  - qsenc_read
+  - qsenc_save
+
+- title: Tests
+  desc: >
+    These functions and datasets are out of date,
+    and should not be used.
+- contents:
+  - sc_test_action
+  - sc_test_data_selector
+  - sc_test_plan_argset
+- title: Deprecated
+  desc: >
+    These functions and datasets are out of date,
+    and should not be used.
+- contents:
+  - Schema
+  - add_schema
+  - add_task
+  - get_rundate
+  - update_rundate
+  - latin1_to_utf8
+  - task_from_config
+  - task_from_config_v2
+  - task_from_config_v3
+  - task_inline_v1
