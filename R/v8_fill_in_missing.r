@@ -160,7 +160,7 @@ fill_in_missing_v8 <- function(d, border = 2020){
   if(!"calyearmonth" %in% names(d)){
     dates <- unique(d[, "date"])
     dates[, granularity_time := "day"]
-    dates[,x := paste0(lubridate::year(date), formatC(lubridate::month(date), width=2, flag="0"))]
+    dates[,x := paste0(lubridate::year(date), "-M", formatC(lubridate::month(date), width=2, flag="0"))]
     d[dates, on=c("granularity_time","date"), calyearmonth := x]
   }
   if(!"country_iso3" %in% names(d)){
