@@ -152,12 +152,12 @@ sc_test_data_selector = function(argset, schema){
 
 # **** plan_analysis **** ----
 #' sc_test (plan/analysis)
-#' This function can be deleted if you are not using "plan_argset_fn_name"
+#' This function can be deleted if you are not using "plan_analysis_fn_name"
 #' inside sc::task_from_config_v3
-#' @param analysis analysis
+#' @param argset argset
 #' @param schema schema
 #' @export
-sc_test_plan_argset <- function(argset, schema) {
+sc_test_plan_analysis <- function(argset, schema) {
   if(plnr::is_run_directly()){
     argset <- sc::tm_get_argset("sc_test")
     schema <- sc::tm_get_schema("sc_test")
