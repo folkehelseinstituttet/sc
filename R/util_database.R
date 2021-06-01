@@ -628,9 +628,39 @@ drop_rows_where <- function(conn=NULL, table, condition) {
     on.exit(DBI::dbDisconnect(conn))
   }
   t0 <- Sys.time()
-  a <- DBI::dbExecute(conn, glue::glue({
-    "DELETE FROM {table} WHERE {condition};"
+
+  #' find out how many rows to delete
+  numrows <- DBI::dbExecute(conn, glue::glue({
+    "SELECT COUNT(*) FROM {table} WHERE {condition};"
   }))
+
+  if (numrows < 10000) {
+
+    #' delete a small number of rows
+    a <- DBI::dbExecute(conn, glue::glue({
+      "DELETE FROM {table} WHERE {condition};"
+    }))
+  }
+  else {
+
+    #' delete a large number of rows
+    #' database must be in SIMPLE recovery mode
+    #' "ALTER DATABASE [MATH] SET RECOVERY SIMPLE;"
+    #' checkpointing will ensure transcation log is cleared after each delete operation
+    #' http://craftydba.com/?p=3079
+    b <- DBI::dbExecute(conn, glue::glue('-- Delete in batches',
+                                          'DECLARE @VAR_ROWS INT = 1;',
+                                          'WHILE (@VAR_ROWS > 0)',
+                                          'BEGIN',
+                                          'DELETE TOP (10000) FROM [MATH].[dbo].[TBL_PRIMES];',
+                                          'SET @VAR_ROWS = @@ROWCOUNT;',
+                                          'CHECKPOINT;',
+                                          'END;',
+                                          'GO'
+                                          )
+                                        )
+
+  }
   t1 <- Sys.time()
   dif <- round(as.numeric(difftime(t1, t0, units = "secs")), 1)
   if(config$verbose) message(glue::glue("Deleted rows in {dif} seconds from {table}"))
