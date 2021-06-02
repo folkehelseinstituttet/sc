@@ -403,11 +403,10 @@ Schema_v8 <- R6Class(
       )
     },
 
-    drop_all_rows_and_then_insert_data =  function(newdata, drop_indexes = names(self$indexes), verbose = TRUE) {
+    drop_all_rows_and_then_insert_data =  function(newdata, verbose = TRUE) {
       self$drop_all_rows()
       self$insert_data(
         newdata = newdata,
-        drop_indexes = drop_indexes,
         verbose = verbose
       )
     },
