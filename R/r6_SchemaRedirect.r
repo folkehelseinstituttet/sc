@@ -277,6 +277,19 @@ SchemaRedirect_v8 <- R6Class(
       }
     },
 
+    drop_all_rows_and_then_insert_data =  function(newdata, drop_indexes = names(self$indexes), verbose = TRUE) {
+      for(i in seq_along(self$table_names)){
+        table_name <- self$table_names[i]
+        table_access <- self$table_accesses[i]
+
+        self$schemas[[table_name]]$drop_all_rows_and_then_insert_data(
+          newdata = censored_data,
+          drop_indexes = drop_indexes,
+          verbose = verbose
+        )
+      }
+    },
+
     tbl = function() {
       self$schemas[[self$preferred_table_name]]$tbl()
     },

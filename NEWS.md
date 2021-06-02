@@ -1,3 +1,7 @@
+# sc 8.0.1
+
+- * insert_data, upsert_data, drop_all_rows_and_then_insert_data are now the recommended ways of inserting data
+
 # sc 8.0.0
 
 * Release of schema redirects that allow for restricted and anonymous datasets to be seamlessly used by people with different access rights

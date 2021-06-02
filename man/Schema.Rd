@@ -22,6 +22,7 @@ schema class description
 \item \href{#method-drop_rows_where}{\code{Schema$drop_rows_where()}}
 \item \href{#method-keep_rows_where}{\code{Schema$keep_rows_where()}}
 \item \href{#method-drop_all_rows_and_then_upsert_data}{\code{Schema$drop_all_rows_and_then_upsert_data()}}
+\item \href{#method-drop_all_rows_and_then_insert_data}{\code{Schema$drop_all_rows_and_then_insert_data()}}
 \item \href{#method-tbl}{\code{Schema$tbl()}}
 \item \href{#method-db_connect}{\code{Schema$db_connect()}}
 \item \href{#method-db_disconnect}{\code{Schema$db_disconnect()}}
@@ -169,6 +170,19 @@ Upserts data into db table
 \subsection{Method \code{drop_all_rows_and_then_upsert_data()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Schema$drop_all_rows_and_then_upsert_data(
+  newdata,
+  drop_indexes = names(self$indexes),
+  verbose = TRUE
+)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-drop_all_rows_and_then_insert_data"></a>}}
+\if{latex}{\out{\hypertarget{method-drop_all_rows_and_then_insert_data}{}}}
+\subsection{Method \code{drop_all_rows_and_then_insert_data()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Schema$drop_all_rows_and_then_insert_data(
   newdata,
   drop_indexes = names(self$indexes),
   verbose = TRUE
