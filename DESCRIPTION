@@ -6,6 +6,9 @@ Authors@R: c(
     comment = c(ORCID = "0000-0002-6747-1726")
   ),
   person("Gunnar", "R\u00F8", email = "GunnarOyvindIsaksson.Ro@fhi.no", role = c("aut"))
+  ),
+  person(c("Calvin","Chen-Kai"), "Chiang", email = "calvinchen-kai.chiang@fhi.no", role = c("aut"),
+    comment = c(ORCID = "0000-0003-0889-1429")
   )
 Description: Sykdomspulsen is a free and open-source health surveillance system designed and developed by the Norwegian Institute of Public Health. `sc` contains `Sykdomspulsen Core` the generic infrastructure that can be used to implement new surveillance systems.
 URL: https://sykdomspulsen-dokumentasjon.no
