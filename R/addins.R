@@ -1,6 +1,6 @@
 addin_load_production <- function(){
   rstudioapi::insertText(
-    'rstudioapi::restartSession("Sys.setenv(SYKDOMSPULSEN_PRODUCTION=1);devtools::load_all(\".\");Sys.setenv(SYKDOMSPULSEN_PRODUCTION=0)")'
+    'rstudioapi::restartSession("Sys.setenv(SYKDOMSPULSEN_PRODUCTION=1);devtools::load_all(\\".\\");Sys.setenv(SYKDOMSPULSEN_PRODUCTION=0)")'
   )
 }
 
