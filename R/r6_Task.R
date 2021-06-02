@@ -49,7 +49,7 @@ Task <- R6::R6Class(
                               info_plan_analysis_fn_name = NULL,
                               info_action_fn_name = NULL,
                               info_data_selector_fn_name = NULL,
-                              info_version = NULL,
+                              info_version = NULL
                               ) {
       stopifnot(!(is.null(name) & is.null(name_description)))
       if(!is.null(name_description)){
