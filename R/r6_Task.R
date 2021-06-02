@@ -31,6 +31,7 @@ Task <- R6::R6Class(
     info_plan_analysis_fn_name = NULL,
     info_action_fn_name = NULL,
     info_data_selector_fn_name = NULL,
+    info_version = "1",
     initialize = function(
                               name = NULL,
                               name_description = NULL,
@@ -47,7 +48,8 @@ Task <- R6::R6Class(
                               info = NULL,
                               info_plan_analysis_fn_name = NULL,
                               info_action_fn_name = NULL,
-                              info_data_selector_fn_name = NULL
+                              info_data_selector_fn_name = NULL,
+                              info_version = NULL,
                               ) {
       stopifnot(!(is.null(name) & is.null(name_description)))
       if(!is.null(name_description)){
@@ -77,6 +79,7 @@ Task <- R6::R6Class(
       self$info_plan_analysis_fn_name <- info_plan_analysis_fn_name
       self$info_action_fn_name <- info_action_fn_name
       self$info_data_selector_fn_name <- info_data_selector_fn_name
+      self$info_version <- info$version
     },
 
     insert_first_last_argset = function(){

@@ -177,7 +177,8 @@ task_from_config_v8 <- function(
     info = info,
     info_plan_analysis_fn_name = plan_analysis_fn_name,
     info_action_fn_name = action_fn_name,
-    info_data_selector_fn_name = data_selector_fn_name
+    info_data_selector_fn_name = data_selector_fn_name,
+    info_version = "8"
   )
 
   return(task)
