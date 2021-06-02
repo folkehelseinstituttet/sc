@@ -1,3 +1,9 @@
+addin_load_production <- function(){
+  rstudioapi::insertText(
+    'rstudioapi::restartSession("Sys.setenv(SYKDOMSPULSEN_PRODUCTION=1);devtools::load_all(\".\");Sys.setenv(SYKDOMSPULSEN_PRODUCTION=0)"'
+  )
+}
+
 addin_task_inline_v1_copy_to_db <- function(){
   rstudioapi::insertText(
     '

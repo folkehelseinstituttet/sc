@@ -1,6 +1,7 @@
 # sc 8.0.1
 
 - * insert_data, upsert_data, drop_all_rows_and_then_insert_data are now the recommended ways of inserting data
+- * addin_load_production
 
 # sc 8.0.0
 

@@ -1,3 +1,8 @@
+Name: Load auto via devtools
+Description: Load auto via devtools.
+Binding: addin_load_production
+Interactive: false
+
 Name: Insert task_from_config
 Description: Insert task_from_config.
 Binding: addin_add_task_from_config_v8_basic
