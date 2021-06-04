@@ -206,7 +206,7 @@ Schema_v8 <- R6Class(
     indexes = NULL,
     validator_field_contents = NULL,
     info = "No information given in schema definition",
-    load_folder = tempdir(),
+    load_folder = tempdir(check=T),
     censors = NULL,
 
     #' @description

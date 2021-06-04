@@ -70,7 +70,7 @@ set_db <- function(){
         "date" = "DATE",
         "datetime" = "DATETIME"
       ),
-      db_load_folder = tempdir(),
+      db_load_folder = tempdir(check=T),
       keys = c(
         "type",
         "tag"
@@ -89,7 +89,7 @@ set_db <- function(){
         "isoyearweek" = "TEXT",
         "date" = "DATE"
       ),
-      db_load_folder = tempdir(),
+      db_load_folder = tempdir(check=T),
       keys = c(
         "type",
         "tag"
@@ -108,7 +108,7 @@ set_db <- function(){
         "date" = "DATE",
         "datetime" = "DATETIME"
       ),
-      db_load_folder = tempdir(),
+      db_load_folder = tempdir(check=T),
       keys = c(
         "task"
       )
@@ -127,7 +127,7 @@ set_db <- function(){
         "date" = "DATE",
         "datetime" = "DATETIME"
       ),
-      db_load_folder = tempdir(),
+      db_load_folder = tempdir(check=T),
       keys = c(
         "type",
         "tag"
