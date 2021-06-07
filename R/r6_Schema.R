@@ -340,8 +340,10 @@ Schema_v8 <- R6Class(
 
       newdata <- private$make_censored_data(newdata)
 
-      validated <- self$validator_field_contents(newdata)
-      if(!validated) stop(glue::glue("load_data_infile not validated in {self$table_name}. {attr(validated,'var')}"))
+      if(!is.null(self$validator_field_contents)){
+        validated <- self$validator_field_contents(newdata)
+        if(!validated) stop(glue::glue("load_data_infile not validated in {self$table_name}. {attr(validated,'var')}"))
+      }
 
       infile <- random_file(self$load_folder)
       load_data_infile(
@@ -362,8 +364,10 @@ Schema_v8 <- R6Class(
 
       newdata <- private$make_censored_data(newdata)
 
-      validated <- self$validator_field_contents(newdata)
-      if(!validated) stop(glue::glue("upsert_load_data_infile not validated in {self$table_name}. {attr(validated,'var')}"))
+      if(!is.null(self$validator_field_contents)){
+        validated <- self$validator_field_contents(newdata)
+        if(!validated) stop(glue::glue("upsert_load_data_infile not validated in {self$table_name}. {attr(validated,'var')}"))
+      }
 
       infile <- random_file(self$load_folder)
       upsert_load_data_infile(

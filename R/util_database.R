@@ -628,9 +628,35 @@ drop_rows_where <- function(conn=NULL, table, condition) {
     on.exit(DBI::dbDisconnect(conn))
   }
   t0 <- Sys.time()
-  a <- DBI::dbExecute(conn, glue::glue({
-    "DELETE FROM {table} WHERE {condition};"
-  }))
+
+  #' find out how many rows to delete
+  numrows <- DBI::dbGetQuery(conn, glue::glue(
+    "SELECT COUNT(*) FROM {table} WHERE {condition};"
+  ))
+
+  while (numrows > 0)
+    {
+
+    #' delete a large number of rows
+    #' database must be in SIMPLE recovery mode
+    #' "ALTER DATABASE sykdomspulsen_surv SET RECOVERY SIMPLE;"
+    #' checkpointing will ensure transcation log is cleared after each delete operation
+    #' http://craftydba.com/?p=3079
+    #'
+    #'
+
+
+      b <- DBI::dbExecute(conn, glue::glue(
+          'DELETE TOP (10000) FROM {table} WHERE {condition}; ',
+          'CHECKPOINT; '
+      ))
+
+      numrows <- DBI::dbGetQuery(conn, glue::glue(
+        "SELECT COUNT(*) FROM {table} WHERE {condition};"
+      ))
+
+    }
+
   t1 <- Sys.time()
   dif <- round(as.numeric(difftime(t1, t0, units = "secs")), 1)
   if(config$verbose) message(glue::glue("Deleted rows in {dif} seconds from {table}"))

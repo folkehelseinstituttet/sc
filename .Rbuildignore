@@ -6,3 +6,4 @@ travis/*
 ^Makefile$
 ^Jenkinsfile$
 _pkgdown.yaml
+dev/*
