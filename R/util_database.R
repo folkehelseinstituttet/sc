@@ -633,6 +633,7 @@ drop_rows_where <- function(conn=NULL, table, condition) {
   numrows <- DBI::dbGetQuery(conn, glue::glue(
     "SELECT COUNT(*) FROM {table} WHERE {condition};"
   ))
+  message(numrows, " rows remaining to be deleted")
 
   while (numrows > 0)
     {
@@ -654,7 +655,7 @@ drop_rows_where <- function(conn=NULL, table, condition) {
       numrows <- DBI::dbGetQuery(conn, glue::glue(
         "SELECT COUNT(*) FROM {table} WHERE {condition};"
       ))
-
+      message(numrows, " rows remaining to be deleted")
     }
 
   t1 <- Sys.time()
