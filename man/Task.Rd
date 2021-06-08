@@ -41,7 +41,8 @@ Task
   info = NULL,
   info_plan_analysis_fn_name = NULL,
   info_action_fn_name = NULL,
-  info_data_selector_fn_name = NULL
+  info_data_selector_fn_name = NULL,
+  info_version = NULL
 )}\if{html}{\out{</div>}}
 }
 

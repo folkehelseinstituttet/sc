@@ -187,11 +187,7 @@ Upserts data into db table
 \if{latex}{\out{\hypertarget{method-drop_all_rows_and_then_insert_data}{}}}
 \subsection{Method \code{drop_all_rows_and_then_insert_data()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Schema_v8$drop_all_rows_and_then_insert_data(
-  newdata,
-  drop_indexes = names(self$indexes),
-  verbose = TRUE
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Schema_v8$drop_all_rows_and_then_insert_data(newdata, verbose = TRUE)}\if{html}{\out{</div>}}
 }
 
 }
