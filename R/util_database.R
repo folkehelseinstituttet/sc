@@ -632,7 +632,8 @@ drop_rows_where <- function(conn=NULL, table, condition) {
   #' find out how many rows to delete
   numrows <- DBI::dbGetQuery(conn, glue::glue(
     "SELECT COUNT(*) FROM {table} WHERE {condition};"
-  ))
+  )) %>%
+    as.numeric()
   message(numrows, " rows remaining to be deleted")
 
   num_deleting <- 10000
@@ -660,7 +661,8 @@ drop_rows_where <- function(conn=NULL, table, condition) {
 
     numrows <- DBI::dbGetQuery(conn, glue::glue(
       "SELECT COUNT(*) FROM {table} WHERE {condition};"
-    ))
+    )) %>%
+      as.numeric()
     i <- i + 1
     if(i %in% notify_indexes) message(i, "/", num_delete_calls, " delete calls performed. ", numrows, " rows remaining to be deleted")
   }

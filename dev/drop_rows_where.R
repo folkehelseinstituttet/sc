@@ -35,3 +35,5 @@ sc::config$schemas$anon_test$tbl() %>%
   dplyr::collect()
 
 sc::config$schemas$anon_test$drop_rows_where(condition = "uuid<=50000")
+
+table = "anon_test"
