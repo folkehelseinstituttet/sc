@@ -20,20 +20,18 @@ sc::add_schema_v8(
     anon = list(
     )
   ),
-  validator_field_types = NULL,
-  validator_field_contents = NULL,
   info = "This db table is used for..."
 )
 
 sc::config$schemas$anon_test
 
-d = data.table(uuid = 1:10000)
+d = data.table(uuid = 1:1000000)
 d$n = 1
 
 sc::config$schemas$anon_test$tbl()
-sc::config$schemas$anon_test$insert_data(d)
+sc::config$schemas$anon_test$drop_all_rows_and_then_insert_data(d)
 
 sc::config$schemas$anon_test$tbl() %>%
   dplyr::collect()
 
-drop_rows_where(table = "anon_test")
+drop_rows_where(table = "anon_test", condition = "1=1")
