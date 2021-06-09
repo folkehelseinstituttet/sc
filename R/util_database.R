@@ -635,8 +635,15 @@ drop_rows_where <- function(conn=NULL, table, condition) {
   ))
   message(numrows, " rows remaining to be deleted")
 
-  while (numrows > 0)
-    {
+  num_deleting <- 10000
+  num_delete_calls <- ceiling(numrows/num_deleting)
+  message("We will need to perform ", num_delete_calls, " delete calls...")
+
+  indexes <- plnr::split_equal(1:num_delete_calls, 10)
+  notify_indexes <- unlist(lapply(indexes, max))
+
+  i <- 0
+  while (numrows > 0){
 
     #' delete a large number of rows
     #' database must be in SIMPLE recovery mode
@@ -646,17 +653,17 @@ drop_rows_where <- function(conn=NULL, table, condition) {
     #'
     #'
 
+    b <- DBI::dbExecute(conn, glue::glue(
+        'DELETE TOP ({num_deleting}) FROM {table} WHERE {condition}; ',
+        'CHECKPOINT; '
+    ))
 
-      b <- DBI::dbExecute(conn, glue::glue(
-          'DELETE TOP (10000) FROM {table} WHERE {condition}; ',
-          'CHECKPOINT; '
-      ))
-
-      numrows <- DBI::dbGetQuery(conn, glue::glue(
-        "SELECT COUNT(*) FROM {table} WHERE {condition};"
-      ))
-      message(numrows, " rows remaining to be deleted")
-    }
+    numrows <- DBI::dbGetQuery(conn, glue::glue(
+      "SELECT COUNT(*) FROM {table} WHERE {condition};"
+    ))
+    i <- i + 1
+    if(i %in% notify_indexes) message(i, "/", num_delete_calls, " delete calls performed. ", numrows, " rows remaining to be deleted")
+  }
 
   t1 <- Sys.time()
   dif <- round(as.numeric(difftime(t1, t0, units = "secs")), 1)
