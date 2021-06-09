@@ -585,6 +585,63 @@ drop_all_rows <- function(conn=NULL, table) {
   update_config_datetime(type = "data", tag = table)
 }
 
+#' Drops the rows where the condition is met
+#' @param conn A db connection
+#' @param table Table name
+#' @param condition A string SQL condition
+#' @export
+drop_rows_where <- function(conn=NULL, table, condition) {
+  if(is.null(conn)){
+    conn <- get_db_connection()
+    on.exit(DBI::dbDisconnect(conn))
+  }
+  t0 <- Sys.time()
+
+  # find out how many rows to delete
+  numrows <- DBI::dbGetQuery(conn, glue::glue(
+    "SELECT COUNT(*) FROM {table} WHERE {condition};"
+  )) %>%
+    as.numeric()
+  message(numrows, " rows remaining to be deleted")
+
+  num_deleting <- 10000
+  num_delete_calls <- ceiling(numrows/num_deleting)
+  message("We will need to perform ", num_delete_calls, " delete calls...")
+
+  indexes <- plnr::easy_split(1:num_delete_calls, number_of_groups = 10)
+  notify_indexes <- unlist(lapply(indexes, max))
+
+  i <- 0
+  while (numrows > 0){
+
+    # delete a large number of rows
+    # database must be in SIMPLE recovery mode
+    # "ALTER DATABASE sykdomspulsen_surv SET RECOVERY SIMPLE;"
+    # checkpointing will ensure transcation log is cleared after each delete operation
+    # http://craftydba.com/?p=3079
+    #
+    #
+
+    b <- DBI::dbExecute(conn, glue::glue(
+      'DELETE TOP ({num_deleting}) FROM {table} WHERE {condition}; ',
+      'CHECKPOINT; '
+    ))
+
+    numrows <- DBI::dbGetQuery(conn, glue::glue(
+      "SELECT COUNT(*) FROM {table} WHERE {condition};"
+    )) %>%
+      as.numeric()
+    i <- i + 1
+    if(i %in% notify_indexes) message(i, "/", num_delete_calls, " delete calls performed. ", numrows, " rows remaining to be deleted")
+  }
+
+  t1 <- Sys.time()
+  dif <- round(as.numeric(difftime(t1, t0, units = "secs")), 1)
+  if(config$verbose) message(glue::glue("Deleted rows in {dif} seconds from {table}"))
+
+  update_config_datetime(type = "data", tag = table)
+}
+
 #' keep_rows_where
 #' Keeps the rows where the condition is met
 #' @param conn A db connection
@@ -616,63 +673,7 @@ keep_rows_where <- function(conn=NULL, table, condition) {
   update_config_datetime(type = "data", tag = table)
 }
 
-#' drop_rows_where
-#' Drops the rows where the condition is met
-#' @param conn A db connection
-#' @param table Table name
-#' @param condition A string SQL condition
-#' @export
-drop_rows_where <- function(conn=NULL, table, condition) {
-  if(is.null(conn)){
-    conn <- get_db_connection()
-    on.exit(DBI::dbDisconnect(conn))
-  }
-  t0 <- Sys.time()
 
-  #' find out how many rows to delete
-  numrows <- DBI::dbGetQuery(conn, glue::glue(
-    "SELECT COUNT(*) FROM {table} WHERE {condition};"
-  )) %>%
-    as.numeric()
-  message(numrows, " rows remaining to be deleted")
-
-  num_deleting <- 10000
-  num_delete_calls <- ceiling(numrows/num_deleting)
-  message("We will need to perform ", num_delete_calls, " delete calls...")
-
-  indexes <- plnr::easy_split(1:num_delete_calls, number_of_groups = 10)
-  notify_indexes <- unlist(lapply(indexes, max))
-
-  i <- 0
-  while (numrows > 0){
-
-    #' delete a large number of rows
-    #' database must be in SIMPLE recovery mode
-    #' "ALTER DATABASE sykdomspulsen_surv SET RECOVERY SIMPLE;"
-    #' checkpointing will ensure transcation log is cleared after each delete operation
-    #' http://craftydba.com/?p=3079
-    #'
-    #'
-
-    b <- DBI::dbExecute(conn, glue::glue(
-        'DELETE TOP ({num_deleting}) FROM {table} WHERE {condition}; ',
-        'CHECKPOINT; '
-    ))
-
-    numrows <- DBI::dbGetQuery(conn, glue::glue(
-      "SELECT COUNT(*) FROM {table} WHERE {condition};"
-    )) %>%
-      as.numeric()
-    i <- i + 1
-    if(i %in% notify_indexes) message(i, "/", num_delete_calls, " delete calls performed. ", numrows, " rows remaining to be deleted")
-  }
-
-  t1 <- Sys.time()
-  dif <- round(as.numeric(difftime(t1, t0, units = "secs")), 1)
-  if(config$verbose) message(glue::glue("Deleted rows in {dif} seconds from {table}"))
-
-  update_config_datetime(type = "data", tag = table)
-}
 
 
 #' get_db_connection

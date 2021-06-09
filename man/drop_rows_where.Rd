@@ -2,8 +2,7 @@
 % Please edit documentation in R/util_database.R
 \name{drop_rows_where}
 \alias{drop_rows_where}
-\title{drop_rows_where
-Drops the rows where the condition is met}
+\title{Drops the rows where the condition is met}
 \usage{
 drop_rows_where(conn = NULL, table, condition)
 }
@@ -15,6 +14,5 @@ drop_rows_where(conn = NULL, table, condition)
 \item{condition}{A string SQL condition}
 }
 \description{
-drop_rows_where
 Drops the rows where the condition is met
 }
