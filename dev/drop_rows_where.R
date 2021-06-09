@@ -34,4 +34,4 @@ sc::config$schemas$anon_test$drop_all_rows_and_then_insert_data(d)
 sc::config$schemas$anon_test$tbl() %>%
   dplyr::collect()
 
-drop_rows_where(table = "anon_test", condition = "1=1")
+sc::config$schemas$anon_test$drop_rows_where(condition = "uuid<=50000")
