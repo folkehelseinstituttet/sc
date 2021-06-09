@@ -605,6 +605,8 @@ drop_rows_where <- function(conn=NULL, table, condition) {
   message(numrows, " rows remaining to be deleted")
 
   num_deleting <- 100000
+  # need to do this, so that we dont get scientific format in the SQL command
+  num_deleting_character <- formatC(num_deleting, format="f", drop0trailing = T)
   num_delete_calls <- ceiling(numrows/num_deleting)
   message("We will need to perform ", num_delete_calls, " delete calls of ", num_deleting, " rows each.")
 
@@ -623,7 +625,7 @@ drop_rows_where <- function(conn=NULL, table, condition) {
     #
 
     b <- DBI::dbExecute(conn, glue::glue(
-      'DELETE TOP ({num_deleting}) FROM {table} WHERE {condition}; ',
+      'DELETE TOP ({num_deleting_character}) FROM {table} WHERE {condition}; ',
       'CHECKPOINT; '
     ))
 
