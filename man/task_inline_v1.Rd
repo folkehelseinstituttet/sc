@@ -4,10 +4,9 @@
 \alias{task_inline_v1}
 \title{Creating an inline task}
 \usage{
-task_inline_v1(
-  name,
-  action_fn = function(data, argset, schema) {     print(1) }
-)
+task_inline_v1(name, action_fn = function(data, argset, schema) {
+    print(1)
+})
 }
 \arguments{
 \item{name}{Name of the task}

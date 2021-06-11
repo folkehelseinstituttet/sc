@@ -10,6 +10,7 @@ add_task_from_config_v8(
   name_action = NULL,
   name_variant = NULL,
   cores = 1,
+  permission = NULL,
   plan_analysis_fn_name = NULL,
   for_each_plan = NULL,
   for_each_analysis = NULL,
@@ -32,6 +33,8 @@ add_task_from_config_v8(
 \item{name_variant}{Name of the task (variant)}
 
 \item{cores}{Number of CPU cores}
+
+\item{permission}{A permission R6 instance}
 
 \item{plan_analysis_fn_name}{The name of a function that returns a named list \code{list(for_each_plan = list(), for_each_analysis = NULL)}.}
 
