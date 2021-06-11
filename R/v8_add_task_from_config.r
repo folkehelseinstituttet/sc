@@ -118,6 +118,7 @@ task_from_config_v8 <- function(
   name_action= NULL,
   name_variant = NULL,
   cores = 1,
+  permission = NULL,
   plan_analysis_fn_name = NULL,
   for_each_plan = NULL,
   for_each_analysis = NULL,
@@ -168,6 +169,7 @@ task_from_config_v8 <- function(
     name = name,
     name_description = name_description,
     type = "analysis",
+    permission = permission,
     plans = list_plan,
     update_plans_fn = update_plans_fn,
     schema = schema,
@@ -190,6 +192,7 @@ task_from_config_v8 <- function(
 #' @param name_action Name of the task (action)
 #' @param name_variant Name of the task (variant)
 #' @param cores Number of CPU cores
+#' @param permission A permission R6 instance
 #' @param plan_analysis_fn_name The name of a function that returns a named list \code{list(for_each_plan = list(), for_each_analysis = NULL)}.
 #' @param for_each_plan A list, where each unit corresponds to one data extraction. Generally recommended to use \code{plnr::expand_list}.
 #' @param for_each_analysis A list, where each unit corresponds to one analysis within a plan (data extraction). Generally recommended to use \code{plnr::expand_list}.
@@ -207,6 +210,7 @@ add_task_from_config_v8 <- function(
   name_action= NULL,
   name_variant = NULL,
   cores = 1,
+  permission = NULL,
   plan_analysis_fn_name = NULL,
   for_each_plan = NULL,
   for_each_analysis = NULL,
@@ -223,6 +227,7 @@ add_task_from_config_v8 <- function(
   force(name_action)
   force(name_variant)
   force(cores)
+  force(permission)
   force(plan_analysis_fn_name)
   force(for_each_plan)
   force(for_each_analysis)
@@ -241,6 +246,7 @@ add_task_from_config_v8 <- function(
       name_action = name_action,
       name_variant = name_variant,
       cores = cores,
+      permission = permission,
       plan_analysis_fn_name = plan_analysis_fn_name,
       for_each_plan = for_each_plan,
       for_each_analysis = for_each_analysis,

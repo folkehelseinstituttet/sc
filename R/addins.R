@@ -34,6 +34,7 @@ sc::add_task_from_config_v8(
   name_action = "TASK_ACTION",
   name_variant = "TASK_VARIANT",
   cores = 1,
+  permission = NULL,
   plan_analysis_fn_name = NULL, # "PACKAGE::TASK_NAME_plan_analysis"
   for_each_plan = plnr::expand_list(
     x = 1
