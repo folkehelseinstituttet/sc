@@ -207,6 +207,7 @@ Schema_v8 <- R6Class(
     validator_field_contents = NULL,
     info = "No information given in schema definition",
     load_folder = tempdir(check=T),
+    load_folder_fn = function() tempdir(check=T),
     censors = NULL,
 
     #' @description
@@ -343,7 +344,7 @@ Schema_v8 <- R6Class(
       validated <- self$validator_field_contents(newdata)
       if(!validated) stop(glue::glue("load_data_infile not validated in {self$table_name}. {attr(validated,'var')}"))
 
-      infile <- random_file(self$load_folder)
+      infile <- random_file(self$load_folder_fn())
       load_data_infile(
         conn = self$conn,
         db_config = self$db_config,
@@ -365,7 +366,7 @@ Schema_v8 <- R6Class(
       validated <- self$validator_field_contents(newdata)
       if(!validated) stop(glue::glue("upsert_load_data_infile not validated in {self$table_name}. {attr(validated,'var')}"))
 
-      infile <- random_file(self$load_folder)
+      infile <- random_file(self$load_folder_fn())
       upsert_load_data_infile(
         # conn = self$conn,
         db_config = self$db_config,
@@ -526,6 +527,7 @@ Schema <- R6Class(
     db_field_types = NULL,
     db_field_types_with_length = NULL,
     db_load_folder = NULL,
+    load_folder_fn = function() tempdir(check=T),
     keys = NULL,
     keys_with_length = NULL,
     indexes = NULL,
@@ -737,7 +739,7 @@ Schema <- R6Class(
       validated <- self$validator_field_contents(newdata)
       if(!validated) stop(glue::glue("db_load_data_infile not validated in {self$db_table}. {attr(validated,'var')}"))
 
-      infile <- random_file(self$db_load_folder)
+      infile <- random_file(self$load_folder_fn())
       load_data_infile(
         conn = self$conn,
         db_config = self$db_config,
@@ -753,7 +755,7 @@ Schema <- R6Class(
       validated <- self$validator_field_contents(newdata)
       if(!validated) stop(glue::glue("db_upsert_load_data_infile not validated in {self$db_table}. {attr(validated,'var')}"))
 
-      infile <- random_file(self$db_load_folder)
+      infile <- random_file(self$load_folder_fn())
       upsert_load_data_infile(
         # conn = self$conn,
         db_config = self$db_config,
