@@ -2,6 +2,7 @@
 
 - * insert_data, upsert_data, drop_all_rows_and_then_insert_data are now the recommended ways of inserting data
 - * addin_load_production
+- * schemas now use load_folder_fn, which should dynamically check if a user has permission to write to a folder, solving permissions errors
 
 # sc 8.0.0
 

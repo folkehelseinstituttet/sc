@@ -642,11 +642,10 @@ Schema <- R6Class(
       self$db_drop_all_rows_and_then_upsert_data(newdata, drop_indexes, verbose)
     },
 
-    drop_all_rows_and_then_insert_data =  function(newdata, drop_indexes = names(self$indexes), verbose = TRUE) {
+    drop_all_rows_and_then_insert_data =  function(newdata, verbose = TRUE) {
       self$drop_all_rows()
       self$insert_data(
         newdata = newdata,
-        drop_indexes = drop_indexes,
         verbose = verbose
       )
     },
