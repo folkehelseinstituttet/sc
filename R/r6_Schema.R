@@ -419,6 +419,12 @@ Schema_v8 <- R6Class(
       return(retval)
     },
 
+    print_dplyr_select = function() {
+      x <- self$tbl() %>% head() %>% dplyr::collect() %>% names() %>% paste0(., collapse=",\n  ")
+      x <- paste0("dplyr::select(\n  ",x,"\n) %>%")
+      cat(x)
+    },
+
     list_indexes_db = function(){
       list_indexes(
         conn = self$conn,

@@ -293,6 +293,10 @@ SchemaRedirect_v8 <- R6Class(
       self$schemas[[self$preferred_table_name]]$tbl()
     },
 
+    print_dplyr_select = function() {
+      self$schemas[[self$preferred_table_name]]$print_dplyr_select()
+    },
+
     list_indexes_db = function(){
       self$schemas[[self$preferred_table_name]]$list_indexes_db()
     },
