@@ -106,7 +106,7 @@ load_data_infile.default <- function(conn = NULL, db_config = NULL, table, dt = 
   correct_order <- DBI::dbListFields(conn, table)
   if(length(correct_order)>0) dt <- dt[,correct_order,with=F]
   write_data_infile(dt = dt, file = file)
-  on.exit(fs::file_delete(file), add = T)
+  on.exit(unlink(file), add = T)
 
   sep <- ","
   eol <- "\n"
@@ -170,10 +170,10 @@ load_data_infile.default <- function(conn = NULL, db_config = NULL, table, dt = 
     quote = FALSE,
     na="",
     sep="\t")
-  on.exit(fs::file_delete(file), add = T)
+  on.exit(unlink(file), add = T)
 
-  format_file <- tempfile()
-  on.exit(fs::file_delete(format_file), add = T)
+  format_file <- tempfile(tmpdir = tempdir(check=TRUE))
+  on.exit(unlink(format_file), add = T)
 
   args <- c(
     table,
