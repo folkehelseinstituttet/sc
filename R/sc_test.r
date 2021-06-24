@@ -2,6 +2,7 @@
 # 2 cores, x=1:40, 630 MB, 24s
 # sc:::set_test_task()
 # sc::tm_run_task("sc_test")
+# Rscript -e '.libPaths("~/R"); sc:::set_test_task(); sc::tm_run_task("sc_test")'
 set_test_task <- function(){
   # tm_run_task("sc_test")
   add_task_from_config_v8(
@@ -65,6 +66,8 @@ sc_test_action <- function(data, argset, schema) {
   if(argset$first_argset == TRUE){
 
   }
+
+  if(argset$index == 5) stop("this is my error")
 
   Sys.sleep(1)
 

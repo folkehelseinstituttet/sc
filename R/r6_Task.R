@@ -340,19 +340,33 @@ Task <- R6::R6Class(
           for (s in schema) s$connect()
 
           x$set_verbose(FALSE)
-          retval <- x$run_all(schema = schema)
+          catch_result <- tryCatch({
+            retval <- x$run_all(schema = schema)
 
-          if (upsert_at_end_of_each_plan) {
-            retval <- rbindlist(retval, use.names = T, fill = T)
-            schema$output$upsert_data(retval, verbose = F)
-          }
+            if (upsert_at_end_of_each_plan) {
+              retval <- rbindlist(retval, use.names = T, fill = T)
+              schema$output$upsert_data(retval, verbose = F)
+            }
 
-          if (insert_at_end_of_each_plan) {
-            retval <- rbindlist(retval, use.names = T, fill = T)
-            schema$output$insert_data(retval, verbose = F)
-          }
-          rm("retval")
+            if (insert_at_end_of_each_plan) {
+              retval <- rbindlist(retval, use.names = T, fill = T)
+              schema$output$insert_data(retval, verbose = F)
+            }
+            rm("retval")
+
+            return(list(
+              error = FALSE,
+              msg = "success"
+            ))
+          }, error = function(e){
+            return(list(
+              error = TRUE,
+              msg = paste0("Error in index ", x$get_argset(1)$index)
+            ))
+          })
           for (s in schema) s$disconnect()
+
+          if(catch_result$error) stop(catch_result$msg)
 
           # ***************************** #
           # NEVER DELETE gc()             #
@@ -370,7 +384,10 @@ Task <- R6::R6Class(
         mc.style = "ETA",
         mc.substyle = 2
       )
-      if(sum(unlist(lapply(y, function(x) inherits(x, "try-error"))))>0) stop("Error running in parallel")
+      try_error_index <- unlist(lapply(y, function(x) inherits(x, "try-error")))
+      if(sum(try_error_index)>0){
+        stop("Error running in parallel: ", y[try_error_index][1][[1]][1])
+      }
       # print(y)
     },
     # run_parallel = function(plans_index, schema, upsert_at_end_of_each_plan, insert_at_end_of_each_plan, pb){
