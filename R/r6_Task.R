@@ -336,36 +336,37 @@ Task <- R6::R6Class(
         self$plans[plans_index],
         function(x, schema, upsert_at_end_of_each_plan, insert_at_end_of_each_plan){
           data.table::setDTthreads(1)
-          #for (s in schema) s$disconnect()
-          for (s in schema) s$connect()
-
           x$set_verbose(FALSE)
-          catch_result <- tryCatch({
-            retval <- x$run_all(schema = schema)
 
-            if (upsert_at_end_of_each_plan) {
-              retval <- rbindlist(retval, use.names = T, fill = T)
-              schema$output$upsert_data(retval, verbose = F)
-            }
+          for(tries in 1:3){
+            catch_result <- tryCatch({
+              for (s in schema) s$connect()
+              retval <- x$run_all(schema = schema)
 
-            if (insert_at_end_of_each_plan) {
-              retval <- rbindlist(retval, use.names = T, fill = T)
-              schema$output$insert_data(retval, verbose = F)
-            }
-            rm("retval")
+              if (upsert_at_end_of_each_plan) {
+                retval <- rbindlist(retval, use.names = T, fill = T)
+                schema$output$upsert_data(retval, verbose = F)
+              }
 
-            return(list(
-              error = FALSE,
-              msg = "success"
-            ))
-          }, error = function(e){
-            return(list(
-              error = TRUE,
-              msg = paste0("Error in index ", x$get_argset(1)$index)
-            ))
-          })
-          for (s in schema) s$disconnect()
+              if (insert_at_end_of_each_plan) {
+                retval <- rbindlist(retval, use.names = T, fill = T)
+                schema$output$insert_data(retval, verbose = F)
+              }
+              rm("retval")
 
+              return(list(
+                error = FALSE,
+                msg = "success"
+              ))
+            }, error = function(e){
+              return(list(
+                error = TRUE,
+                msg = paste0("Error in index ", x$get_argset(1)$index)
+              ))
+            })
+            for (s in schema) s$disconnect()
+            if(!catch_result$error) break()
+          }
           if(catch_result$error) stop(catch_result$msg)
 
           # ***************************** #
