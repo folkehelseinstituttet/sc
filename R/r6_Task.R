@@ -337,6 +337,7 @@ Task <- R6::R6Class(
         function(x, schema, upsert_at_end_of_each_plan, insert_at_end_of_each_plan){
           data.table::setDTthreads(1)
           x$set_verbose(FALSE)
+          message(".")
 
           for(tries in 1:5){
             catch_result <- tryCatch({
