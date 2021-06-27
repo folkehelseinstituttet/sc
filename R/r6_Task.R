@@ -338,7 +338,7 @@ Task <- R6::R6Class(
           data.table::setDTthreads(1)
           x$set_verbose(FALSE)
 
-          for(tries in 1:3){
+          for(tries in 1:5){
             catch_result <- tryCatch({
               for (s in schema) s$connect()
               retval <- x$run_all(schema = schema)
