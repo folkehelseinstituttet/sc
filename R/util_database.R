@@ -91,6 +91,7 @@ load_data_infile <- function(
 
 load_data_infile.default <- function(conn = NULL, db_config = NULL, table, dt = NULL, file = "/xtmp/x123.csv") {
   if(is.null(dt)) return()
+  if(nrow(dt)==0) return()
 
   t0 <- Sys.time()
 
@@ -142,6 +143,7 @@ load_data_infile.default <- function(conn = NULL, db_config = NULL, table, dt = 
   file = tempfile()
   ) {
   if(is.null(dt)) return()
+  if(nrow(dt)==0) return()
   if(is.null(conn)){
     conn <- get_db_connection()
     on.exit(DBI::dbDisconnect(conn))

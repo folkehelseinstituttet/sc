@@ -366,7 +366,15 @@ Task <- R6::R6Class(
               ))
             })
             for (s in schema) s$disconnect()
-            if(!catch_result$error) break()
+
+            # if the plan executed without any errors
+            # then break the loop
+            # otherwise sleep for 5 seconds and try again
+            if(!catch_result$error){
+              break()
+            } else {
+              Sys.sleep(5)
+            }
           }
           if(catch_result$error) stop(catch_result$msg)
 
