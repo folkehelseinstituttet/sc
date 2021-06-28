@@ -362,7 +362,7 @@ Task <- R6::R6Class(
             }, error = function(e){
               return(list(
                 error = TRUE,
-                msg = paste0("Error in index ", x$get_argset(1)$index)
+                msg = paste0("Error in index ", x$get_argset(1)$index, ".\n********\n", e$message, "\n********\n")
               ))
             })
             for (s in schema) s$disconnect()
