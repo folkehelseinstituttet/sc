@@ -10,4 +10,4 @@ config$is_production <- FALSE
 config$verbose <- FALSE
 config$schemas <- list()
 config$permissions <- list()
-
+config$in_parallel <- FALSE

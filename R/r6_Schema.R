@@ -344,6 +344,10 @@ Schema_v8 <- R6Class(
       validated <- self$validator_field_contents(newdata)
       if(!validated) stop(glue::glue("load_data_infile not validated in {self$table_name}. {attr(validated,'var')}"))
 
+      # this will make the insert go faster, because
+      # the data will be sorted
+      setkeyv(newdata, self$keys)
+
       infile <- random_file(self$load_folder_fn())
       load_data_infile(
         conn = self$conn,
@@ -365,6 +369,9 @@ Schema_v8 <- R6Class(
 
       validated <- self$validator_field_contents(newdata)
       if(!validated) stop(glue::glue("upsert_load_data_infile not validated in {self$table_name}. {attr(validated,'var')}"))
+
+      # this will make the insert go faster, because
+      # the data will be sorted
 
       infile <- random_file(self$load_folder_fn())
       upsert_load_data_infile(

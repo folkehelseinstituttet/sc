@@ -204,10 +204,25 @@ load_data_infile.default <- function(conn = NULL, db_config = NULL, table, dt = 
     stdout=NULL
   )
 
+  if(config$in_parallel){
+    hint_arg <- NULL
+  } else {
+    hint_arg <- "TABLOCK"
+  }
+  if(!is.null(key(dt))){
+    hint_arg <- c(hint_arg, paste0("ORDER(", paste0(key(dt), " ASC", collapse=", "), ")"))
+  }
+  if(length(hint_arg) > 0){
+    hint_arg <- paste0(hint_arg, collapse = ", ")
+    hint_arg <- paste0("-h '", hint_arg, "'")
+  }
+
   args <- c(
     table,
     "in" ,
     file,
+    "-a 16384",
+    hint_arg,
     "-S",
     db_config$server,
     "-d",
@@ -222,6 +237,7 @@ load_data_infile.default <- function(conn = NULL, db_config = NULL, table, dt = 
   if(db_config$trusted_connection=="yes"){
     args <- c(args,"-T")
   }
+  print(args)
   system2(
     "bcp",
     args=args,

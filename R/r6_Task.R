@@ -335,6 +335,7 @@ Task <- R6::R6Class(
       y <- pbmcapply::pbmclapply(
         self$plans[plans_index],
         function(x, schema, upsert_at_end_of_each_plan, insert_at_end_of_each_plan){
+          config$in_parallel <- TRUE # this will stop TABLOCK from being used in in/upserts
           data.table::setDTthreads(1)
           x$set_verbose(FALSE)
           message(".")
@@ -394,6 +395,8 @@ Task <- R6::R6Class(
         mc.style = "ETA",
         mc.substyle = 2
       )
+      config$in_parallel <- FALSE # this will allow TABLOCK in in/upserts
+
       try_error_index <- unlist(lapply(y, function(x) inherits(x, "try-error")))
       if(sum(try_error_index)>0){
         stop("Error running in parallel: ", y[try_error_index][1][[1]][1])
