@@ -251,7 +251,7 @@ load_data_infile.default <- function(
   if(db_config$trusted_connection=="yes"){
     args <- c(args,"-T")
   }
-  print(args)
+  # print(args)
   system2(
     "bcp",
     args=args,
