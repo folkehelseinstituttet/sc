@@ -24,6 +24,7 @@ SchemaRedirect class description
 \item \href{#method-drop_all_rows_and_then_upsert_data}{\code{SchemaRedirect_v8$drop_all_rows_and_then_upsert_data()}}
 \item \href{#method-drop_all_rows_and_then_insert_data}{\code{SchemaRedirect_v8$drop_all_rows_and_then_insert_data()}}
 \item \href{#method-tbl}{\code{SchemaRedirect_v8$tbl()}}
+\item \href{#method-print_dplyr_select}{\code{SchemaRedirect_v8$print_dplyr_select()}}
 \item \href{#method-list_indexes_db}{\code{SchemaRedirect_v8$list_indexes_db()}}
 \item \href{#method-add_indexes}{\code{SchemaRedirect_v8$add_indexes()}}
 \item \href{#method-drop_indexes}{\code{SchemaRedirect_v8$drop_indexes()}}
@@ -169,6 +170,15 @@ Upserts data into db table
 \subsection{Method \code{tbl()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{SchemaRedirect_v8$tbl()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-print_dplyr_select"></a>}}
+\if{latex}{\out{\hypertarget{method-print_dplyr_select}{}}}
+\subsection{Method \code{print_dplyr_select()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{SchemaRedirect_v8$print_dplyr_select()}\if{html}{\out{</div>}}
 }
 
 }

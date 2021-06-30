@@ -86,7 +86,8 @@ load_data_infile <- function(
   db_config,
   table,
   dt,
-  file
+  file,
+  force_tablock
 ) UseMethod("load_data_infile")
 
 load_data_infile.default <- function(

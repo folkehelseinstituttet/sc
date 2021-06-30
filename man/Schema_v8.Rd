@@ -18,6 +18,7 @@ schema class description
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
+\item \href{#method-load_folder_fn}{\code{Schema_v8$load_folder_fn()}}
 \item \href{#method-new}{\code{Schema_v8$new()}}
 \item \href{#method-connect}{\code{Schema_v8$connect()}}
 \item \href{#method-disconnect}{\code{Schema_v8$disconnect()}}
@@ -31,6 +32,7 @@ schema class description
 \item \href{#method-drop_all_rows_and_then_upsert_data}{\code{Schema_v8$drop_all_rows_and_then_upsert_data()}}
 \item \href{#method-drop_all_rows_and_then_insert_data}{\code{Schema_v8$drop_all_rows_and_then_insert_data()}}
 \item \href{#method-tbl}{\code{Schema_v8$tbl()}}
+\item \href{#method-print_dplyr_select}{\code{Schema_v8$print_dplyr_select()}}
 \item \href{#method-list_indexes_db}{\code{Schema_v8$list_indexes_db()}}
 \item \href{#method-add_indexes}{\code{Schema_v8$add_indexes()}}
 \item \href{#method-drop_indexes}{\code{Schema_v8$drop_indexes()}}
@@ -38,6 +40,15 @@ schema class description
 \item \href{#method-db_disconnect}{\code{Schema_v8$db_disconnect()}}
 \item \href{#method-clone}{\code{Schema_v8$clone()}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-load_folder_fn"></a>}}
+\if{latex}{\out{\hypertarget{method-load_folder_fn}{}}}
+\subsection{Method \code{load_folder_fn()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Schema_v8$load_folder_fn()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
@@ -197,6 +208,15 @@ Upserts data into db table
 \subsection{Method \code{tbl()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Schema_v8$tbl()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-print_dplyr_select"></a>}}
+\if{latex}{\out{\hypertarget{method-print_dplyr_select}{}}}
+\subsection{Method \code{print_dplyr_select()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Schema_v8$print_dplyr_select()}\if{html}{\out{</div>}}
 }
 
 }

@@ -11,6 +11,7 @@ schema class description
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
+\item \href{#method-load_folder_fn}{\code{Schema$load_folder_fn()}}
 \item \href{#method-new}{\code{Schema$new()}}
 \item \href{#method-connect}{\code{Schema$connect()}}
 \item \href{#method-disconnect}{\code{Schema$disconnect()}}
@@ -49,6 +50,15 @@ schema class description
 \item \href{#method-identify_dt_that_exists_in_db}{\code{Schema$identify_dt_that_exists_in_db()}}
 \item \href{#method-clone}{\code{Schema$clone()}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-load_folder_fn"></a>}}
+\if{latex}{\out{\hypertarget{method-load_folder_fn}{}}}
+\subsection{Method \code{load_folder_fn()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Schema$load_folder_fn()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
@@ -182,11 +192,7 @@ Upserts data into db table
 \if{latex}{\out{\hypertarget{method-drop_all_rows_and_then_insert_data}{}}}
 \subsection{Method \code{drop_all_rows_and_then_insert_data()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Schema$drop_all_rows_and_then_insert_data(
-  newdata,
-  drop_indexes = names(self$indexes),
-  verbose = TRUE
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Schema$drop_all_rows_and_then_insert_data(newdata, verbose = TRUE)}\if{html}{\out{</div>}}
 }
 
 }
