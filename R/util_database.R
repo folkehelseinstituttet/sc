@@ -89,7 +89,14 @@ load_data_infile <- function(
   file
 ) UseMethod("load_data_infile")
 
-load_data_infile.default <- function(conn = NULL, db_config = NULL, table, dt = NULL, file = "/xtmp/x123.csv") {
+load_data_infile.default <- function(
+  conn = NULL,
+  db_config = NULL,
+  table,
+  dt = NULL,
+  file = "/xtmp/x123.csv",
+  force_tablock = FALSE
+  ) {
   if(is.null(dt)) return()
   if(nrow(dt)==0) return()
 
@@ -140,7 +147,8 @@ load_data_infile.default <- function(conn = NULL, db_config = NULL, table, dt = 
   db_config = NULL,
   table,
   dt,
-  file = tempfile()
+  file = tempfile(),
+  force_tablock = FALSE
   ) {
   if(is.null(dt)) return()
   if(nrow(dt)==0) return()
@@ -204,11 +212,16 @@ load_data_infile.default <- function(conn = NULL, db_config = NULL, table, dt = 
     stdout=NULL
   )
 
-  if(config$in_parallel){
-    hint_arg <- NULL
-  } else {
+  # TABLOCK is used by bcp by default. It is disabled when performing inserts in parallel.
+  # Upserts can use TABLOCK in parallel, because they initially insert to a random table
+  # before merging. This random db table will therefore not be in use by multiple processes
+  # simultaneously
+  if(!config$in_parallel | force_tablock){
     hint_arg <- "TABLOCK"
+  } else {
+    hint_arg <- NULL
   }
+
   if(!is.null(key(dt))){
     hint_arg <- c(hint_arg, paste0("ORDER(", paste0(key(dt), " ASC", collapse=", "), ")"))
   }
@@ -393,7 +406,8 @@ upsert_load_data_infile_internal.default <- function(
     db_config = db_config,
     table = temp_name,
     dt = dt,
-    file = file
+    file = file,
+    force_tablock = TRUE
     )
 
   a <- Sys.time()
