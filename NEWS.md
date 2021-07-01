@@ -3,7 +3,7 @@
 * insert_data, upsert_data, drop_all_rows_and_then_insert_data are now the recommended ways of inserting data
 * addin_load_production
 * schemas now use load_folder_fn, which should dynamically check if a user has permission to write to a folder, solving permissions errors
-- TABLOCK is used by bcp by default. It is disabled when performing inserts in parallel.
+- TABLOCK is disabled right now due to issues where data would not be uploaded.
 - Data is sorted before sending it to bcp to speed up in/upserts.
 
 # sc 8.0.0

@@ -218,7 +218,11 @@ load_data_infile.default <- function(
   # before merging. This random db table will therefore not be in use by multiple processes
   # simultaneously
   if(!config$in_parallel | force_tablock){
-    hint_arg <- "TABLOCK"
+    # sometimes this results in the data not being
+    # uploaded at all, so for the moment I am disabling this
+    # until we can spend more time on it
+    # hint_arg <- "TABLOCK"
+    hint_arg <- NULL
   } else {
     hint_arg <- NULL
   }
