@@ -346,7 +346,7 @@ Schema_v8 <- R6Class(
 
       # this will make the insert go faster, because
       # the data will be sorted
-      setkeyv(newdata, self$keys)
+      # setkeyv(newdata, self$keys)
 
       infile <- random_file(self$load_folder_fn())
       load_data_infile(
