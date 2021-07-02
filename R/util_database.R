@@ -221,8 +221,8 @@ load_data_infile.default <- function(
     # sometimes this results in the data not being
     # uploaded at all, so for the moment I am disabling this
     # until we can spend more time on it
-    hint_arg <- "TABLOCK"
-    #hint_arg <- NULL
+    # hint_arg <- "TABLOCK"
+    hint_arg <- NULL
   } else {
     hint_arg <- NULL
   }
