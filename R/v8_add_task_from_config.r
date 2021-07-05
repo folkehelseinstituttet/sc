@@ -239,6 +239,10 @@ add_task_from_config_v8 <- function(
   force(schema)
   force(info)
 
+  for(i in seq_along(NULL)){
+    if(!inherits(sc::config$schemas$anon_test, c("Schema", "Schema_v8"))) stop(names(schema)[i], " is not a valid schema")
+  }
+
   add_task(
     task_from_config_v8(
       name = name,

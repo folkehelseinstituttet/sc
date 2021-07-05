@@ -1,10 +1,11 @@
 # sc 8.0.1
 
+* When using `sc::add_task_from_config_v8` the schema list is checked to make sure they are actually schemas. This will solve the issue where people incorrectly add non-existent schemas to the task.
 * insert_data, upsert_data, drop_all_rows_and_then_insert_data are now the recommended ways of inserting data
 * addin_load_production
 * schemas now use load_folder_fn, which should dynamically check if a user has permission to write to a folder, solving permissions errors
-- TABLOCK is disabled right now due to issues where data would not be uploaded.
-- Data is sorted before sending it to bcp to speed up in/upserts.
+- (Disabled) TABLOCK is disabled right now due to issues where data would not be uploaded.
+- (Disabled) Data is sorted before sending it to bcp to speed up in/upserts.
 
 # sc 8.0.0
 
