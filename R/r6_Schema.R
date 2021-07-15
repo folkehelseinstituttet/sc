@@ -1,3 +1,10 @@
+#' shortcut to get available schema names
+#' @export
+tm_get_schema_names <- function(){
+  config$schemas |>
+    names()
+}
+
 #' Blank field_types validator
 #' @param db_field_types db_field_types passed to schema
 #' @export

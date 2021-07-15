@@ -14,7 +14,7 @@ Description: Sykdomspulsen is a free and open-source health surveillance system 
 URL: https://sykdomspulsen-dokumentasjon.no
 BugReports: https://github.com/folkehelseinstituttet/sc/issues
 Depends:
-  R (>= 3.5.0)
+  R (>= 4.1.0)
 Imports:
   doFuture,
   data.table,
