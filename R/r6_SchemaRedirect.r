@@ -47,6 +47,8 @@ censor_function_factory_everything <- function(
   column_name_to_be_censored,
   column_name_value = column_name_to_be_censored,
   censored_value = 0,
+  granularity_time = NULL,
+  granularity_time_not = NULL,
   granularity_geo = NULL,
   granularity_geo_not = NULL
 ){
@@ -100,10 +102,12 @@ censor_function_factory_everything <- function(
 #' @param granularity_geo Which granularity_geos to use this function on
 #' @param granularity_geo_not Which granularity_geos to not use this function on
 #' @export
-censor_function_factory_everything <- function(
+censor_function_factory_values_0_4 <- function(
   column_name_to_be_censored,
   column_name_value = column_name_to_be_censored,
   censored_value = 0,
+  granularity_time = NULL,
+  granularity_time_not = NULL,
   granularity_geo = NULL,
   granularity_geo_not = NULL
 ){
