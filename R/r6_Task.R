@@ -307,6 +307,7 @@ Task <- R6::R6Class(
       for (s in schema) s$connect()
       for (i in seq_along(self$plans[plans_index])) {
         if(!is.null(pb)) self$plans[plans_index][[i]]$set_progressor(pb)
+        config$plan_attempt_index <- 1
 
         if(length(plans_index) == 1 & is.null(pb)){
           verbose <- TRUE
@@ -341,6 +342,8 @@ Task <- R6::R6Class(
           message(".")
 
           for(tries in 1:5){
+            config$plan_attempt_index <- tries
+
             catch_result <- tryCatch({
               for (s in schema) s$connect()
               retval <- x$run_all(schema = schema)

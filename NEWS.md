@@ -7,6 +7,7 @@
 - Including tm_get_schema_names
 - Both granularity_time AND granularity_geo are now included in db censors
 - Requires R >= 4.1.0
+- sc::config\u0026plan_attempt_index now exists. When running plans in parallel, if a plan fails it is retried five times. This lets a user track which attempt they are on. This is mostly useful so that emails and smses are only sent when  sc::config$plan_attempt_index==1
 - (Disabled) TABLOCK is disabled right now due to issues where data would not be uploaded.
 - (Disabled) Data is sorted before sending it to bcp to speed up in/upserts.
 

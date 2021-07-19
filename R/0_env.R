@@ -11,3 +11,4 @@ config$verbose <- FALSE
 config$schemas <- list()
 config$permissions <- list()
 config$in_parallel <- FALSE
+config$plan_attempt_index <- 1
